@@ -1,0 +1,26 @@
+{
+    "name": "edi-support",
+    "displayName": "edi-support",
+    "description": "Provides basic support for the EDI format.",
+    "version": "0.0.1",
+    "publisher": "Silvenga",
+    "engines": {
+        "vscode": "^1.11.0"
+    },
+    "categories": [
+        "Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "edi",
+            "aliases": ["Electronic Data Interchange", "edi"],
+            "extensions": [".edi"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "edi",
+            "scopeName": "source.edi",
+            "path": "./syntaxes/edi.tmLanguage.json"
+        }]
+    }
+}
