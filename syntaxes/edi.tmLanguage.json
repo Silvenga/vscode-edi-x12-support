@@ -6,24 +6,64 @@
 			"include": "#keywords"
 		},
 		{
-			"include": "#strings"
+			"include": "#segments"
 		}
 	],
 	"repository": {
 		"keywords": {
-			"patterns": [{
-				"name": "keyword.control.edi",
-				"match": "\\b(if|while|for|return)\\b"
-			}]
-		},
-		"strings": {
-			"name": "string.quoted.double.edi",
-			"begin": "\"",
-			"end": "\"",
 			"patterns": [
 				{
-					"name": "constant.character.escape.edi",
-					"match": "\\\\."
+					"name": "keyword.control.edi",
+					"match": "\\b(if|while|for|return)\\b"
+				}
+			]
+		},
+		"segments": {
+			"name": "segments.edi",
+			"begin": "\\b",
+			"end": "~",
+			"patterns": [
+				{
+					"match": "(\\*)([\\w\\d ]*)",
+					"captures": {
+						"1": {
+							"name": "constant.segment.data-element.separator"
+						},
+						"2": {
+							"name": "string.unquoted.value.edi"
+						}
+					}
+				},
+				{
+					"match": "(\\^)([\\w\\d ]*)",
+					"captures": {
+						"1": {
+							"name": "constant.segment.repetition.separator"
+						},
+						"2": {
+							"name": "constant.segment.repetition"
+						}
+					}
+				},
+				{
+					"match": "([:>])([\\w\\d ]*)",
+					"captures": {
+						"1": {
+							"name": "constant.segment.component.separator"
+						},
+						"2": {
+							"name": "constant.segment.component"
+						}
+					}
+				},
+				{
+					"name": "keyword",
+					"match": "~"
+				},
+				{
+					"name": "keyword",
+					"match": "[\\w\\d]+",
+					"disabled": 1
 				}
 			]
 		}
