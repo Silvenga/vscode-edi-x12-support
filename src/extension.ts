@@ -5,6 +5,7 @@ import { ExtensionContext, commands, languages, TextDocument, Range } from 'vsco
 import { EdiController } from './ediController';
 import { EdiHoverProvider } from './ediHoverProvider';
 import { EdiHighlightProvider } from './ediHighlightProvider';
+import { Constants } from './constants'
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -14,7 +15,7 @@ export async function activate(context: ExtensionContext) {
     // This line of code will only be executed once when your extension is activated
     console.log('Active!');
 
-    const documentSelector = "edi";
+    const documentSelector = Constants.languageId;
 
     let controller = new EdiController();    
     context.subscriptions.push(controller);

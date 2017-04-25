@@ -1,4 +1,4 @@
-# VSCode Edi Support
+# VSCode Edi X12 Support
 
 A Visual Studio Code extension aimed at providing basic support for the EDI format.
 

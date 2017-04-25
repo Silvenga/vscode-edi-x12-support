@@ -1,7 +1,7 @@
 {
   "name": "edi-support",
   "displayName": "edi-support",
-  "description": "Provides basic support for the EDI format.",
+  "description": "Provides basic support for the EDI X12/HIPAA format.",
   "version": "0.0.1",
   "publisher": "Silvenga",
   "engines": {
@@ -19,11 +19,12 @@
       {
         "id": "edi",
         "aliases": [
-          "Electronic Data Interchange",
+          "Electronic Data Interchange (X12)",
           "edi"
         ],
         "extensions": [
-          ".edi"
+          ".edi",
+          ".x12"
         ],
         "configuration": "./language-configuration.json"
       }
@@ -49,7 +50,6 @@
     "@types/node": "^6.0.40",
     "ava": "^0.19.1",
     "chai": "^3.5.0",
-    "electron": "^1.6.6",
     "mocha": "^3.2.0",
     "tslint": "^4.2.0",
     "typescript": "^2.0.3",

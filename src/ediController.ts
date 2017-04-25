@@ -1,4 +1,5 @@
 import { StatusBarItem, StatusBarAlignment, window, TextEditor } from 'vscode';
+import { Constants } from './constants'
 
 export class EdiController {
 
@@ -11,14 +12,14 @@ export class EdiController {
     }
 
     public setStatus(message: string) {
-        this._statusBarItem.text = "Last EDI Status: " + message;
+        this._statusBarItem.text = "EDI Status: " + message;
     }
 
     private onDidChangeActiveTextEditor(textEditor: TextEditor) {
         if (textEditor == null) {
             return;
         }
-        if (textEditor.document.languageId === "edi") {
+        if (textEditor.document.languageId === Constants.languageId) {
             this.documentActive(textEditor);
             this.setStatus("Active");
         } else {

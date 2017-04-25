@@ -1,6 +1,7 @@
 import { DocumentHighlightProvider, DocumentHighlight, MarkedString, TextDocument, CancellationToken, Position, Range } from 'vscode';
 import { EdiController } from './ediController';
 import { Parser } from './parser';
+import { Constants } from './constants'
 
 export class EdiHighlightProvider implements DocumentHighlightProvider {
 

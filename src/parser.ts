@@ -22,9 +22,9 @@ export class Parser {
         segment.length = endIndex - startIndex;
 
         let segmentsIds = this.parseRegex(/^[\w\d]{2,3}/g, segmentStr, x => new EdiElement(ElementType.segmentId, x[0], startIndex + x.index, ""));
-        let dataElements = this.parseRegex(/(\*)([\w .]*)/g, segmentStr, x => new EdiElement(ElementType.dataElement, x[2], startIndex + x.index, x[1]))
-        let repeatingElements = this.parseRegex(/(\^)([\w .]*)/g, segmentStr, x => new EdiElement(ElementType.repeatingElement, x[2], startIndex + x.index, x[1]));
-        let componentElements = this.parseRegex(/(>)([\w .]*)/g, segmentStr, x => new EdiElement(ElementType.componentElement, x[2], startIndex + x.index, x[1]));
+        let dataElements = this.parseRegex(/(\*)([\w .-]*)/g, segmentStr, x => new EdiElement(ElementType.dataElement, x[2], startIndex + x.index, x[1]))
+        let repeatingElements = this.parseRegex(/(\^)([\w .-]*)/g, segmentStr, x => new EdiElement(ElementType.repeatingElement, x[2], startIndex + x.index, x[1]));
+        let componentElements = this.parseRegex(/(>)([\w .-]*)/g, segmentStr, x => new EdiElement(ElementType.componentElement, x[2], startIndex + x.index, x[1]));
 
         segment.elements = segmentsIds.concat(dataElements, repeatingElements, componentElements).sort((a, b) => a.startIndex - b.startIndex);
 
