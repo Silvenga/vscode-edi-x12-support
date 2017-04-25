@@ -10,12 +10,17 @@ export class EdiController {
         window.onDidChangeActiveTextEditor((params) => this.onDidChangeActiveTextEditor(params))
     }
 
+    public setStatus(message: string) {
+        this._statusBarItem.text = "Last EDI Status: " + message;
+    }
+
     private onDidChangeActiveTextEditor(textEditor: TextEditor) {
         if (textEditor == null) {
             return;
         }
         if (textEditor.document.languageId === "edi") {
             this.documentActive(textEditor);
+            this.setStatus("Active");
         } else {
             this.documentInactive(textEditor);
         }
@@ -34,7 +39,6 @@ export class EdiController {
     private createStatusBar(): StatusBarItem {
         var statusBar = window.createStatusBarItem(StatusBarAlignment.Left);
         statusBar.tooltip = 'EDI Extension Status';
-        statusBar.text = "EDI Status: ";
         return statusBar;
     }
 

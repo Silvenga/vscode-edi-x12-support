@@ -16,10 +16,11 @@ export async function activate(context: ExtensionContext) {
 
     const documentSelector = "edi";
 
-    context.subscriptions.push(new EdiController());
+    let controller = new EdiController();    
+    context.subscriptions.push(controller);
 
-    // context.subscriptions.push(languages.registerHoverProvider(documentSelector, new EdiHoverProvider()))
-    context.subscriptions.push(languages.registerDocumentHighlightProvider(documentSelector, new EdiHighlightProvider()));
+    context.subscriptions.push(languages.registerHoverProvider(documentSelector, new EdiHoverProvider(controller)))
+    context.subscriptions.push(languages.registerDocumentHighlightProvider(documentSelector, new EdiHighlightProvider(controller)));
 }
 
 // this method is called when your extension is deactivated
