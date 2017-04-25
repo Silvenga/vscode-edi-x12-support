@@ -5,7 +5,7 @@ export class Parser {
 
         // console.log(document);
 
-        let results = this.parseRegex(/\b(.*?)~/g, document, x => this.parseSegment(x[0], x.index, x.index + x[0].length));
+        let results = this.parseRegex(/\b([\s\S]*?)~/g, document, x => this.parseSegment(x[0], x.index, x.index + x[0].length));
 
         return results;
     }

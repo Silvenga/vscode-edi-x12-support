@@ -35,6 +35,7 @@ See below.
 - [ ] Support repeating element numbering.
 - [ ] Support multiple lines.
 - [ ] Parse envelop headers for deliminator instead of using the hardcoded values of `>`/`*`/`~`/`^`.
+- [ ] Formating.
   - Grammar wont like this though...
 
 ## Release Notes
