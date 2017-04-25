@@ -7,6 +7,16 @@
   "engines": {
     "vscode": "^1.11.0"
   },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Silvenga/vscode-edi-support/issues",
+    "email": "m@silvenga.com"
+  },
+  "homepage": "https://github.com/Silvenga/vscode-edi-support/blob/master/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Silvenga/vscode-edi-support.git"
+  },
   "categories": [
     "Languages"
   ],
