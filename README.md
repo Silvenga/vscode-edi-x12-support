@@ -24,9 +24,11 @@ See below.
 
 ## TODO
 
+- [ ] Publish to market place?
 - [ ] Status icon?
 - [ ] Parsing of large files?
 - [ ] Cache parsed results.
+- [ ] Support all allowed characters, e.g. `-`, etc. 
 - [ ] Helper functions, e.g. splitting, segment lookup/jump-to, segment index jump-to, etc.
 - [ ] Support other EDI formats aside from X12.
 - [ ] Support component numbering.
