@@ -2,7 +2,9 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import { ExtensionContext, commands, languages, TextDocument, Range } from 'vscode';
+import { EdiController } from './ediController';
 import { EdiHoverProvider } from './ediHoverProvider';
+import { EdiHighlightProvider } from './ediHighlightProvider';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -12,7 +14,12 @@ export async function activate(context: ExtensionContext) {
     // This line of code will only be executed once when your extension is activated
     console.log('Active!');
 
-    context.subscriptions.push(languages.registerHoverProvider('edi', new EdiHoverProvider()))
+    const documentSelector = "edi";
+
+    context.subscriptions.push(new EdiController());
+
+    // context.subscriptions.push(languages.registerHoverProvider(documentSelector, new EdiHoverProvider()))
+    context.subscriptions.push(languages.registerDocumentHighlightProvider(documentSelector, new EdiHighlightProvider()));
 }
 
 // this method is called when your extension is deactivated
