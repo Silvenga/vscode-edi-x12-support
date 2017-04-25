@@ -4,7 +4,10 @@ typings/**
 out/test/**
 test/**
 src/**
+docs/**
 **/*.map
 .gitignore
+wallaby.js
 tsconfig.json
+tslint.json
 vsc-extension-quickstart.md
