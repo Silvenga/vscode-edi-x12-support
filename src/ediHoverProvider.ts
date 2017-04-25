@@ -22,7 +22,19 @@ export class EdiHoverProvider implements HoverProvider {
         var selectedElementIndex = selectedSegment.elements.findIndex(x => position.character >= x.startIndex && position.character <= x.endIndex)
         if (selectedElementIndex != -1) {
             let selectedElement = selectedSegment.elements[selectedElementIndex];
-            return new Hover(`**${selectedSegment.id}**${this.pad(selectedElementIndex, 2)}`);
+
+            let context = "";
+            for (var i = 0, len = selectedSegment.elements.length; i < len; i++) {
+                var el = selectedSegment.elements[i];
+                let element = (el.separator + el.value).replace("*", "\\*");
+                let isSelected = i == selectedElementIndex;
+                context += isSelected ? `**${element}**` : element;
+            }
+
+            return new Hover(
+                `**${selectedSegment.id}**${selectedElementIndex == 0 ? "" : this.pad(selectedElementIndex, 2)} (_${selectedElement.type}_)\n\n` +
+                `${context}`
+            );
         }
 
         return null;

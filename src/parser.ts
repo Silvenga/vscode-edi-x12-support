@@ -5,11 +5,7 @@ export class Parser {
 
         // console.log(document);
 
-        let matches = this.parseRegex(/\b(.*?)~/g, document);
-
-        let results = matches.map((x, i) => {
-            return this.parseSegment(x.value, x.index, x.index + x.value.length);
-        });
+        let results = this.parseRegex(/\b(.*?)~/g, document, x => this.parseSegment(x[0], x.index, x.index + x[0].length));
 
         return results;
     }
@@ -25,17 +21,10 @@ export class Parser {
         segment.endIndex = endIndex;
         segment.length = endIndex - startIndex;
 
-        let segmentsIds = this.parseRegex(/^[\w\d]{2,3}/g, segmentStr)
-            .map(x => new EdiElement(ElementType.segmentId, x.value, startIndex + x.index));
-
-        let dataElements = this.parseRegex(/\*([\w .]*)/g, segmentStr, 1)
-            .map(x => new EdiElement(ElementType.dataElement, x.value, startIndex + x.index);
-
-        let repeatingElements = this.parseRegex(/\^([\w .]*)/g, segmentStr, 1)
-            .map(x => new EdiElement(ElementType.repeatingElement, x.value, startIndex + x.index));
-
-        let componentElements = this.parseRegex(/>([\w .]*)/g, segmentStr, 1)
-            .map(x => new EdiElement(ElementType.componentElement, x.value, startIndex + x.index));
+        let segmentsIds = this.parseRegex(/^[\w\d]{2,3}/g, segmentStr, x => new EdiElement(ElementType.segmentId, x[0], startIndex + x.index, ""));
+        let dataElements = this.parseRegex(/(\*)([\w .]*)/g, segmentStr, x => new EdiElement(ElementType.dataElement, x[2], startIndex + x.index, x[1]))
+        let repeatingElements = this.parseRegex(/(\^)([\w .]*)/g, segmentStr, x => new EdiElement(ElementType.repeatingElement, x[2], startIndex + x.index, x[1]));
+        let componentElements = this.parseRegex(/(>)([\w .]*)/g, segmentStr, x => new EdiElement(ElementType.componentElement, x[2], startIndex + x.index, x[1]));
 
         segment.elements = segmentsIds.concat(dataElements, repeatingElements, componentElements).sort((a, b) => a.startIndex - b.startIndex);
 
@@ -49,13 +38,12 @@ export class Parser {
         return segment;
     }
 
-    private parseRegex(exp: RegExp, str: string, group: number = 0): RegexMatch[] {
-        let results: RegexMatch[] = [];
+    private parseRegex<T>(exp: RegExp, str: string, selector: (match: RegExpExecArray) => T): T[] {
+        let results: T[] = [];
         let match: RegExpExecArray;
         while ((match = exp.exec(str)) != null) {
-            results.push(new RegexMatch(match[group], match.index));
+            results.push(selector(match));
         }
-
         return results;
     }
 }
@@ -83,10 +71,10 @@ export class EdiSegment {
 }
 
 export enum ElementType {
-    segmentId,
-    dataElement,
-    repeatingElement,
-    componentElement
+    segmentId = <any>"Segment Id",
+    dataElement = <any>"Data Element",
+    repeatingElement = <any>"Repeating Element",
+    componentElement = <any>"Component Element"
 }
 
 export class EdiElement {
@@ -95,13 +83,16 @@ export class EdiElement {
     public value: string;
     public startIndex: number;
 
+    public separator: string;
+
     public endIndex: number;
 
-    constructor(type: ElementType, value: string, startIndex: number) {
+    constructor(type: ElementType, value: string, startIndex: number, separator : string) {
         this.type = type;
         this.value = value;
         this.startIndex = startIndex;
         this.endIndex = startIndex + value.length;
+        this.separator = separator;
     }
 
     public toString() {
