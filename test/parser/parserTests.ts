@@ -1,6 +1,6 @@
 import test from 'ava';
 import { expect } from 'chai';
-import { Parser } from '../src/parser'
+import { Parser } from '../../src/parser'
 
 const twoSegments = "ISA*hello~BSA*61*2017~";
 
@@ -14,6 +14,7 @@ test('On ParseSegments, when no matches, return empty array.', t => {
 
     // Assert
     expect(result).is.empty;
+    t.pass();
 });
 
 test('On ParseSegments, return matches.', t => {
@@ -25,6 +26,7 @@ test('On ParseSegments, return matches.', t => {
 
     // Assert
     expect(result).to.have.lengthOf(2);
+    t.pass();
 });
 
 test('Segment should be populated.', t => {
@@ -37,6 +39,7 @@ test('Segment should be populated.', t => {
     // Assert
     expect(result).to.have.lengthOf(1);
     expect(result[0].id).to.be.eq("ISA");
+    t.pass();
 });
 
 test('Can parse decimals.', t => {
@@ -48,6 +51,7 @@ test('Can parse decimals.', t => {
 
     // Assert
     expect(result[0].elements).to.have.lengthOf(2);
+    t.pass();
 });
 
 test('Can parse whitespace.', t => {
@@ -59,6 +63,7 @@ test('Can parse whitespace.', t => {
 
     // Assert
     expect(result[0].elements).to.have.lengthOf(2);
+    t.pass();
 });
 
 test('Can parse empty elements.', t => {
@@ -70,6 +75,7 @@ test('Can parse empty elements.', t => {
 
     // Assert
     expect(result[0].elements).to.have.lengthOf(4);
+    t.pass();
 });
 
 test('Repeating Elements', t => {
@@ -81,4 +87,17 @@ test('Repeating Elements', t => {
 
     // Assert
     expect(result[0].elements).to.have.lengthOf(3);
+    t.pass();
+});
+
+test('Can parse Commas.', t => {
+
+    var parser = new Parser();
+
+    // Act
+    var result = parser.ParseSegments("ISA* , *~");
+
+    // Assert
+    expect(result[0].elements).to.have.lengthOf(3);
+    t.pass();
 });
