@@ -9,13 +9,13 @@
     },
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/Silvenga/vscode-edi-support/issues",
+        "url": "https://github.com/Silvenga/vscode-edi-x12-support/issues",
         "email": "m@silvenga.com"
     },
-    "homepage": "https://github.com/Silvenga/vscode-edi-support/blob/master/README.md",
+    "homepage": "https://github.com/Silvenga/vscode-edi-x12-support/blob/master/README.md",
     "repository": {
         "type": "git",
-        "url": "https://github.com/Silvenga/vscode-edi-support.git"
+        "url": "https://github.com/Silvenga/vscode-edi-x12-support.git"
     },
     "categories": [
         "Languages"
