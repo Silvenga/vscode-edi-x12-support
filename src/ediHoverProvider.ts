@@ -23,7 +23,7 @@ export class EdiHoverProvider implements HoverProvider {
         let realPosition = doc.positionToIndex(position.line, position.character);
         let selectedSegment = segments.find(x => realPosition >= x.startIndex && realPosition <= x.endIndex);
         
-        var selectedElementIndex = selectedSegment.elements.findIndex(x => position.character >= x.startIndex && position.character <= x.endIndex)
+        var selectedElementIndex = selectedSegment.elements.findIndex(x => realPosition >= x.startIndex && realPosition <= x.endIndex)
         if (selectedElementIndex != -1) {
             let selectedElement = selectedSegment.elements[selectedElementIndex];
 
