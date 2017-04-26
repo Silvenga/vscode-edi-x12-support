@@ -20,7 +20,7 @@ Nothing at this point.
 
 ## Known Issues
 
-See below.
+- Components are not handled correctly.
 
 ## TODO
 

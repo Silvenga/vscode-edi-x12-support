@@ -28,7 +28,6 @@ export class Document {
 
         return doc;
     }
-
     public positionToIndex(line: number, character: number): number {
         if (line < 0 || line > this.lineToStartIndex.length) {
             throw "Position out of range.";

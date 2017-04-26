@@ -1,8 +1,9 @@
 import { HoverProvider, Hover, MarkedString, TextDocument, CancellationToken, Position, window } from 'vscode';
 import { EdiController } from './ediController';
-import { Parser } from './parser';
+import { Parser, EdiSegment } from './parser';
 import { Constants } from './constants'
 import { Document } from './document'
+import { List } from 'linqts';
 
 export class EdiHoverProvider implements HoverProvider {
 
@@ -19,11 +20,12 @@ export class EdiHoverProvider implements HoverProvider {
         let text = document.getText();
         let doc = Document.create(text);
 
-        let segments = this.parser.ParseSegments(text);
+        let segments = new List<EdiSegment>(this.parser.ParseSegments(text));
         let realPosition = doc.positionToIndex(position.line, position.character);
-        let selectedSegment = segments.find(x => realPosition >= x.startIndex && realPosition <= x.endIndex);
+        let selectedSegment = segments.First(x => realPosition >= x.startIndex && realPosition <= x.endIndex);
+
+        var selectedElementIndex = selectedSegment.elements.findIndex(x => realPosition >= x.startIndex && realPosition <= x.endIndex);
         
-        var selectedElementIndex = selectedSegment.elements.findIndex(x => realPosition >= x.startIndex && realPosition <= x.endIndex)
         if (selectedElementIndex != -1) {
             let selectedElement = selectedSegment.elements[selectedElementIndex];
 
@@ -34,9 +36,9 @@ export class EdiHoverProvider implements HoverProvider {
                 let isSelected = i == selectedElementIndex;
                 context += isSelected ? `**${element}**` : element;
             }
-
+            
             return new Hover(
-                `**${selectedSegment.id}**${selectedElementIndex == 0 ? "" : this.pad(selectedElementIndex, 2)} (_${selectedElement.type}_)\n\n` +
+                `**${selectedSegment.id}**${selectedElement.name} (_${selectedElement.type}_)\n\n` +
                 `${context}`
             );
         }

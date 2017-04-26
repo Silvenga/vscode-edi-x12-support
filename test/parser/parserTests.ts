@@ -29,7 +29,7 @@ test('On ParseSegments, return matches.', t => {
     t.pass();
 });
 
-test('Segment should be populated.', t => {
+test('Segment Id should be populated.', t => {
 
     var parser = new Parser();
 
@@ -39,6 +39,18 @@ test('Segment should be populated.', t => {
     // Assert
     expect(result).to.have.lengthOf(1);
     expect(result[0].id).to.be.eq("ISA");
+    t.pass();
+});
+
+test('Segment end deliminator should be populated.', t => {
+
+    var parser = new Parser();
+
+    // Act
+    var result = parser.ParseSegments("ISA*test~");
+
+    // Assert
+    expect(result[0].endingDelimiter).to.be.eq("~");
     t.pass();
 });
 
