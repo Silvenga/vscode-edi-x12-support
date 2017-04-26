@@ -2,6 +2,7 @@ import { DocumentHighlightProvider, DocumentHighlight, MarkedString, TextDocumen
 import { EdiController } from './ediController';
 import { Parser } from './parser';
 import { Constants } from './constants'
+import { Document } from './document'
 
 export class EdiHighlightProvider implements DocumentHighlightProvider {
 
@@ -16,28 +17,16 @@ export class EdiHighlightProvider implements DocumentHighlightProvider {
     public async provideDocumentHighlights(document: TextDocument, position: Position, token: CancellationToken): Promise<DocumentHighlight[]> {
 
         let text = document.getText();
-
-        let workIndex = 0;
-        let lines = text.split(/\r?\n/).map((x, line) => {
-            let currentIndex = workIndex;
-            workIndex += x.length;
-            return new LineIndex(x.length, line, currentIndex);
-        });
+        let doc = Document.create(text);
 
         let segments = this.parser.ParseSegments(text);
-
-        let realPosition = lines[position.line].startIndex + position.character;
-
+        let realPosition = doc.positionToIndex(position.line, position.character);
         let selectedSegment = segments.find(x => realPosition >= x.startIndex && realPosition <= x.endIndex);
 
-        let startLine = lines.reverse().find(x => x.startIndex <= selectedSegment.startIndex);
-        let endLine = lines.find(x => x.startIndex + x.length >= selectedSegment.endIndex);
+        let startLine = doc.indexToPosition(selectedSegment.startIndex);
+        let endLine = doc.indexToPosition(selectedSegment.endIndex);
 
-        console.log(startLine.line, endLine.line);
-
-
-        // TODO handle multiple lines        
-        return [new DocumentHighlight(new Range(new Position(0, selectedSegment.startIndex), new Position(0, selectedSegment.endIndex)))];
+        return [new DocumentHighlight(new Range(new Position(startLine.line, startLine.character), new Position(endLine.line, endLine.character)))];
     }
 }
 

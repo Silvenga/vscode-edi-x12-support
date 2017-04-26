@@ -1,5 +1,3 @@
-import { } from 'vscode';
-
 export class Parser {
     public ParseSegments(document: string): EdiSegment[] {
 
