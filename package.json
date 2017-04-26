@@ -1,8 +1,8 @@
 {
     "name": "edi-x12-support",
-    "displayName": "edi-x12-support",
+    "displayName": "Edi X12 Support",
     "description": "Provides basic support for the EDI X12/HIPAA format.",
-    "version": "0.4.0",
+    "version": "0.4.1",
     "publisher": "Silvenga",
     "engines": {
         "vscode": "^1.11.0"
