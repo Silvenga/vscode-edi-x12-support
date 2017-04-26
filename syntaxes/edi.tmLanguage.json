@@ -14,7 +14,7 @@
 			"patterns": [
 				{
 					"name": "meta.segment.data-element.edi",
-					"match": "(\\*)([\\w\\. -,]*)",
+					"match": "(\\*)([\\w\\. -,']*)",
 					"captures": {
 						"1": {
 							"name": "keyword.operator.segment.data-element.separator.edi"
@@ -26,7 +26,7 @@
 				},
 				{
 					"name": "meta.segment.repetition.edi",
-					"match": "(\\^)([\\w\\. -,]*)",
+					"match": "(\\^)([\\w\\. -,']*)",
 					"captures": {
 						"1": {
 							"name": "keyword.operator.segment.repetition.separator.edi"
@@ -38,7 +38,7 @@
 				},
 				{
 					"name": "meta.segment.component.edi",
-					"match": "([:>])([\\w\\. -,]*)",
+					"match": "([:>])([\\w\\. -,']*)",
 					"captures": {
 						"1": {
 							"name": "keyword.operator.segment.component.separator.edi"

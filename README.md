@@ -24,7 +24,7 @@ See below.
 
 ## TODO
 
-- [ ] Publish to market place?
+- [X] Publish to market place?
 - [ ] Status icon?
 - [ ] Parsing of large files?
 - [ ] Cache parsed results.
@@ -33,7 +33,7 @@ See below.
 - [ ] Support other EDI formats aside from X12.
 - [ ] Support component numbering.
 - [ ] Support repeating element numbering.
-- [ ] Support multiple lines.
+- [X] Support multiple lines.
 - [ ] Parse envelop headers for deliminator instead of using the hardcoded values of `>`/`*`/`~`/`^`.
 - [ ] Formating.
   - Grammar wont like this though...
