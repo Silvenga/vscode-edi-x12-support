@@ -1,5 +1,6 @@
-import { StatusBarItem, StatusBarAlignment, window, TextEditor } from 'vscode';
+import { StatusBarItem, StatusBarAlignment, window, TextEditor, Selection, Range } from 'vscode';
 import { Constants } from './constants'
+import { Parser } from './parser'
 
 export class EdiController {
 
@@ -38,9 +39,22 @@ export class EdiController {
     }
 
     private createStatusBar(): StatusBarItem {
-        var statusBar = window.createStatusBarItem(StatusBarAlignment.Left);
+        let statusBar = window.createStatusBarItem(StatusBarAlignment.Left);
         statusBar.tooltip = 'EDI Extension Status';
         return statusBar;
+    }
+
+    public addNewLines() {
+
+        let parser = new Parser();
+        let segments = parser.ParseSegments(window.activeTextEditor.document.getText())
+        let text = segments.join("\n");
+
+        window.activeTextEditor.edit(builder => {
+            let start = window.activeTextEditor.document.positionAt(segments[0].startIndex);
+            let end = window.activeTextEditor.document.positionAt(segments[segments.length - 1].endIndex);
+            builder.replace(new Range(start, end), text);
+        })
     }
 
     public dispose() {

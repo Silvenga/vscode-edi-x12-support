@@ -66,6 +66,11 @@ export class EdiSegment {
     public id: string;
 
     public elements: EdiElement[];
+
+    // TODO Store ending deliminator
+    public toString() {
+        return this.elements.join("") + "~";
+    }
 }
 
 export enum ElementType {
@@ -85,7 +90,7 @@ export class EdiElement {
 
     public endIndex: number;
 
-    constructor(type: ElementType, value: string, startIndex: number, separator : string) {
+    constructor(type: ElementType, value: string, startIndex: number, separator: string) {
         this.type = type;
         this.value = value;
         this.startIndex = startIndex;
@@ -94,7 +99,7 @@ export class EdiElement {
     }
 
     public toString() {
-        return this.value;
+        return this.separator + this.value;
     }
 }
 

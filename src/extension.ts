@@ -20,6 +20,7 @@ export async function activate(context: ExtensionContext) {
     let controller = new EdiController();    
     context.subscriptions.push(controller);
 
+    context.subscriptions.push(commands.registerCommand('edi-x12-support.add-new-lines', () => controller.addNewLines()));    
     context.subscriptions.push(languages.registerHoverProvider(documentSelector, new EdiHoverProvider(controller)))
     context.subscriptions.push(languages.registerDocumentHighlightProvider(documentSelector, new EdiHighlightProvider(controller)));
 }

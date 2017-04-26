@@ -2,7 +2,7 @@
     "name": "edi-x12-support",
     "displayName": "edi-x12-support",
     "description": "Provides basic support for the EDI X12/HIPAA format.",
-    "version": "0.2.1",
+    "version": "0.3.0",
     "publisher": "Silvenga",
     "engines": {
         "vscode": "^1.11.0"
@@ -44,6 +44,13 @@
                 "language": "edi",
                 "scopeName": "source.edi",
                 "path": "./syntaxes/edi.tmLanguage.json"
+            }
+        ],
+        "commands": [
+            {
+                "command": "edi-x12-support.add-new-lines",
+                "title": "Delimit with new lines",
+                "category": "EDI Support"
             }
         ]
     },
