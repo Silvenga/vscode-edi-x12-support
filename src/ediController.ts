@@ -47,7 +47,7 @@ export class EdiController {
     public addNewLines() {
 
         let parser = new Parser();
-        let segments = parser.ParseSegments(window.activeTextEditor.document.getText())
+        let segments = parser.parseSegments(window.activeTextEditor.document.getText())
         let text = segments.join("\n");
 
         window.activeTextEditor.edit(builder => {

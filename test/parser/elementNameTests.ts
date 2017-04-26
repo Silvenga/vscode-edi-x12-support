@@ -8,7 +8,7 @@ test('Segment ids.', t => {
     var parser = new Parser();
 
     // Act
-    var result = parser.ParseSegments(input)[0];
+    var result = parser.parseSegments(input)[0];
 
     // Assert
     expect(result.elements[0].name).is.eq("00");
@@ -22,7 +22,7 @@ test('Data elements.', t => {
     var parser = new Parser();
 
     // Act
-    var result = parser.ParseSegments(input)[0];
+    var result = parser.parseSegments(input)[0];
 
     // Assert
     expect(result.elements[1].name).is.eq("01")
@@ -36,7 +36,7 @@ test('Component elements.', t => {
     var parser = new Parser();
 
     // Act
-    var result = parser.ParseSegments(input)[0];
+    var result = parser.parseSegments(input)[0];
 
     // Assert
     expect(result.elements[1].name).is.eq("01")
@@ -51,7 +51,7 @@ test('Repeating elements.', t => {
     var parser = new Parser();
 
     // Act
-    var result = parser.ParseSegments(input)[0];
+    var result = parser.parseSegments(input)[0];
 
     // Assert
     expect(result.elements[1].name).is.eq("01");
