@@ -21,7 +21,8 @@
         "Languages"
     ],
     "activationEvents": [
-        "onLanguage:edi"
+        "onLanguage:edi",
+        "onCommand:edi-x12-support.add-new-lines"
     ],
     "main": "./out/src/extension",
     "contributes": {
