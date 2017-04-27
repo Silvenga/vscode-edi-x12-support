@@ -123,9 +123,8 @@ export class EdiSegment {
 
     public endingDelimiter: string;
 
-    // TODO Store ending deliminator
     public toString() {
-        return this.elements.join("") + "~";
+        return this.elements.join("") + this.endingDelimiter;
     }
 }
 

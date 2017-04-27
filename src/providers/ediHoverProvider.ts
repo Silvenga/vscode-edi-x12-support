@@ -37,6 +37,7 @@ export class EdiHoverProvider implements HoverProvider {
                 let isSelected = i == selectedElementIndex;
                 context += isSelected ? `**${element}**` : element;
             }
+            context += selectedSegment.endingDelimiter;
 
             return new Hover(
                 `**${selectedSegment.id}**${selectedElement.name} (_${selectedElement.type}_)\n\n` +
