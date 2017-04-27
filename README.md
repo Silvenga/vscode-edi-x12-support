@@ -20,7 +20,7 @@ Nothing at this point.
 
 ## Known Issues
 
-- Components are not handled correctly.
+None for now.
 
 ## TODO
 
@@ -28,15 +28,17 @@ Nothing at this point.
 - [ ] Status icon?
 - [ ] Parsing of large files?
 - [ ] Cache parsed results.
-- [ ] Support all allowed characters, e.g. `-`, etc. 
+- [X] Support all allowed characters, e.g. `-`, etc. 
 - [ ] Helper functions, e.g. splitting, segment lookup/jump-to, segment index jump-to, etc.
 - [ ] Support other EDI formats aside from X12.
-- [ ] Support component numbering.
-- [ ] Support repeating element numbering.
+- [X] Support component numbering.
+- [X] Support repeating element numbering.
 - [X] Support multiple lines.
 - [ ] Parse envelop headers for deliminator instead of using the hardcoded values of `>`/`*`/`~`/`^`.
-- [ ] Formating.
   - Grammar wont like this though...
+- [ ] Formating.
+- [ ] Support changing separators.
+
 
 ## Release Notes
 

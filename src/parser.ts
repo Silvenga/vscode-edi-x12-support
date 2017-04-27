@@ -1,4 +1,27 @@
 export class Parser {
+
+    public parseHeader(document: string): EdiDocumentConfiguration {
+
+        // https://msdn.microsoft.com/en-us/library/bb259967(v=bts.20).aspx
+
+        var isaHeader = document.replace(/(^\s+)/g, '').slice(0, 106);
+
+        let isIsa = isaHeader.slice(0, 3) == "ISA";
+        if (!isIsa) {
+            return null;
+        }
+        let standard = isaHeader.slice(84, 89);
+        let dataSeparator = isaHeader.charAt(3);
+        let componentSeparator = isaHeader.charAt(104);
+        let segmentSeparator = isaHeader.charAt(105);
+        if (segmentSeparator == "\r") {
+            segmentSeparator = "\r\n";
+        }
+        let repetitionSeparator = isaHeader.charAt(82);
+
+        return new EdiDocumentConfiguration(standard, dataSeparator, componentSeparator, repetitionSeparator, segmentSeparator);
+    }
+
     public parseSegments(document: string): EdiSegment[] {
 
         let results = this.parseRegex(/\b([\s\S]*?)(~)/g, document, x => this.parseSegment(x[0], x.index, x.index + x[0].length, x[2]));
@@ -118,3 +141,19 @@ export class EdiElement {
     }
 }
 
+export class EdiDocumentConfiguration {
+
+    public controlVersion: string;
+    public dataSeparator: string;
+    public componentSeparator: string;
+    public repetitionSeparator: string;
+    public segmentSeparator: string;
+
+    constructor(controlVersion: string, dataSeparator: string, componentSeparator: string, repetitionSeparator: string, segmentSeparator: string) {
+        this.controlVersion = controlVersion;
+        this.dataSeparator = dataSeparator;
+        this.componentSeparator = componentSeparator;
+        this.repetitionSeparator = repetitionSeparator;
+        this.segmentSeparator = segmentSeparator;
+    }
+}

@@ -1,13 +1,14 @@
 import { EditorPosition } from './models/editorPosition';
 
-export class Document {
+export class EdiFile {
 
     public text: string;
 
     public lineToStartIndex: number[];
+
     public lineToStartIndexReversed: number[];
 
-    public static create(text: string): Document {
+    public static create(text: string): EdiFile {
 
         const delimiter = "\u0000";
         let workIndex = 0;
@@ -21,13 +22,14 @@ export class Document {
 
         let lineToStartIndexReversed = lineToStartIndex.slice().reverse();
 
-        let doc = new Document();
+        let doc = new EdiFile();
         doc.text = text;
         doc.lineToStartIndex = lineToStartIndex;
         doc.lineToStartIndexReversed = lineToStartIndexReversed;
 
         return doc;
     }
+
     public positionToIndex(line: number, character: number): number {
         if (line < 0 || line > this.lineToStartIndex.length) {
             throw "Position out of range.";

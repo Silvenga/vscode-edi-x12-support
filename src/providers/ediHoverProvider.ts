@@ -1,8 +1,8 @@
 import { HoverProvider, Hover, MarkedString, TextDocument, CancellationToken, Position, window } from 'vscode';
-import { EditorController } from './controllers/editorController';
-import { Parser, EdiSegment } from './parser';
-import { Constants } from './constants'
-import { Document } from './document'
+import { EditorController } from '../controllers/editorController';
+import { Parser, EdiSegment } from '../parser';
+import { Constants } from '../constants'
+import { EdiFile } from '../ediFile'
 import { List } from 'linqts';
 
 export class EdiHoverProvider implements HoverProvider {
@@ -18,7 +18,7 @@ export class EdiHoverProvider implements HoverProvider {
     public async provideHover(document: TextDocument, position: Position, token: CancellationToken): Promise<Hover> {
 
         let text = document.getText();
-        let doc = Document.create(text);
+        let doc = EdiFile.create(text);
 
         let segments = new List<EdiSegment>(this.parser.parseSegments(text));
         let realPosition = doc.positionToIndex(position.line, position.character);

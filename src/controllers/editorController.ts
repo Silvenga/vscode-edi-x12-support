@@ -1,8 +1,8 @@
 import { StatusBarItem, StatusBarAlignment, window, TextEditor, Selection, Range, ExtensionContext, languages } from 'vscode';
 import { Constants } from '../constants'
 import { Parser } from '../parser'
-import { EdiHoverProvider } from '../ediHoverProvider';
-import { EdiHighlightProvider } from '../ediHighlightProvider';
+import { EdiHoverProvider } from '../providers/ediHoverProvider';
+import { EdiHighlightProvider } from '../providers/ediHighlightProvider';
 
 export class EditorController implements Disposable {
 

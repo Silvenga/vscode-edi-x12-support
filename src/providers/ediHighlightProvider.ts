@@ -1,8 +1,8 @@
 import { DocumentHighlightProvider, DocumentHighlight, MarkedString, TextDocument, CancellationToken, Position, Range, DocumentHighlightKind } from 'vscode';
-import { EditorController } from './controllers/editorController';
-import { Parser } from './parser';
-import { Constants } from './constants'
-import { Document } from './document'
+import { EditorController } from '../controllers/editorController';
+import { Parser } from '../parser';
+import { Constants } from '../constants'
+import { EdiFile } from '../ediFile'
 
 export class EdiHighlightProvider implements DocumentHighlightProvider {
 
@@ -17,7 +17,7 @@ export class EdiHighlightProvider implements DocumentHighlightProvider {
     public async provideDocumentHighlights(document: TextDocument, position: Position, token: CancellationToken): Promise<DocumentHighlight[]> {
 
         let text = document.getText();
-        let doc = Document.create(text);
+        let doc = EdiFile.create(text);
 
         let segments = this.parser.parseSegments(text);
         let realPosition = doc.positionToIndex(position.line, position.character);

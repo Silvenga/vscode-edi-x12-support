@@ -1,6 +1,6 @@
 import test from 'ava';
 import { expect } from 'chai';
-import { Document } from '../src/document'
+import { EdiFile } from '../src/ediFile'
 import { EditorPosition } from '../src/models/editorPosition';
 
 test('Create should populate document.', t => {
@@ -8,7 +8,7 @@ test('Create should populate document.', t => {
     const str = "1234567890 \r\n abc \r\n a";
 
     // Act
-    let doc = Document.create(str);
+    let doc = EdiFile.create(str);
 
     // Assert
     expect(doc).is.not.null;
@@ -20,7 +20,7 @@ test('Create should populate document.', t => {
 test('When parsing text, windows returns should be counted.', t => {
 
     const str = "1234567890 \r\n abc \r\n";
-    let doc = Document.create(str);
+    let doc = EdiFile.create(str);
 
     // Act
     let index = doc.positionToIndex(1, 1);
@@ -33,7 +33,7 @@ test('When parsing text, windows returns should be counted.', t => {
 test('When parsing text, unix returns should be counted.', t => {
 
     const str = "1234567890 \n abc \n";
-    let doc = Document.create(str);
+    let doc = EdiFile.create(str);
 
     // Act
     let index = doc.positionToIndex(1, 1);
@@ -46,7 +46,7 @@ test('When parsing text, unix returns should be counted.', t => {
 test('When parsing text, indexToPosition should return correct information. 1', t => {
 
     const str = "123\nabc\nxyz";
-    let doc = Document.create(str);
+    let doc = EdiFile.create(str);
 
     // Act
     let result = doc.indexToPosition(1);
@@ -60,7 +60,7 @@ test('When parsing text, indexToPosition should return correct information. 1', 
 test('When parsing text, indexToPosition should return correct information. 2', t => {
 
     const str = "123\r\nabc\r\nxyz";
-    let doc = Document.create(str);
+    let doc = EdiFile.create(str);
 
     // Act
     let result = doc.indexToPosition(7);
