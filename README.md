@@ -1,6 +1,11 @@
 # VSCode Edi X12 Support
 
-A Visual Studio Code extension aimed at providing basic support for the EDI format.
+A Visual Studio Code extension aimed at providing basic support for the EDI X12 format.
+
+
+[![Vs Code Extension](https://img.shields.io/badge/vscode-extension-blue.svg?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=Silvenga.edi-x12-support)
+[![License](https://img.shields.io/github/license/Silvenga/vscode-edi-x12-support.svg?style=flat-square)](https://github.com/Silvenga/vscode-edi-x12-support/blob/master/LICENSE)
+
 
 ## Features
 
@@ -30,20 +35,12 @@ None for now.
 - [ ] Cache parsed results.
 - [X] Support all allowed characters, e.g. `-`, etc. 
 - [ ] Helper functions, e.g. splitting, segment lookup/jump-to, segment index jump-to, etc.
-- [ ] Support other EDI formats aside from X12.
 - [X] Support component numbering.
 - [X] Support repeating element numbering.
 - [X] Support multiple lines.
-- [ ] Parse envelop headers for deliminator instead of using the hardcoded values of `>`/`*`/`~`/`^`.
+- [X] Parse envelop headers for deliminator instead of using the hardcoded values of `>`/`*`/`~`/`^`.
   - Grammar wont like this though...
 - [ ] Formating.
 - [ ] Support changing separators.
-
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
+- [ ] Fix Gif.
+- [ ] CI Server.
