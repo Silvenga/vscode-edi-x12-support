@@ -1,15 +1,16 @@
 import test from 'ava';
 import { expect } from 'chai';
-import { Parser, ElementType } from '../../src/parser'
+import { Parser, ElementType, EdiDocumentConfiguration } from '../../src/parser'
+
+const config = new EdiDocumentConfiguration("", "*", ":", ">", "~");
 
 test('On ParseSegments, when no matches, return empty array.', t => {
 
     const input = "";
     let parser = new Parser();
 
-    // Act
-    let config = parser.parseHeader(input);
-    let result = parser.parseSegments(input, config);
+    // Act    
+    let result = parser.parseSegments(input, this.config);
 
     // Assert
     expect(result).is.empty;
@@ -22,7 +23,6 @@ test('On ParseSegments, return matches.', t => {
     let parser = new Parser();
 
     // Act
-    let config = parser.parseHeader(input);
     let result = parser.parseSegments(input, config);
 
     // Assert
@@ -36,7 +36,6 @@ test('Segment Id should be populated.', t => {
     let parser = new Parser();
 
     // Act
-    let config = parser.parseHeader(input);
     let result = parser.parseSegments(input, config);
 
     // Assert
@@ -51,7 +50,6 @@ test('Segment end deliminator should be populated.', t => {
     let parser = new Parser();
 
     // Act
-    let config = parser.parseHeader(input);
     let result = parser.parseSegments(input, config);
 
     // Assert
@@ -65,7 +63,6 @@ test('Can parse empty elements.', t => {
     let parser = new Parser();
 
     // Act
-    let config = parser.parseHeader(input);
     let result = parser.parseSegments(input, config);
 
     // Assert
@@ -81,7 +78,6 @@ test('Supports extended character sets.', t => {
     let parser = new Parser();
 
     // Act
-    let config = parser.parseHeader(input);
     let result = parser.parseSegments(input, config);
 
     // Assert

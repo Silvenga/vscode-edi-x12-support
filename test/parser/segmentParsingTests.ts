@@ -1,6 +1,8 @@
 import test from 'ava';
 import { expect } from 'chai';
-import { Parser } from '../../src/parser'
+import { Parser, EdiDocumentConfiguration } from '../../src/parser'
+
+const config = new EdiDocumentConfiguration("", "*", ":", ">", "~");
 
 test('Can parse decimals.', t => {
 
@@ -8,7 +10,6 @@ test('Can parse decimals.', t => {
     let parser = new Parser();
 
     // Act
-    let config = parser.parseHeader(input);
     let result = parser.parseSegments(input, config);
 
     // Assert
@@ -22,7 +23,6 @@ test('Can parse whitespace.', t => {
     let parser = new Parser();
 
     // Act
-    let config = parser.parseHeader(input);
     let result = parser.parseSegments(input, config);
 
     // Assert
@@ -36,24 +36,9 @@ test('Can parse empty elements.', t => {
     let parser = new Parser();
 
     // Act
-    let config = parser.parseHeader(input);
     let result = parser.parseSegments(input, config);
 
     // Assert
     expect(result[0].elements).to.have.lengthOf(4);
-    t.pass();
-});
-
-test('Repeating Elements', t => {
-
-    const input = "ISA^^~";
-    let parser = new Parser();
-
-    // Act
-    let config = parser.parseHeader(input);
-    let result = parser.parseSegments(input, config);
-
-    // Assert
-    expect(result[0].elements).to.have.lengthOf(3);
     t.pass();
 });

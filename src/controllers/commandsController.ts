@@ -1,6 +1,6 @@
 import { window, TextEditor, Range, ExtensionContext, commands } from 'vscode';
 import { Constants } from '../constants'
-import { Parser } from '../parser'
+import { Parser, } from '../parser'
 
 export class CommandsController implements Disposable {
 

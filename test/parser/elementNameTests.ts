@@ -1,6 +1,8 @@
 import test from 'ava';
 import { expect } from 'chai';
-import { Parser } from '../../src/parser'
+import { Parser, EdiDocumentConfiguration } from '../../src/parser'
+
+const config = new EdiDocumentConfiguration("", "*", ":", ">", "~");
 
 test('Segment ids.', t => {
 
@@ -8,7 +10,6 @@ test('Segment ids.', t => {
     let parser = new Parser();
 
     // Act
-    let config = parser.parseHeader(input);
     let result = parser.parseSegments(input, config)[0];
 
     // Assert
@@ -23,7 +24,6 @@ test('Data elements.', t => {
     let parser = new Parser();
 
     // Act
-    let config = parser.parseHeader(input);
     let result = parser.parseSegments(input, config)[0];
 
     // Assert
@@ -38,7 +38,6 @@ test('Component elements.', t => {
     let parser = new Parser();
 
     // Act
-    let config = parser.parseHeader(input);
     let result = parser.parseSegments(input, config)[0];
 
     // Assert
@@ -54,7 +53,6 @@ test('Repeating elements.', t => {
     let parser = new Parser();
 
     // Act
-    let config = parser.parseHeader(input);
     let result = parser.parseSegments(input, config)[0];
 
     // Assert

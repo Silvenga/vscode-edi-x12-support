@@ -24,7 +24,12 @@ export class Parser {
 
     public parseSegments(document: string, config: EdiDocumentConfiguration): EdiSegment[] {
 
-        let results = this.parseRegex(/\b([\s\S]*?)(~)/g, document, x => this.parseSegment(x[0], x.index, x.index + x[0].length, x[2]));
+        if (config == null) {
+            config = new EdiDocumentConfiguration("", "*", ":", ">", "~");
+        }
+
+        let regex = new RegExp(`\\b([\\s\\S]*?)(${config.segmentSeparator})`, "g");
+        let results = this.parseRegex(regex, document, x => this.parseSegment(x[0], x.index, x.index + x[0].length, x[2]));
 
         return results;
     }
