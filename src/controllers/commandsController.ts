@@ -12,7 +12,9 @@ export class CommandsController implements Disposable {
     public addNewLines() {
 
         let parser = new Parser();
-        let segments = parser.parseSegments(window.activeTextEditor.document.getText())
+        let document = window.activeTextEditor.document.getText();
+        var config = parser.parseHeader(document);
+        let segments = parser.parseSegments(document, config);
         let text = segments.join("\n");
 
         window.activeTextEditor.edit(builder => {

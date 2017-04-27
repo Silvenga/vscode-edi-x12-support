@@ -4,10 +4,12 @@ import { Parser } from '../../src/parser'
 
 test('Can parse decimals.', t => {
 
+    const input = "ISA*1.0~";
     let parser = new Parser();
 
     // Act
-    let result = parser.parseSegments("ISA*1.0~");
+    let config = parser.parseHeader(input);
+    let result = parser.parseSegments(input, config);
 
     // Assert
     expect(result[0].elements).to.have.lengthOf(2);
@@ -16,10 +18,12 @@ test('Can parse decimals.', t => {
 
 test('Can parse whitespace.', t => {
 
+    const input = "ISA*1000 ~";
     let parser = new Parser();
 
     // Act
-    let result = parser.parseSegments("ISA*1000 ~");
+    let config = parser.parseHeader(input);
+    let result = parser.parseSegments(input, config);
 
     // Assert
     expect(result[0].elements).to.have.lengthOf(2);
@@ -28,10 +32,12 @@ test('Can parse whitespace.', t => {
 
 test('Can parse empty elements.', t => {
 
+    const input = "ISA***~";
     let parser = new Parser();
 
     // Act
-    let result = parser.parseSegments("ISA***~");
+    let config = parser.parseHeader(input);
+    let result = parser.parseSegments(input, config);
 
     // Assert
     expect(result[0].elements).to.have.lengthOf(4);
@@ -40,10 +46,12 @@ test('Can parse empty elements.', t => {
 
 test('Repeating Elements', t => {
 
+    const input = "ISA^^~";
     let parser = new Parser();
 
     // Act
-    let result = parser.parseSegments("ISA^^~");
+    let config = parser.parseHeader(input);
+    let result = parser.parseSegments(input, config);
 
     // Assert
     expect(result[0].elements).to.have.lengthOf(3);

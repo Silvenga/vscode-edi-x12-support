@@ -2,15 +2,14 @@ import test from 'ava';
 import { expect } from 'chai';
 import { Parser, ElementType } from '../../src/parser'
 
-const twoSegments = "ISA*hello~BSA*61*2017~";
-
 test('On ParseSegments, when no matches, return empty array.', t => {
 
-    const noMatch = "";
+    const input = "";
     let parser = new Parser();
 
     // Act
-    let result = parser.parseSegments(noMatch);
+    let config = parser.parseHeader(input);
+    let result = parser.parseSegments(input, config);
 
     // Assert
     expect(result).is.empty;
@@ -19,10 +18,12 @@ test('On ParseSegments, when no matches, return empty array.', t => {
 
 test('On ParseSegments, return matches.', t => {
 
+    const input = "ISA*hello~BSA*61*2017~";
     let parser = new Parser();
 
     // Act
-    let result = parser.parseSegments(twoSegments);
+    let config = parser.parseHeader(input);
+    let result = parser.parseSegments(input, config);
 
     // Assert
     expect(result).to.have.lengthOf(2);
@@ -31,10 +32,12 @@ test('On ParseSegments, return matches.', t => {
 
 test('Segment Id should be populated.', t => {
 
+    const input = "ISA*test~";
     let parser = new Parser();
 
     // Act
-    let result = parser.parseSegments("ISA*test~");
+    let config = parser.parseHeader(input);
+    let result = parser.parseSegments(input, config);
 
     // Assert
     expect(result).to.have.lengthOf(1);
@@ -44,73 +47,29 @@ test('Segment Id should be populated.', t => {
 
 test('Segment end deliminator should be populated.', t => {
 
+    const input = "ISA*test~";
     let parser = new Parser();
 
     // Act
-    let result = parser.parseSegments("ISA*test~");
+    let config = parser.parseHeader(input);
+    let result = parser.parseSegments(input, config);
 
     // Assert
     expect(result[0].endingDelimiter).to.be.eq("~");
     t.pass();
 });
 
-test('Can parse decimals.', t => {
-
-    let parser = new Parser();
-
-    // Act
-    let result = parser.parseSegments("ISA*1.0~");
-
-    // Assert
-    expect(result[0].elements).to.have.lengthOf(2);
-    t.pass();
-});
-
-test('Can parse whitespace.', t => {
-
-    let parser = new Parser();
-
-    // Act
-    let result = parser.parseSegments("ISA*1000 ~");
-
-    // Assert
-    expect(result[0].elements).to.have.lengthOf(2);
-    t.pass();
-});
-
 test('Can parse empty elements.', t => {
 
+    const input = "ISA***~";
     let parser = new Parser();
 
     // Act
-    let result = parser.parseSegments("ISA***~");
+    let config = parser.parseHeader(input);
+    let result = parser.parseSegments(input, config);
 
     // Assert
     expect(result[0].elements).to.have.lengthOf(4);
-    t.pass();
-});
-
-test('Repeating Elements', t => {
-
-    let parser = new Parser();
-
-    // Act
-    let result = parser.parseSegments("ISA^^~");
-
-    // Assert
-    expect(result[0].elements).to.have.lengthOf(3);
-    t.pass();
-});
-
-test('Can parse Commas.', t => {
-
-    let parser = new Parser();
-
-    // Act
-    let result = parser.parseSegments("ISA* , *~");
-
-    // Assert
-    expect(result[0].elements).to.have.lengthOf(3);
     t.pass();
 });
 
@@ -118,10 +77,12 @@ const supportCharsExtended = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!\"&'\(\),-./;
 
 test('Supports extended character sets.', t => {
 
+    const input = `ISA*${supportCharsExtended}*test~`;
     let parser = new Parser();
 
     // Act
-    let result = parser.parseSegments(`ISA*${supportCharsExtended}*test~`);
+    let config = parser.parseHeader(input);
+    let result = parser.parseSegments(input, config);
 
     // Assert
     expect(result[0].elements).to.have.lengthOf(3);

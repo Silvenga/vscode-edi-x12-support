@@ -22,7 +22,7 @@ export class Parser {
         return new EdiDocumentConfiguration(standard, dataSeparator, componentSeparator, repetitionSeparator, segmentSeparator);
     }
 
-    public parseSegments(document: string): EdiSegment[] {
+    public parseSegments(document: string, config: EdiDocumentConfiguration): EdiSegment[] {
 
         let results = this.parseRegex(/\b([\s\S]*?)(~)/g, document, x => this.parseSegment(x[0], x.index, x.index + x[0].length, x[2]));
 

@@ -19,13 +19,14 @@ export class EdiHoverProvider implements HoverProvider {
 
         let text = document.getText();
         let doc = EdiFile.create(text);
+        let config = this.parser.parseHeader(text);
 
-        let segments = new List<EdiSegment>(this.parser.parseSegments(text));
+        let segments = new List<EdiSegment>(this.parser.parseSegments(text, config));
         let realPosition = doc.positionToIndex(position.line, position.character);
         let selectedSegment = segments.First(x => realPosition >= x.startIndex && realPosition <= x.endIndex);
 
         let selectedElementIndex = selectedSegment.elements.findIndex(x => realPosition >= x.startIndex && realPosition <= x.endIndex);
-        
+
         if (selectedElementIndex != -1) {
             let selectedElement = selectedSegment.elements[selectedElementIndex];
 
@@ -36,7 +37,7 @@ export class EdiHoverProvider implements HoverProvider {
                 let isSelected = i == selectedElementIndex;
                 context += isSelected ? `**${element}**` : element;
             }
-            
+
             return new Hover(
                 `**${selectedSegment.id}**${selectedElement.name} (_${selectedElement.type}_)\n\n` +
                 `${context}`

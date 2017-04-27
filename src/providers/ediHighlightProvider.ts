@@ -19,7 +19,8 @@ export class EdiHighlightProvider implements DocumentHighlightProvider {
         let text = document.getText();
         let doc = EdiFile.create(text);
 
-        let segments = this.parser.parseSegments(text);
+        let config = this.parser.parseHeader(text);
+        let segments = this.parser.parseSegments(text, config);
         let realPosition = doc.positionToIndex(position.line, position.character);
         let selectedSegment = segments.find(x => realPosition >= x.startIndex && realPosition <= x.endIndex);
 
