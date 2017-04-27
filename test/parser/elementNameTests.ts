@@ -34,7 +34,7 @@ test('Data elements.', t => {
 
 test('Component elements.', t => {
 
-    const input = "ISA*test>test~";
+    const input = "ISA*test:test~";
     let parser = new Parser();
 
     // Act
@@ -49,7 +49,7 @@ test('Component elements.', t => {
 
 test('Repeating elements.', t => {
 
-    const input = "ISA*test^test~";
+    const input = "ISA*test>test~";
     let parser = new Parser();
 
     // Act

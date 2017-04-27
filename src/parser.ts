@@ -29,14 +29,12 @@ export class Parser {
         }
 
         let regex = new RegExp(`\\b([\\s\\S]*?)(${config.segmentSeparator})`, "g");
-        let results = this.parseRegex(regex, document, x => this.parseSegment(x[0], x.index, x.index + x[0].length, x[2]));
+        let results = this.parseRegex(regex, document, x => this.parseSegment(x[0], x.index, x.index + x[0].length, x[2], config));
 
         return results;
     }
 
-    private parseSegment(segmentStr: string, startIndex: number, endIndex: number, endingDelimiter: string): EdiSegment {
-
-        // TODO don't hard code this separators
+    private parseSegment(segmentStr: string, startIndex: number, endIndex: number, endingDelimiter: string, config: EdiDocumentConfiguration): EdiSegment {
 
         let segment = new EdiSegment();
         segment.endingDelimiter = endingDelimiter;
@@ -44,10 +42,22 @@ export class Parser {
         segment.endIndex = endIndex;
         segment.length = endIndex - startIndex;
 
-        let segmentsIds = this.parseRegex(/^[\w\d]{2,3}/g, segmentStr, x => new EdiElement(ElementType.segmentId, x[0], startIndex + x.index, ""));
-        let dataElements = this.parseRegex(/(\*)([\w+\(\)'&"! ,\-\./;\?=%@\[\]_\{\}\\|<#$]*)/g, segmentStr, x => new EdiElement(ElementType.dataElement, x[2], startIndex + x.index, x[1]))
-        let repeatingElements = this.parseRegex(/(\^)([\w+\(\)'&"! ,\-\./;\?=%@\[\]_\{\}\\|<#$]*)/g, segmentStr, x => new EdiElement(ElementType.repeatingElement, x[2], startIndex + x.index, x[1]));
-        let componentElements = this.parseRegex(/([>:])([\w+\(\)'&"! ,\-\./;\?=%@\[\]_\{\}\\|<#$]*)/g, segmentStr, x => new EdiElement(ElementType.componentElement, x[2], startIndex + x.index, x[1]));
+        let segmentsIds = this.parseRegex(new RegExp("^[\\w\\d]{2,3}", "g"),
+            segmentStr,
+            x => new EdiElement(ElementType.segmentId, x[0], startIndex + x.index, ""));
+
+        let dataRegex = `[\\w+\\(\\)'&"! ,\\-\\.\/;\\?=%@\\[\\]_\\{\\}\\\\|<#$]*`;
+
+        let dataElements = this.parseRegex(new RegExp(`(${this.escapeCharRegex(config.dataSeparator)})(${dataRegex})`, "g"),
+            segmentStr,
+            x => new EdiElement(ElementType.dataElement, x[2], startIndex + x.index, x[1]));
+                
+        let repeatingElements = this.parseRegex(new RegExp(`(${this.escapeCharRegex(config.repetitionSeparator)})(${dataRegex})`, "g"),
+            segmentStr,
+            x => new EdiElement(ElementType.repeatingElement, x[2], startIndex + x.index, x[1]));
+        let componentElements = this.parseRegex(new RegExp(`(${this.escapeCharRegex(config.componentSeparator)})(${dataRegex})`, "g"),
+            segmentStr,
+            x => new EdiElement(ElementType.componentElement, x[2], startIndex + x.index, x[1]));
 
         segment.elements = segmentsIds.concat(dataElements, repeatingElements, componentElements).sort((a, b) => a.startIndex - b.startIndex);
 
@@ -77,6 +87,11 @@ export class Parser {
         }
 
         return segment;
+    }
+
+    private escapeCharRegex(str: string): string {
+        // http://stackoverflow.com/a/3561711
+        return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')
     }
 
     private parseRegex<T>(exp: RegExp, str: string, selector: (match: RegExpExecArray) => T): T[] {
