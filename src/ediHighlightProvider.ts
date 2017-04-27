@@ -1,4 +1,4 @@
-import { DocumentHighlightProvider, DocumentHighlight, MarkedString, TextDocument, CancellationToken, Position, Range } from 'vscode';
+import { DocumentHighlightProvider, DocumentHighlight, MarkedString, TextDocument, CancellationToken, Position, Range, DocumentHighlightKind } from 'vscode';
 import { EdiController } from './ediController';
 import { Parser } from './parser';
 import { Constants } from './constants'
@@ -26,7 +26,7 @@ export class EdiHighlightProvider implements DocumentHighlightProvider {
         let startLine = doc.indexToPosition(selectedSegment.startIndex);
         let endLine = doc.indexToPosition(selectedSegment.endIndex);
 
-        return [new DocumentHighlight(new Range(new Position(startLine.line, startLine.character), new Position(endLine.line, endLine.character)))];
+        return [new DocumentHighlight(new Range(new Position(startLine.line, startLine.character), new Position(endLine.line, endLine.character)), DocumentHighlightKind.Read)];
     }
 }
 
