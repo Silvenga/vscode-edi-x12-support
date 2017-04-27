@@ -1,5 +1,5 @@
 import { HoverProvider, Hover, MarkedString, TextDocument, CancellationToken, Position, window } from 'vscode';
-import { EdiController } from './ediController';
+import { EditorController } from './controllers/editorController';
 import { Parser, EdiSegment } from './parser';
 import { Constants } from './constants'
 import { Document } from './document'
@@ -7,10 +7,10 @@ import { List } from 'linqts';
 
 export class EdiHoverProvider implements HoverProvider {
 
-    private ediController: EdiController;
+    private ediController: EditorController;
     private parser: Parser;
 
-    constructor(ediController: EdiController) {
+    constructor(ediController: EditorController) {
         this.ediController = ediController;
         this.parser = new Parser();
     }
@@ -24,14 +24,14 @@ export class EdiHoverProvider implements HoverProvider {
         let realPosition = doc.positionToIndex(position.line, position.character);
         let selectedSegment = segments.First(x => realPosition >= x.startIndex && realPosition <= x.endIndex);
 
-        var selectedElementIndex = selectedSegment.elements.findIndex(x => realPosition >= x.startIndex && realPosition <= x.endIndex);
+        let selectedElementIndex = selectedSegment.elements.findIndex(x => realPosition >= x.startIndex && realPosition <= x.endIndex);
         
         if (selectedElementIndex != -1) {
             let selectedElement = selectedSegment.elements[selectedElementIndex];
 
             let context = "";
-            for (var i = 0, len = selectedSegment.elements.length; i < len; i++) {
-                var el = selectedSegment.elements[i];
+            for (let i = 0, len = selectedSegment.elements.length; i < len; i++) {
+                let el = selectedSegment.elements[i];
                 let element = (el.separator + el.value).replace("*", "\\*");
                 let isSelected = i == selectedElementIndex;
                 context += isSelected ? `**${element}**` : element;
@@ -44,11 +44,5 @@ export class EdiHoverProvider implements HoverProvider {
         }
 
         return null;
-    }
-
-    // http://stackoverflow.com/a/10073788
-    private pad(n: number, width: number, z: string = '0') {
-        let nStr = n + '';
-        return nStr.length >= width ? nStr : new Array(width - nStr.length + 1).join(z) + nStr;
     }
 }

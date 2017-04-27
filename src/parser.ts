@@ -1,8 +1,6 @@
 export class Parser {
     public parseSegments(document: string): EdiSegment[] {
 
-        // console.log(document);
-
         let results = this.parseRegex(/\b([\s\S]*?)(~)/g, document, x => this.parseSegment(x[0], x.index, x.index + x[0].length, x[2]));
 
         return results;
@@ -12,9 +10,7 @@ export class Parser {
 
         // TODO don't hard code this separators
 
-        // console.log(segmentStr);
-
-        var segment = new EdiSegment();
+        let segment = new EdiSegment();
         segment.endingDelimiter = endingDelimiter;
         segment.startIndex = startIndex;
         segment.endIndex = endIndex;
@@ -68,16 +64,6 @@ export class Parser {
     private pad(n: number, width: number, z: string = '0') {
         let nStr = n + '';
         return nStr.length >= width ? nStr : new Array(width - nStr.length + 1).join(z) + nStr;
-    }
-}
-
-class RegexMatch {
-    public value: string;
-    public index: number;
-
-    constructor(value: string, index: number) {
-        this.value = value;
-        this.index = index;
     }
 }
 

@@ -1,10 +1,18 @@
-import { StatusBarItem, StatusBarAlignment, window, TextEditor, Selection, Range } from 'vscode';
-import { Constants } from './constants'
-import { Parser } from './parser'
+import { StatusBarItem, StatusBarAlignment, window, TextEditor, Selection, Range, ExtensionContext, languages } from 'vscode';
+import { Constants } from '../constants'
+import { Parser } from '../parser'
+import { EdiHoverProvider } from '../ediHoverProvider';
+import { EdiHighlightProvider } from '../ediHighlightProvider';
 
-export class EdiController {
+export class EditorController implements Disposable {
 
     private _statusBarItem: StatusBarItem;
+
+    public bind(context: ExtensionContext) {
+        context.subscriptions.push(this);
+        context.subscriptions.push(languages.registerHoverProvider(Constants.languageId, new EdiHoverProvider(this)))
+        context.subscriptions.push(languages.registerDocumentHighlightProvider(Constants.languageId, new EdiHighlightProvider(this)));
+    }
 
     public constructor() {
         this._statusBarItem = this.createStatusBar();
@@ -42,19 +50,6 @@ export class EdiController {
         let statusBar = window.createStatusBarItem(StatusBarAlignment.Left);
         statusBar.tooltip = 'EDI Extension Status';
         return statusBar;
-    }
-
-    public addNewLines() {
-
-        let parser = new Parser();
-        let segments = parser.parseSegments(window.activeTextEditor.document.getText())
-        let text = segments.join("\n");
-
-        window.activeTextEditor.edit(builder => {
-            let start = window.activeTextEditor.document.positionAt(segments[0].startIndex);
-            let end = window.activeTextEditor.document.positionAt(segments[segments.length - 1].endIndex);
-            builder.replace(new Range(start, end), text);
-        })
     }
 
     public dispose() {

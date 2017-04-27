@@ -1,15 +1,15 @@
 import { DocumentHighlightProvider, DocumentHighlight, MarkedString, TextDocument, CancellationToken, Position, Range, DocumentHighlightKind } from 'vscode';
-import { EdiController } from './ediController';
+import { EditorController } from './controllers/editorController';
 import { Parser } from './parser';
 import { Constants } from './constants'
 import { Document } from './document'
 
 export class EdiHighlightProvider implements DocumentHighlightProvider {
 
-    private ediController: EdiController;
+    private ediController: EditorController;
     private parser: Parser;
 
-    constructor(ediController: EdiController) {
+    constructor(ediController: EditorController) {
         this.ediController = ediController;
         this.parser = new Parser();
     }
@@ -27,18 +27,5 @@ export class EdiHighlightProvider implements DocumentHighlightProvider {
         let endLine = doc.indexToPosition(selectedSegment.endIndex);
 
         return [new DocumentHighlight(new Range(new Position(startLine.line, startLine.character), new Position(endLine.line, endLine.character)), DocumentHighlightKind.Read)];
-    }
-}
-
-class LineIndex {
-
-    public length: number;
-    public line: number;
-    public startIndex: number;
-
-    constructor(length: number, line: number, startIndex: number) {
-        this.length = length;
-        this.line = line;
-        this.startIndex = startIndex;
     }
 }

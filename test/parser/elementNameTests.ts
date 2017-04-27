@@ -5,10 +5,10 @@ import { Parser } from '../../src/parser'
 test('Segment ids.', t => {
 
     const input = "ISA*test~";
-    var parser = new Parser();
+    let parser = new Parser();
 
     // Act
-    var result = parser.parseSegments(input)[0];
+    let result = parser.parseSegments(input)[0];
 
     // Assert
     expect(result.elements[0].name).is.eq("00");
@@ -19,10 +19,10 @@ test('Segment ids.', t => {
 test('Data elements.', t => {
 
     const input = "ISA*test~";
-    var parser = new Parser();
+    let parser = new Parser();
 
     // Act
-    var result = parser.parseSegments(input)[0];
+    let result = parser.parseSegments(input)[0];
 
     // Assert
     expect(result.elements[1].name).is.eq("01")
@@ -33,10 +33,10 @@ test('Data elements.', t => {
 test('Component elements.', t => {
 
     const input = "ISA*test>test~";
-    var parser = new Parser();
+    let parser = new Parser();
 
     // Act
-    var result = parser.parseSegments(input)[0];
+    let result = parser.parseSegments(input)[0];
 
     // Assert
     expect(result.elements[1].name).is.eq("01")
@@ -48,10 +48,10 @@ test('Component elements.', t => {
 test('Repeating elements.', t => {
 
     const input = "ISA*test^test~";
-    var parser = new Parser();
+    let parser = new Parser();
 
     // Act
-    var result = parser.parseSegments(input)[0];
+    let result = parser.parseSegments(input)[0];
 
     // Assert
     expect(result.elements[1].name).is.eq("01");
