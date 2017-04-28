@@ -70,11 +70,11 @@ test('Can parse empty elements.', t => {
     t.pass();
 });
 
-const supportCharsExtended = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!\"&'\(\),-./;?= abcdefghijklmnopqrstuvwxyz%@[]_{}\\|<#$"; // Also :~>, but that doesn't work right now.
-
 test('Supports extended character sets.', t => {
 
-    const input = `ISA*${supportCharsExtended}*test~`;
+    const supportCharsExtended = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!\"&'\(\),-./;?= abcdefghijklmnopqrstuvwxyz%@[]_{}\\|<#$:~>";    
+    const config = new EdiDocumentConfiguration("", "\u0000", "\u0001", "\u0002", "\u0003");
+    const input = `ISA\u0000${supportCharsExtended}\u0000test\u0003`;
     let parser = new Parser();
 
     // Act
@@ -84,5 +84,23 @@ test('Supports extended character sets.', t => {
     expect(result[0].elements).to.have.lengthOf(3);
     expect(result[0].elements.findIndex(x => x.type != ElementType.dataElement && x.type != ElementType.segmentId)).is.eq(-1);
     expect(result[0].elements[1].value).is.eq(supportCharsExtended);
+    expect(result[0].toString()).is.eq(input);
+    t.pass();
+});
+
+
+test('Supports extended character sets when separators are within set.', t => {
+
+    const supportCharsExtended = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!\"&'\(\),-./;?= abcdefghijklmnopqrstuvwxyz%@[]_{}\\|<#$";    
+    const input = `ISA*${supportCharsExtended}*test~`;
+    let parser = new Parser();
+
+    // Act
+    let result = parser.parseSegments(input, config);
+
+    // Assert
+    expect(result[0].elements).to.have.lengthOf(3);
+    expect(result[0].elements.findIndex(x => x.type != ElementType.dataElement && x.type != ElementType.segmentId)).is.eq(-1);
+    expect(result[0].toString()).is.eq(input);
     t.pass();
 });

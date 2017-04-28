@@ -1,4 +1,4 @@
-# VSCode Edi X12 Support
+# Edi X12 Support for VSCode
 
 A Visual Studio Code extension aimed at providing basic support for the EDI X12 format.
 
@@ -30,7 +30,7 @@ None for now.
 ## TODO
 
 - [X] Publish to market place?
-- [ ] Status icon?
+- [X] Status icon?
 - [ ] Parsing of large files?
 - [ ] Cache parsed results.
 - [X] Support all allowed characters, e.g. `-`, etc. 

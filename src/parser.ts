@@ -46,7 +46,41 @@ export class Parser {
             segmentStr,
             x => new EdiElement(ElementType.segmentId, x[0], startIndex + x.index, ""));
 
-        let dataRegex = `[\\w+\\(\\)'&"! ,\\-\\.\/;\\?=%@\\[\\]_\\{\\}\\\\|<#$]*`;
+        let charSet = [
+            "\\w+",
+            "\\(",
+            "\\)",
+            "'",
+            "&",
+            "\"",
+            "!",
+            " ",
+            ",",
+            "\\-",
+            "\\.",
+            "\\/",
+            ";",
+            "\\?",
+            "=",
+            "%",
+            "@",
+            "\\[",
+            "\\]",
+            "_",
+            "\\{",
+            "\\}",
+            "\\\\",
+            "|",
+            "<",
+            ">",
+            "#",
+            "$",
+            ":",
+            "^",
+            "~",
+        ].filter(x => config.separators.indexOf(this.escapeCharRegex(x)) == -1);
+
+        let dataRegex = `[${charSet.join("")}]*`;
 
         let dataElements = this.parseRegex(new RegExp(`(${this.escapeCharRegex(config.dataSeparator)})(${dataRegex})`, "g"),
             segmentStr,
@@ -174,6 +208,15 @@ export class EdiDocumentConfiguration {
         this.componentSeparator = componentSeparator;
         this.repetitionSeparator = repetitionSeparator;
         this.segmentSeparator = segmentSeparator;
+    }
+
+    public get separators(): string[] {
+        return [
+            this.dataSeparator,
+            this.componentSeparator,
+            this.repetitionSeparator,
+            this.segmentSeparator
+        ];
     }
 
     public toString(): string {
