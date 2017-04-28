@@ -51,7 +51,7 @@ export class Parser {
         let dataElements = this.parseRegex(new RegExp(`(${this.escapeCharRegex(config.dataSeparator)})(${dataRegex})`, "g"),
             segmentStr,
             x => new EdiElement(ElementType.dataElement, x[2], startIndex + x.index, x[1]));
-                
+
         let repeatingElements = this.parseRegex(new RegExp(`(${this.escapeCharRegex(config.repetitionSeparator)})(${dataRegex})`, "g"),
             segmentStr,
             x => new EdiElement(ElementType.repeatingElement, x[2], startIndex + x.index, x[1]));
@@ -174,5 +174,23 @@ export class EdiDocumentConfiguration {
         this.componentSeparator = componentSeparator;
         this.repetitionSeparator = repetitionSeparator;
         this.segmentSeparator = segmentSeparator;
+    }
+
+    public toString(): string {
+        return this.humanReadableWhitespace(
+            (""
+                + `Control Version: '${this.controlVersion}'\n`
+                + `Data Separator: '${this.dataSeparator}'\n`
+                + `Component Separator: '${this.componentSeparator}'\n`
+                + `Repetition Separator: '${this.repetitionSeparator}'\n`
+                + `Segment Separator: '${this.segmentSeparator}'\n`
+            ));
+    }
+
+    private humanReadableWhitespace(input: string) {
+        return input.replace(/\r?\n/, "<new line>")
+            .replace(/ /, "<space>")
+            .replace(/\t/, "<tab>")
+            ;
     }
 }

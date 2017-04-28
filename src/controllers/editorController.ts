@@ -20,8 +20,9 @@ export class EditorController implements Disposable {
         window.onDidChangeActiveTextEditor((params) => this.onDidChangeActiveTextEditor(params))
     }
 
-    public setStatus(message: string) {
-        this._statusBarItem.text = "EDI Status: " + message;
+    public setStatus(message: string, tooltip: string = "EDI Extension Status") {
+        this._statusBarItem.text = message;
+        this._statusBarItem.tooltip = tooltip;
     }
 
     private onDidChangeActiveTextEditor(textEditor: TextEditor) {
@@ -30,7 +31,11 @@ export class EditorController implements Disposable {
         }
         if (textEditor.document.languageId === Constants.languageId) {
             this.documentActive(textEditor);
-            this.setStatus("Active");
+
+            let parser = new Parser();
+            let config = parser.parseHeader(textEditor.document.getText());
+            this.setStatus("Detected Valid ISA Header", config.toString())
+
         } else {
             this.documentInactive(textEditor);
         }

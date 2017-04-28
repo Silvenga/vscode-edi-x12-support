@@ -31,7 +31,7 @@
                 "id": "edi",
                 "aliases": [
                     "Electronic Data Interchange (X12)",
-                    "edi"
+                    "EDI"
                 ],
                 "extensions": [
                     ".edi",

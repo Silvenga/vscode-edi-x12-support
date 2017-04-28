@@ -9,6 +9,11 @@ export class CommandsController implements Disposable {
         context.subscriptions.push(commands.registerCommand('edi-x12-support.add-new-lines', () => this.addNewLines()));
     }
 
+    private setLanguage() {
+        // https://github.com/Microsoft/vscode/issues/1800
+        // window.activeTextEditor.document.languageId = ""
+    }
+
     public addNewLines() {
 
         let parser = new Parser();
