@@ -188,9 +188,9 @@ export class EdiDocumentConfiguration {
     }
 
     private humanReadableWhitespace(input: string) {
-        return input.replace(/\r?\n/, "<new line>")
-            .replace(/ /, "<space>")
-            .replace(/\t/, "<tab>")
+        return input.replace(/'\r?\n'/g, "'<new line>'")
+            .replace(/' '/g, "'<space>'")
+            .replace(/'\t'/g, "'<tab>'")
             ;
     }
 }

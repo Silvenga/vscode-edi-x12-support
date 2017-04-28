@@ -1,4 +1,4 @@
-import { StatusBarItem, StatusBarAlignment, window, TextEditor, Selection, Range, ExtensionContext, languages } from 'vscode';
+import { StatusBarItem, StatusBarAlignment, window, TextEditor, Selection, Range, ExtensionContext, languages, workspace, TextDocumentChangeEvent, TextDocument } from 'vscode';
 import { Constants } from '../constants'
 import { Parser } from '../parser'
 import { EdiHoverProvider } from '../providers/ediHoverProvider';
@@ -15,9 +15,13 @@ export class EditorController implements Disposable {
     }
 
     public constructor() {
+        // Prepare messing
         this._statusBarItem = this.createStatusBar();
         this.onDidChangeActiveTextEditor(window.activeTextEditor);
-        window.onDidChangeActiveTextEditor((params) => this.onDidChangeActiveTextEditor(params))
+
+        // Attach events
+        window.onDidChangeActiveTextEditor((params) => this.onDidChangeActiveTextEditor(params));
+        workspace.onDidChangeTextDocument((params) => this.onDidChangeTextDocument(params.document));
     }
 
     public setStatus(message: string, tooltip: string = "EDI Extension Status") {
@@ -31,13 +35,23 @@ export class EditorController implements Disposable {
         }
         if (textEditor.document.languageId === Constants.languageId) {
             this.documentActive(textEditor);
-
-            let parser = new Parser();
-            let config = parser.parseHeader(textEditor.document.getText());
-            this.setStatus("Detected Valid ISA Header", config.toString())
-
         } else {
             this.documentInactive(textEditor);
+        }
+
+        this.onDidChangeTextDocument(textEditor.document);
+    }
+
+    private onDidChangeTextDocument(document: TextDocument) {
+        if (document.languageId === Constants.languageId) {
+
+            let parser = new Parser();
+            let config = parser.parseHeader(document.getText());
+            if (config == null) {
+                this.setStatus("No ISA Header");
+            } else {
+                this.setStatus("Valid ISA Header", config.toString());
+            }
         }
     }
 
@@ -52,7 +66,7 @@ export class EditorController implements Disposable {
     }
 
     private createStatusBar(): StatusBarItem {
-        let statusBar = window.createStatusBarItem(StatusBarAlignment.Left);
+        let statusBar = window.createStatusBarItem(StatusBarAlignment.Right, 100);
         statusBar.tooltip = 'EDI Extension Status';
         return statusBar;
     }
