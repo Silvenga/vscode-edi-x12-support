@@ -119,7 +119,7 @@ export class Parser {
 
                 element.name = elementName;
             } else {
-                element.name = "":
+                element.name = "";
             }
         }
 
