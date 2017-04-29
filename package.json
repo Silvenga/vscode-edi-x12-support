@@ -58,6 +58,11 @@
                 "command": "edi-x12-support.uglify",
                 "title": "Uglify (unformat by removing unneeded whitespace)",
                 "category": "EDI Support"
+            },
+            {
+                "command": "edi-x12-support.goto",
+                "title": "Goto",
+                "category": "EDI Support"
             }
         ]
     },

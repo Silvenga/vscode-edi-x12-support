@@ -1,6 +1,7 @@
-import { window, TextEditor, Range, ExtensionContext, commands } from 'vscode';
+import { window, TextEditor, Range, ExtensionContext, commands, QuickPickItem, Selection, Position } from 'vscode';
 import { Constants } from '../constants'
-import { Parser, } from '../parser'
+import { Parser, EdiSegment, EdiElement, ElementType } from '../parser'
+import { EdiFile } from '../ediFile'
 
 export class CommandsController implements Disposable {
 
@@ -8,6 +9,7 @@ export class CommandsController implements Disposable {
         context.subscriptions.push(this);
         context.subscriptions.push(commands.registerCommand('edi-x12-support.prettify', () => this.prettify()));
         context.subscriptions.push(commands.registerCommand('edi-x12-support.uglify', () => this.uglify()));
+        context.subscriptions.push(commands.registerCommand('edi-x12-support.goto', () => this.goto()));
     }
 
     private setLanguage() {
@@ -19,7 +21,7 @@ export class CommandsController implements Disposable {
 
         let parser = new Parser();
         let document = window.activeTextEditor.document.getText();
-        var config = parser.parseHeader(document);
+        let config = parser.parseHeader(document);
         if (config == null) {
             window.showErrorMessage("No ISA header found.");
             return;
@@ -40,7 +42,7 @@ export class CommandsController implements Disposable {
         let parser = new Parser();
         let document = window.activeTextEditor.document.getText();
 
-        var config = parser.parseHeader(document);
+        let config = parser.parseHeader(document);
         if (config == null) {
             window.showErrorMessage("No ISA header found.");
             return;
@@ -55,6 +57,65 @@ export class CommandsController implements Disposable {
         })
     }
 
+    public async goto() {
+
+        let parser = new Parser();
+        let document = window.activeTextEditor.document.getText();
+
+        let config = parser.parseHeader(document);
+        if (config == null) {
+            window.showErrorMessage("No ISA header found.");
+            return;
+        }
+        let doc = EdiFile.create(document);
+        let segments = parser.parseSegments(document, config);
+
+        let i = 0;
+        let picks = segments.map(x => {
+            if (x.id == "ISA") {
+                i = 0;
+            }
+            i++;
+            return x.elements.map(g => new QuickPick(x, g, i));
+        }).reduce((a, b) => a.concat(b));
+
+
+        let pick = await window.showQuickPick<QuickPick>(picks, { matchOnDescription: true });
+
+        if (pick == null) {
+            return;
+        }
+
+        let anchor = doc.indexToPosition(pick.element.startIndex);
+        let active = doc.indexToPosition(pick.element.endIndex);
+
+        if (pick.element.type == ElementType.segmentId) {
+            active = doc.indexToPosition(pick.segment.endIndex);
+        }
+        
+        window.activeTextEditor.selections = [new Selection(new Position(anchor.line, anchor.character), new Position(active.line, active.character))]
+    }
+
     public dispose() {
+    }
+}
+
+class QuickPick implements QuickPickItem {
+
+    public label: string;
+    public description: string;
+    public detail: string;
+
+    public segment: EdiSegment;
+    public element: EdiElement;
+
+    public index: number;
+
+    constructor(segment: EdiSegment, element: EdiElement, index: number) {
+        this.segment = segment;
+        this.element = element;
+        this.label = segment.id + element.name;
+        this.description = `:${index}`;
+        this.index = index;
     }
 }
