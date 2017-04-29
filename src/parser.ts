@@ -84,14 +84,13 @@ export class Parser {
 
         let dataElements = this.parseRegex(new RegExp(`(${this.escapeCharRegex(config.dataSeparator)})(${dataRegex})`, "g"),
             segmentStr,
-            x => new EdiElement(ElementType.dataElement, x[2], startIndex + x.index, x[1]));
-
+            x => new EdiElement(ElementType.dataElement, x[2], startIndex + x.index + 1, x[1]));
         let repeatingElements = this.parseRegex(new RegExp(`(${this.escapeCharRegex(config.repetitionSeparator)})(${dataRegex})`, "g"),
             segmentStr,
-            x => new EdiElement(ElementType.repeatingElement, x[2], startIndex + x.index, x[1]));
+            x => new EdiElement(ElementType.repeatingElement, x[2], startIndex + x.index + 1, x[1]));
         let componentElements = this.parseRegex(new RegExp(`(${this.escapeCharRegex(config.componentSeparator)})(${dataRegex})`, "g"),
             segmentStr,
-            x => new EdiElement(ElementType.componentElement, x[2], startIndex + x.index, x[1]));
+            x => new EdiElement(ElementType.componentElement, x[2], startIndex + x.index + 1, x[1]));
 
         segment.elements = segmentsIds.concat(dataElements, repeatingElements, componentElements).sort((a, b) => a.startIndex - b.startIndex);
 
@@ -110,14 +109,18 @@ export class Parser {
                 componentIndex = 2;
             }
 
-            let elementName = this.pad(elementIndex, 2);
+            if (elementIndex != 0) {
+                let elementName = this.pad(elementIndex, 2);
 
-            if (element.type == ElementType.componentElement) {
-                elementName += `-${componentIndex}`;
-                componentIndex++;
+                if (element.type == ElementType.componentElement) {
+                    elementName += `-${componentIndex}`;
+                    componentIndex++;
+                }
+
+                element.name = elementName;
+            } else {
+                element.name = "":
             }
-
-            element.name = elementName;
         }
 
         return segment;
