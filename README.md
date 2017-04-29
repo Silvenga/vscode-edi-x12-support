@@ -9,11 +9,15 @@ A Visual Studio Code extension aimed at providing basic support for the EDI X12 
 
 ## Features
 
-![Quick Demo](docs/demo.gif)
+![Hover Demo](docs/demo.gif)
+![Formatting Demo](docs/formatting.gif)
+![GOTO Demo](docs/goto-demo.gif)
 
 - Basic syntax highlighting.
 - Highlighting of parent segments.
 - Basic tooltip.
+- Basic formatting.
+- Dump to segment/element/index.
 
 ## Requirements
 
