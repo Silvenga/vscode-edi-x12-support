@@ -22,7 +22,8 @@
     ],
     "activationEvents": [
         "onLanguage:edi",
-        "onCommand:edi-x12-support.add-new-lines"
+        "onCommand:edi-x12-support.prettify",
+        "onCommand:edi-x12-support.uglify"
     ],
     "main": "./out/src/extension",
     "contributes": {
@@ -49,8 +50,13 @@
         ],
         "commands": [
             {
-                "command": "edi-x12-support.add-new-lines",
-                "title": "Delimit with new lines",
+                "command": "edi-x12-support.prettify",
+                "title": "Prettify (format using new lines)",
+                "category": "EDI Support"
+            },
+            {
+                "command": "edi-x12-support.uglify",
+                "title": "Uglify (unformat by removing unneeded whitespace)",
                 "category": "EDI Support"
             }
         ]
