@@ -10,7 +10,7 @@ test('On ParseSegments, when no matches, return empty array.', t => {
     let parser = new Parser();
 
     // Act    
-    let result = parser.parseSegments(input, this.config);
+    let result = parser.parseSegments(input, config);
 
     // Assert
     expect(result).is.empty;

@@ -3,7 +3,6 @@ import { EditorController } from '../controllers/editorController';
 import { Parser, EdiSegment } from '../parser';
 import { Constants } from '../constants'
 import { EdiFile } from '../ediFile'
-import { List } from 'linqts';
 
 export class EdiHoverProvider implements HoverProvider {
 
@@ -21,9 +20,9 @@ export class EdiHoverProvider implements HoverProvider {
         let doc = EdiFile.create(text);
         let config = this.parser.parseHeader(text);
 
-        let segments = new List<EdiSegment>(this.parser.parseSegments(text, config));
+        let segments = this.parser.parseSegments(text, config);
         let realPosition = doc.positionToIndex(position.line, position.character);
-        let selectedSegment = segments.First(x => realPosition >= x.startIndex && realPosition <= x.endIndex);
+        let selectedSegment = segments.find(x => realPosition >= x.startIndex && realPosition <= x.endIndex);
 
         let selectedElementIndex = selectedSegment.elements.findIndex(x => realPosition >= x.startIndex && realPosition <= x.endIndex);
 

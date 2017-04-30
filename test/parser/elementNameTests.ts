@@ -13,7 +13,7 @@ test('Segment ids.', t => {
     let result = parser.parseSegments(input, config)[0];
 
     // Assert
-    expect(result.elements[0].name).is.eq("00");
+    expect(result.elements[0].name).is.eq("");
     expect(result.elements[1].name).is.eq("01");
     t.pass();
 });
