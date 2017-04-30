@@ -17,7 +17,7 @@ A Visual Studio Code extension aimed at providing basic support for the EDI X12 
 - Highlighting of parent segments.
 - Basic tooltip.
 - Basic formatting.
-- Dump to segment/element/index.
+- Jump to segment/element/index.
 
 ## Requirements
 
