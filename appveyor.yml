@@ -1,0 +1,12 @@
+version: 0.0.0.{build}
+init:
+- ps: Install-Product node ''
+install:
+- ps: $env:package_version = (Get-Content -Raw -Path package.json | ConvertFrom-Json).version
+- ps: Update-AppveyorBuild -Version "$env:package_version-$env:APPVEYOR_BUILD_NUMBER"
+- cmd: npm --no-color install
+cache: node_modules
+build_script:
+- cmd: npm --no-color run compile
+test_script:
+- cmd: npm --no-color test
