@@ -4,6 +4,7 @@ A Visual Studio Code extension aimed at providing basic support for the EDI X12 
 
 
 [![Vs Code Extension](https://img.shields.io/badge/vscode-extension-blue.svg?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=Silvenga.edi-x12-support)
+[![Build status](https://img.shields.io/appveyor/ci/Silvenga/vscode-edi-x12-support.svg?maxAge=2592000&style=flat-square)](https://ci.appveyor.com/project/Silvenga/vscode-edi-x12-support)
 [![License](https://img.shields.io/github/license/Silvenga/vscode-edi-x12-support.svg?style=flat-square)](https://github.com/Silvenga/vscode-edi-x12-support/blob/master/LICENSE)
 
 
@@ -47,4 +48,4 @@ None for now.
 - [X] Formating.
 - [ ] Support changing separators.
 - [X] Fix Gif.
-- [ ] CI Server.
+- [X] CI Server.
