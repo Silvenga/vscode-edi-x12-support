@@ -38,13 +38,13 @@ None for now.
 - [ ] Parsing of large files?
 - [ ] Cache parsed results.
 - [X] Support all allowed characters, e.g. `-`, etc. 
-- [ ] Helper functions, e.g. splitting, segment lookup/jump-to, segment index jump-to, etc.
+- [X] Helper functions, e.g. splitting, segment lookup/jump-to, segment index jump-to, etc.
 - [X] Support component numbering.
 - [X] Support repeating element numbering.
 - [X] Support multiple lines.
 - [X] Parse envelop headers for deliminator instead of using the hardcoded values of `>`/`*`/`~`/`^`.
   - Grammar wont like this though...
-- [ ] Formating.
+- [X] Formating.
 - [ ] Support changing separators.
-- [ ] Fix Gif.
+- [X] Fix Gif.
 - [ ] CI Server.
