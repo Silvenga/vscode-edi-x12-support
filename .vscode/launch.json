@@ -9,7 +9,7 @@
             "runtimeExecutable": "${execPath}",
             "args": [
                 "--extensionDevelopmentPath=${workspaceRoot}",
-                "${workspaceRoot}\\docs\\X223-837I-two-claims-for-the-same-provider.edi"
+                "${workspaceRoot}\\docs\\"
             ],
             "stopOnEntry": false,
             "sourceMaps": true,

@@ -70,15 +70,17 @@ export class Parser {
             "\\{",
             "\\}",
             "\\\\",
-            "|",
+            "\\|",
             "<",
             ">",
             "#",
-            "$",
+            "\$",
             ":",
             "^",
             "~",
-        ].filter(x => config.separators.indexOf(this.escapeCharRegex(x)) == -1);
+        ].filter(x => {
+            return config.separators.indexOf(x.replace(/\\{1}/, "")) == -1; // Remove first \
+        });
 
         let dataRegex = `[${charSet.join("")}]*`;
 
