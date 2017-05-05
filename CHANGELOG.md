@@ -2,6 +2,10 @@
 
 All notable changes to the "edi-x12-support" extension will be documented in this file.
 
+## [0.7.1]
+### Changed
+- Fixed bug that would break the parser with some characters.
+
 ## [0.7.0]
 ### Added
 - Added prettify command.

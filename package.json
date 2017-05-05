@@ -1,97 +1,97 @@
 {
-  "name": "edi-x12-support",
-  "displayName": "Edi X12 Support",
-  "description": "Provides basic support for the EDI X12/HIPAA format.",
-  "version": "0.7.0",
-  "publisher": "Silvenga",
-  "engines": {
-    "vscode": "^1.11.0"
-  },
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/Silvenga/vscode-edi-x12-support/issues",
-    "email": "m@silvenga.com"
-  },
-  "homepage": "https://github.com/Silvenga/vscode-edi-x12-support/blob/master/README.md",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Silvenga/vscode-edi-x12-support.git"
-  },
-  "categories": [
-    "Languages"
-  ],
-  "activationEvents": [
-    "onLanguage:edi",
-    "onCommand:edi-x12-support.prettify",
-    "onCommand:edi-x12-support.uglify"
-  ],
-  "main": "./out/src/extension",
-  "contributes": {
-    "languages": [
-      {
-        "id": "edi",
-        "aliases": [
-          "Electronic Data Interchange (X12)",
-          "EDI"
+    "name": "edi-x12-support",
+    "displayName": "Edi X12 Support",
+    "description": "Provides basic support for the EDI X12/HIPAA format.",
+    "version": "0.7.1",
+    "publisher": "Silvenga",
+    "engines": {
+        "vscode": "^1.11.0"
+    },
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/Silvenga/vscode-edi-x12-support/issues",
+        "email": "m@silvenga.com"
+    },
+    "homepage": "https://github.com/Silvenga/vscode-edi-x12-support/blob/master/README.md",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Silvenga/vscode-edi-x12-support.git"
+    },
+    "categories": [
+        "Languages"
+    ],
+    "activationEvents": [
+        "onLanguage:edi",
+        "onCommand:edi-x12-support.prettify",
+        "onCommand:edi-x12-support.uglify"
+    ],
+    "main": "./out/src/extension",
+    "contributes": {
+        "languages": [
+            {
+                "id": "edi",
+                "aliases": [
+                    "Electronic Data Interchange (X12)",
+                    "EDI"
+                ],
+                "extensions": [
+                    ".edi",
+                    ".x12"
+                ],
+                "configuration": "./language-configuration.json"
+            }
         ],
-        "extensions": [
-          ".edi",
-          ".x12"
+        "grammars": [
+            {
+                "language": "edi",
+                "scopeName": "source.edi",
+                "path": "./syntaxes/edi.tmLanguage.json"
+            }
         ],
-        "configuration": "./language-configuration.json"
-      }
-    ],
-    "grammars": [
-      {
-        "language": "edi",
-        "scopeName": "source.edi",
-        "path": "./syntaxes/edi.tmLanguage.json"
-      }
-    ],
-    "commands": [
-      {
-        "command": "edi-x12-support.prettify",
-        "title": "Prettify (format using new lines)",
-        "category": "EDI Support"
-      },
-      {
-        "command": "edi-x12-support.uglify",
-        "title": "Uglify (unformat by removing unneeded whitespace)",
-        "category": "EDI Support"
-      },
-      {
-        "command": "edi-x12-support.goto",
-        "title": "Goto",
-        "category": "EDI Support"
-      }
-    ]
-  },
-  "scripts": {
-    "vscode:prepublish": "tsc -p ./",
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
-    "postinstall": "node ./node_modules/vscode/bin/install",
-    "tslint": "tslint -c tslint.json src/**/*.ts",
-    "test": "ava",
-    "test:watch": "ava --watch"
-  },
-  "ava": {
-    "files": [
-      "out/test/**/*Tests.js"
-    ],
-    "source": [
-      "src/**/*.ts"
-    ]
-  },
-  "devDependencies": {
-    "@types/mocha": "^2.2.32",
-    "@types/node": "^6.0.40",
-    "ava": "^0.19.1",
-    "chai": "^3.5.0",
-    "mocha": "^3.2.0",
-    "tslint": "^4.2.0",
-    "typescript": "^2.0.3",
-    "vscode": "^1.0.0"
-  },
-  "dependencies": {}
+        "commands": [
+            {
+                "command": "edi-x12-support.prettify",
+                "title": "Prettify (format using new lines)",
+                "category": "EDI Support"
+            },
+            {
+                "command": "edi-x12-support.uglify",
+                "title": "Uglify (unformat by removing unneeded whitespace)",
+                "category": "EDI Support"
+            },
+            {
+                "command": "edi-x12-support.goto",
+                "title": "Goto",
+                "category": "EDI Support"
+            }
+        ]
+    },
+    "scripts": {
+        "vscode:prepublish": "tsc -p ./",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "postinstall": "node ./node_modules/vscode/bin/install",
+        "tslint": "tslint -c tslint.json src/**/*.ts",
+        "test": "ava",
+        "test:watch": "ava --watch"
+    },
+    "ava": {
+        "files": [
+            "out/test/**/*Tests.js"
+        ],
+        "source": [
+            "src/**/*.ts"
+        ]
+    },
+    "devDependencies": {
+        "@types/mocha": "^2.2.32",
+        "@types/node": "^6.0.40",
+        "ava": "^0.19.1",
+        "chai": "^3.5.0",
+        "mocha": "^3.2.0",
+        "tslint": "^4.2.0",
+        "typescript": "^2.0.3",
+        "vscode": "^1.0.0"
+    },
+    "dependencies": {}
 }
