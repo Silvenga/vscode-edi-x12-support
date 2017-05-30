@@ -29,6 +29,7 @@ test('When header ends with windows new line, segment separator should be new li
     let result = parser.parseHeader(noMatch);
 
     // Assert
+    expect(result).is.not.null;
     expect(result.segmentSeparator).is.eq("\r\n");
     t.pass();
 });
@@ -51,6 +52,20 @@ test('When header ends with unix new line, segment separator should be new line.
 test('When header does not start with ISA, return null.', t => {
 
     const noMatch = "nothing to see here...";
+    let parser = new Parser();
+
+    // Act
+    let result = parser.parseHeader(noMatch);
+
+    // Assert
+    expect(result).is.null;
+    t.pass();
+});
+
+
+test('When data elements are not correct, return null.', t => {
+
+    const noMatch = "ISA*00*          *00*          *ZZ*00000000000000*ZZ*00000000000000*000000*0000*^*00501*00000000000*0*P*>~";
     let parser = new Parser();
 
     // Act

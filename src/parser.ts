@@ -16,10 +16,41 @@ export class Parser {
         let segmentSeparator = isaHeader.charAt(105);
         if (segmentSeparator == "\r") {
             segmentSeparator = "\r\n";
+            isaHeader += "\n"; // TODO HACK, handle without modifying header.
         }
         let repetitionSeparator = isaHeader.charAt(82);
 
-        return new EdiDocumentConfiguration(standard, dataSeparator, componentSeparator, repetitionSeparator, segmentSeparator);
+        let config = new EdiDocumentConfiguration(standard, dataSeparator, componentSeparator, repetitionSeparator, segmentSeparator);
+        var parseResult = this.parseSegments(isaHeader, config);
+
+        // TODO Cleanup
+        if (parseResult.length != 1) {
+            return null;
+        }
+        let result = parseResult[0];
+        let isValid = result.id == "ISA"
+            && result.elements.length == 19
+            && result.elements[1].value.length == 2
+            && result.elements[2].value.length == 10
+            && result.elements[3].value.length == 2
+            && result.elements[4].value.length == 10
+            && result.elements[5].value.length == 2
+            && result.elements[6].value.length == 15
+            && result.elements[7].value.length == 2
+            && result.elements[8].value.length == 15
+            && result.elements[9].value.length == 6
+            && result.elements[10].value.length == 4
+            && result.elements[11].value.length == 0
+            && result.elements[12].value.length == 0
+            && result.elements[13].value.length == 5
+            && result.elements[14].value.length == 9
+            && result.elements[15].value.length == 1
+            && result.elements[16].value.length == 1
+            && result.elements[17].value.length == 0
+            && result.elements[18].value.length == 0
+            ;
+
+        return isValid ? config : null;
     }
 
     public parseSegments(document: string, config: EdiDocumentConfiguration): EdiSegment[] {
