@@ -28,7 +28,7 @@ export class Parser {
             return null;
         }
         let result = parseResult[0];
-        let isValid = result.id == "ISA"
+        let isValid = result.id == "ISA" // TODO Too much?
             && result.elements.length == 19
             && result.elements[1].value.length == 2
             && result.elements[2].value.length == 10
