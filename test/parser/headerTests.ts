@@ -11,11 +11,11 @@ test('Can parse header.', t => {
     let result = parser.parseHeader(noMatch);
 
     // Assert
-    expect(result.componentSeparator).is.eq(":");
-    expect(result.controlVersion).is.eq("00501");
-    expect(result.dataSeparator).is.eq("*");
-    expect(result.repetitionSeparator).is.eq(">");
-    expect(result.segmentSeparator).is.eq("~");
+    expect(result.configuration.componentSeparator).is.eq(":");
+    expect(result.configuration.controlVersion).is.eq("00501");
+    expect(result.configuration.dataSeparator).is.eq("*");
+    expect(result.configuration.repetitionSeparator).is.eq(">");
+    expect(result.configuration.segmentSeparator).is.eq("~");
     t.pass();
 });
 
@@ -30,7 +30,8 @@ test('When header ends with windows new line, segment separator should be new li
 
     // Assert
     expect(result).is.not.null;
-    expect(result.segmentSeparator).is.eq("\r\n");
+    expect(result.isValid).is.true;
+    expect(result.configuration.segmentSeparator).is.eq("\r\n");
     t.pass();
 });
 
@@ -44,7 +45,7 @@ test('When header ends with unix new line, segment separator should be new line.
     let result = parser.parseHeader(noMatch);
 
     // Assert
-    expect(result.segmentSeparator).is.eq("\n");
+    expect(result.configuration.segmentSeparator).is.eq("\n");
     t.pass();
 });
 
@@ -58,7 +59,7 @@ test('When header does not start with ISA, return null.', t => {
     let result = parser.parseHeader(noMatch);
 
     // Assert
-    expect(result).is.null;
+    expect(result.isValid).is.false;
     t.pass();
 });
 
@@ -72,6 +73,20 @@ test('When data elements are not correct, return null.', t => {
     let result = parser.parseHeader(noMatch);
 
     // Assert
-    expect(result).is.null;
+    expect(result.isValid).is.false;
     t.pass();
 });
+
+test('When data elements are not correct, return null.', t => {
+
+    const noMatch = "ISA*00*          *00*          *ZZ*R896           *ZZ*IHCP           *170511*1105*^*00501*000000462*1*P*+~";
+    let parser = new Parser();
+
+    // Act
+    let result = parser.parseHeader(noMatch);
+
+    // Assert
+    expect(result.isValid).is.true;
+    t.pass();
+});
+

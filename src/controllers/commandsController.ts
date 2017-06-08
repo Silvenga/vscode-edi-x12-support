@@ -21,13 +21,13 @@ export class CommandsController implements Disposable {
 
         let parser = new Parser();
         let document = window.activeTextEditor.document.getText();
-        let config = parser.parseHeader(document);
-        if (config == null) {
+        let result = parser.parseHeader(document);
+        if (!result.isValid) {
             window.showErrorMessage("No ISA header found.");
             return;
         }
 
-        let segments = parser.parseSegments(document, config);
+        let segments = parser.parseSegments(document, result.configuration);
         let text = segments.join("\n");
 
         window.activeTextEditor.edit(builder => {
@@ -42,12 +42,12 @@ export class CommandsController implements Disposable {
         let parser = new Parser();
         let document = window.activeTextEditor.document.getText();
 
-        let config = parser.parseHeader(document);
-        if (config == null) {
+        let result = parser.parseHeader(document);
+        if (result.isValid) {
             window.showErrorMessage("No ISA header found.");
             return;
         }
-        let segments = parser.parseSegments(document, config);
+        let segments = parser.parseSegments(document, result.configuration);
         let text = segments.join("");
 
         window.activeTextEditor.edit(builder => {
@@ -62,13 +62,13 @@ export class CommandsController implements Disposable {
         let parser = new Parser();
         let document = window.activeTextEditor.document.getText();
 
-        let config = parser.parseHeader(document);
-        if (config == null) {
+        let result = parser.parseHeader(document);
+        if (!result.isValid) {
             window.showErrorMessage("No ISA header found.");
             return;
         }
         let doc = EdiFile.create(document);
-        let segments = parser.parseSegments(document, config);
+        let segments = parser.parseSegments(document, result.configuration);
 
         let i = 0;
         let picks = segments.map(x => {

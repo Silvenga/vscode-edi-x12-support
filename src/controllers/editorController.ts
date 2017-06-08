@@ -46,11 +46,11 @@ export class EditorController implements Disposable {
         if (document.languageId === Constants.languageId) {
 
             let parser = new Parser();
-            let config = parser.parseHeader(document.getText());
-            if (config == null) {
-                this.setStatus("No Valid ISA Header");
+            let result = parser.parseHeader(document.getText());
+            if (!result.isValid) {
+                this.setStatus("No Valid ISA Header", result.errorMessage);
             } else {
-                this.setStatus("Valid ISA Header", config.toString());
+                this.setStatus("Valid ISA Header", result.configuration.toString());
             }
         }
     }

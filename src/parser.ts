@@ -1,14 +1,18 @@
 export class Parser {
 
-    public parseHeader(document: string): EdiDocumentConfiguration {
+    public parseHeader(document: string): EdiDocumentConfigurationResult {
 
         // https://msdn.microsoft.com/en-us/library/bb259967(v=bts.20).aspx
+
+        let configResult = new EdiDocumentConfigurationResult();
+        configResult.isValid = false;
 
         var isaHeader = document.replace(/(^\s+)/g, '').slice(0, 106);
 
         let isIsa = isaHeader.slice(0, 3) == "ISA";
         if (!isIsa) {
-            return null;
+            configResult.errorMessage = `No segment with the segment id of ISA found at the beginning of the document.`
+            return configResult;
         }
         let standard = isaHeader.slice(84, 89);
         let dataSeparator = isaHeader.charAt(3);
@@ -21,36 +25,60 @@ export class Parser {
         let repetitionSeparator = isaHeader.charAt(82);
 
         let config = new EdiDocumentConfiguration(standard, dataSeparator, componentSeparator, repetitionSeparator, segmentSeparator);
+        configResult.configuration = config;
+
+        console.log(config);
+
         var parseResult = this.parseSegments(isaHeader, config);
 
         // TODO Cleanup
-        if (parseResult.length != 1) {
-            return null;
+        let isValid = false;
+        if (parseResult.length == 1) {
+            let result = parseResult[0];
+            console.log(result);
+            isValid = // TODO Too much?
+                this.checkWithReason(configResult, () => result.elements.filter(x => x.type == ElementType.repeatingElement && x.name == "11").length == 1,
+                    `ISA segment found, but found one or more repeating segments, should the repeating element separator really be '${repetitionSeparator}'?`)
+                && this.checkWithReason(configResult, () => result.elements.filter(x => x.type == ElementType.componentElement && x.name == "16-2").length == 1,
+                    `ISA segment found, but found one or more components, should the component element separator really be '${componentSeparator}'?`)
+                && this.checkWithReason(configResult, () => result.elements.filter(x => x.type == ElementType.dataElement).length == 16,
+                    `ISA segment found, but found an invalid number of data elements, should the data element separator really be '${dataSeparator}'?`)
+                && this.checkWithReason(configResult, () => result.elements[1].value.length == 2, `ISA01 has an invalid length. ${result.elements[1].value.length} != 2`)
+                && this.checkWithReason(configResult, () => result.elements[2].value.length == 10, `ISA02 has an invalid length. ${result.elements[2].value.length} != 10`)
+                && this.checkWithReason(configResult, () => result.elements[3].value.length == 2, `ISA03 has an invalid length.`)
+                && this.checkWithReason(configResult, () => result.elements[4].value.length == 10, `ISA04 has an invalid length.`)
+                && this.checkWithReason(configResult, () => result.elements[5].value.length == 2, `ISA05 has an invalid length.`)
+                && this.checkWithReason(configResult, () => result.elements[6].value.length == 15, `ISA06 has an invalid length.`)
+                && this.checkWithReason(configResult, () => result.elements[7].value.length == 2, `ISA07 has an invalid length.`)
+                && this.checkWithReason(configResult, () => result.elements[8].value.length == 15, `ISA08 has an invalid length.`)
+                && this.checkWithReason(configResult, () => result.elements[9].value.length == 6, `ISA09 has an invalid length.`)
+                && this.checkWithReason(configResult, () => result.elements[10].value.length == 4, `ISA10 has an invalid length.`)
+                && this.checkWithReason(configResult, () => result.elements[11].value.length == 0, `Repeating separator does not exist in the correct element.`)
+                && this.checkWithReason(configResult, () => result.elements[12].value.length == 0, `Repeating separator does not exist in the correct element.`)
+                && this.checkWithReason(configResult, () => result.elements[13].value.length == 5, `ISA12 has an invalid length.`)
+                && this.checkWithReason(configResult, () => result.elements[14].value.length == 9, `ISA13 has an invalid length.`)
+                && this.checkWithReason(configResult, () => result.elements[15].value.length == 1, `ISA14 has an invalid length.`)
+                && this.checkWithReason(configResult, () => result.elements[16].value.length == 1, `ISA15 has an invalid length.`)
+                && this.checkWithReason(configResult, () => result.elements[17].value.length == 0, `Component separator does not exist in the correct element.`)
+                && this.checkWithReason(configResult, () => result.elements[18].value.length == 0, `Component separator does not exist in the correct element.`)
+                ;
+        } else {
+            configResult.errorMessage = `ISA segment found, but found element mismatches, should the data element separator really be '${dataSeparator}'?`;
         }
-        let result = parseResult[0];
-        let isValid = result.id == "ISA" // TODO Too much?
-            && result.elements.length == 19
-            && result.elements[1].value.length == 2
-            && result.elements[2].value.length == 10
-            && result.elements[3].value.length == 2
-            && result.elements[4].value.length == 10
-            && result.elements[5].value.length == 2
-            && result.elements[6].value.length == 15
-            && result.elements[7].value.length == 2
-            && result.elements[8].value.length == 15
-            && result.elements[9].value.length == 6
-            && result.elements[10].value.length == 4
-            && result.elements[11].value.length == 0
-            && result.elements[12].value.length == 0
-            && result.elements[13].value.length == 5
-            && result.elements[14].value.length == 9
-            && result.elements[15].value.length == 1
-            && result.elements[16].value.length == 1
-            && result.elements[17].value.length == 0
-            && result.elements[18].value.length == 0
-            ;
 
-        return isValid ? config : null;
+        configResult.isValid = isValid;
+        if (!isValid) {
+            console.log(configResult.errorMessage);
+        }
+        return configResult;
+    }
+
+    private checkWithReason(input: EdiDocumentConfigurationResult, tester: () => boolean, errorMessage: string): boolean {
+        let result = tester();
+        if (!result) {
+            input.errorMessage = errorMessage;
+        }
+        return result;
     }
 
     public parseSegments(document: string, config: EdiDocumentConfiguration): EdiSegment[] {
@@ -78,37 +106,39 @@ export class Parser {
             x => new EdiElement(ElementType.segmentId, x[0], startIndex + x.index, ""));
 
         let charSet = [
-            "\\w+",
-            "\\(",
-            "\\)",
-            "'",
-            "&",
-            "\"",
-            "!",
-            " ",
-            ",",
-            "\\-",
-            "\\.",
-            "\\/",
-            ";",
-            "\\?",
-            "=",
-            "%",
-            "@",
-            "\\[",
-            "\\]",
-            "_",
-            "\\{",
-            "\\}",
-            "\\\\",
-            "\\|",
-            "<",
-            ">",
-            "#",
-            "\$",
-            ":",
-            "^",
-            "~",
+            `\\w`,
+            `\\(`,
+            `\\)`,
+            `'`,
+            `&`,
+            `\``,
+            `!`,
+            ` `,
+            `,`,
+            `\\-`,
+            `\\.`,
+            `\\/`,
+            `;`,
+            `\\?`,
+            `=`,
+            `%`,
+            `@`,
+            `\\[`,
+            `\\]`,
+            `_`,
+            `\\{`,
+            `\\}`,
+            `\\\\`,
+            `\\|`,
+            `<`,
+            `>`,
+            `#`,
+            `\$`,
+            `:`,
+            `^`,
+            `~`,
+            `"`,
+            `\\+`,
         ].filter(x => {
             return config.separators.indexOf(x.replace(/\\{1}/, "")) == -1; // Remove first \
         });
@@ -228,6 +258,12 @@ export class EdiElement {
     public toString() {
         return this.separator + this.value;
     }
+}
+
+export class EdiDocumentConfigurationResult {
+    public isValid: boolean;
+    public errorMessage: string;
+    public configuration: EdiDocumentConfiguration;
 }
 
 export class EdiDocumentConfiguration {

@@ -20,7 +20,7 @@ export class EdiHoverProvider implements HoverProvider {
         let doc = EdiFile.create(text);
         let config = this.parser.parseHeader(text);
 
-        let segments = this.parser.parseSegments(text, config);
+        let segments = this.parser.parseSegments(text, config.configuration);
         let realPosition = doc.positionToIndex(position.line, position.character);
         let selectedSegment = segments.find(x => realPosition >= x.startIndex && realPosition <= x.endIndex);
 
