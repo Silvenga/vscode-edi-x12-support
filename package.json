@@ -73,7 +73,8 @@
         "postinstall": "node ./node_modules/vscode/bin/install",
         "tslint": "tslint -c tslint.json src/**/*.ts",
         "test": "ava",
-        "test:watch": "ava --watch"
+        "test:watch": "ava --watch",
+        "publish": "vsce publish"
     },
     "ava": {
         "files": [
@@ -84,14 +85,14 @@
         ]
     },
     "devDependencies": {
-        "@types/mocha": "^2.2.32",
-        "@types/node": "^6.0.40",
+        "@types/mocha": "^2.2.41",
+        "@types/node": "^6.0.78",
         "ava": "^0.19.1",
-        "chai": "^3.5.0",
-        "mocha": "^3.2.0",
-        "tslint": "^4.2.0",
-        "typescript": "^2.0.3",
-        "vscode": "^1.0.0"
+        "chai": "^4.0.2",
+        "mocha": "^3.4.2",
+        "tslint": "^5.4.3",
+        "typescript": "^2.3.4",
+        "vscode": "^1.1.0"
     },
     "dependencies": {}
 }
