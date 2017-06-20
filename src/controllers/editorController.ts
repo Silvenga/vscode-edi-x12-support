@@ -3,6 +3,7 @@ import { Constants } from '../constants'
 import { Parser } from '../parser'
 import { EdiHoverProvider } from '../providers/ediHoverProvider';
 import { EdiHighlightProvider } from '../providers/ediHighlightProvider';
+import { EdiDocumentSymbolProvider } from '../providers/ediDocumentSymbolProvider';
 
 export class EditorController implements Disposable {
 
@@ -12,6 +13,8 @@ export class EditorController implements Disposable {
         context.subscriptions.push(this);
         context.subscriptions.push(languages.registerHoverProvider(Constants.languageId, new EdiHoverProvider(this)))
         context.subscriptions.push(languages.registerDocumentHighlightProvider(Constants.languageId, new EdiHighlightProvider(this)));
+        context.subscriptions.push(languages.registerDocumentHighlightProvider(Constants.languageId, new EdiHighlightProvider(this)));
+        context.subscriptions.push(languages.registerDocumentSymbolProvider(Constants.languageId, new EdiDocumentSymbolProvider(this)));
     }
 
     public constructor() {
