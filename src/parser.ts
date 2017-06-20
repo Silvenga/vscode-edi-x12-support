@@ -27,15 +27,12 @@ export class Parser {
         let config = new EdiDocumentConfiguration(standard, dataSeparator, componentSeparator, repetitionSeparator, segmentSeparator);
         configResult.configuration = config;
 
-        console.log(config);
-
         var parseResult = this.parseSegments(isaHeader, config);
 
         // TODO Cleanup
         let isValid = false;
         if (parseResult.length == 1) {
             let result = parseResult[0];
-            console.log(result);
             isValid = // TODO Too much?
                 this.checkWithReason(configResult, () => result.elements.filter(x => x.type == ElementType.repeatingElement && x.name == "11").length == 1,
                     `ISA segment found, but found one or more repeating segments, should the repeating element separator really be '${repetitionSeparator}'?`)

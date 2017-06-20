@@ -11,9 +11,7 @@ test('Can parse pipes', t => {
     // Act
     let result = parser.parseSegments(input, config);
 
-    // Assert
-    console.log(result[0].elements[1]);
-    
+    // Assert    
     expect(result[0].elements).to.have.lengthOf(4);
     t.pass();
 });
