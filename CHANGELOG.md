@@ -2,6 +2,14 @@
 
 All notable changes to the "edi-x12-support" extension will be documented in this file.
 
+## [0.8.0]
+### Added
+- Symbol parsing support.
+
+## [0.7.3]
+### Changed
+- More hardening, added basic error reason outputs.
+
 ## [0.7.2]
 ### Changed
 - Hardened ISA header parsing.
