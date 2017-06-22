@@ -4,9 +4,14 @@ init:
 install:
 - ps: $env:package_version = (Get-Content -Raw -Path package.json | ConvertFrom-Json).version
 - ps: Update-AppveyorBuild -Version "$env:package_version-$env:APPVEYOR_BUILD_NUMBER"
-- cmd: npm --no-color install
+- cmd: yarn install
 cache: node_modules
 build_script:
-- cmd: npm --no-color run compile
+- cmd: npm run compile
+after_build:
+- cmd: npm run package
 test_script:
-- cmd: npm --no-color test
+- cmd: npm test
+artifacts:
+  - path: '*.vsix'
+    name: vsix

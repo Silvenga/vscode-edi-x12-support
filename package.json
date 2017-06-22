@@ -74,7 +74,8 @@
         "tslint": "tslint -c tslint.json src/**/*.ts",
         "test": "ava",
         "test:watch": "ava --watch",
-        "publish": "vsce publish"
+        "publish": "vsce publish",
+        "package": "vsce package"
     },
     "ava": {
         "files": [
@@ -92,6 +93,7 @@
         "mocha": "^3.4.2",
         "tslint": "^5.4.3",
         "typescript": "^2.3.4",
+        "vsce": "^1.25.1",
         "vscode": "^1.1.0"
     },
     "dependencies": {}
