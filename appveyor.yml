@@ -15,3 +15,5 @@ test_script:
 artifacts:
   - path: '*.vsix'
     name: vsix
+# deploy_script:
+# - ps: npm run publish --packagePath "edi-x12-support-$env:package_version.vsix"
