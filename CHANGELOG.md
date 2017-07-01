@@ -2,6 +2,10 @@
 
 All notable changes to the "edi-x12-support" extension will be documented in this file.
 
+## [0.8.1]
+### Added
+- Project icon.
+
 ## [0.8.0]
 ### Added
 - Symbol parsing support.
