@@ -1,6 +1,6 @@
 # Edi X12 Support for VSCode
 
-![Project Icon](docs/icon.png)
+![Project Icon](docs/images/icon.png)
 
 A Visual Studio Code extension aimed at providing basic support for the EDI X12 format.
 
@@ -10,9 +10,9 @@ A Visual Studio Code extension aimed at providing basic support for the EDI X12 
 
 ## Features
 
-![Hover Demo](docs/demo.gif)
-![Formatting Demo](docs/formatting.gif)
-![GOTO Demo](docs/goto-demo.gif)
+![Hover Demo](docs/images/demo.gif)
+![Formatting Demo](docs/images/formatting.gif)
+![GOTO Demo](docs/images/goto-demo.gif)
 
 - Basic syntax highlighting.
 - Highlighting of parent segments.
