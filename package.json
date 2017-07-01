@@ -4,6 +4,11 @@
     "description": "Provides basic support for the EDI X12/HIPAA format.",
     "version": "0.8.0",
     "publisher": "Silvenga",
+    "author": {
+        "email": "m+vscode@silvenga.com",
+        "name": "Mark Lopez",
+        "url": "https://silvenga.com"
+    },
     "engines": {
         "vscode": "^1.11.0"
     },
@@ -20,6 +25,7 @@
     "categories": [
         "Languages"
     ],
+    "icon": "docs/icon.png",
     "activationEvents": [
         "onLanguage:edi",
         "onCommand:edi-x12-support.prettify",
