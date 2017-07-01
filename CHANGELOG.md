@@ -3,6 +3,10 @@
 All notable changes to the "edi-x12-support" extension will be documented in this file.
 
 ## [0.8.1]
+### Changed
+- Reduced package.json icon size to prevent blurring.
+
+## [0.8.1]
 ### Added
 - Project icon.
 
