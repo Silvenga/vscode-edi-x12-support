@@ -3,7 +3,6 @@ import { DocumentSymbolProvider, TextDocument, CancellationToken, Position, Rang
 import { EditorController } from '../controllers/editorController';
 import { Parser, ElementType } from '../parser';
 import { Constants } from '../constants'
-import { EdiFile } from '../ediFile'
 
 export class EdiDocumentSymbolProvider implements DocumentSymbolProvider {
 

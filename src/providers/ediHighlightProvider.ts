@@ -2,7 +2,6 @@ import { DocumentHighlightProvider, DocumentHighlight, MarkedString, TextDocumen
 import { EditorController } from '../controllers/editorController';
 import { Parser } from '../parser';
 import { Constants } from '../constants'
-import { EdiFile } from '../ediFile'
 
 export class EdiHighlightProvider implements DocumentHighlightProvider {
 
@@ -17,15 +16,14 @@ export class EdiHighlightProvider implements DocumentHighlightProvider {
     public async provideDocumentHighlights(document: TextDocument, position: Position, token: CancellationToken): Promise<DocumentHighlight[]> {
 
         let text = document.getText();
-        let doc = EdiFile.create(text);
 
         let result = this.parser.parseHeader(text);
         let segments = this.parser.parseSegments(text, result.configuration);
-        let realPosition = doc.positionToIndex(position.line, position.character);
+        let realPosition = document.offsetAt(new Position(position.line, position.character));
         let selectedSegment = segments.find(x => realPosition >= x.startIndex && realPosition <= x.endIndex);
 
-        let startLine = doc.indexToPosition(selectedSegment.startIndex);
-        let endLine = doc.indexToPosition(selectedSegment.endIndex);
+        let startLine = document.positionAt(selectedSegment.startIndex);
+        let endLine = document.positionAt(selectedSegment.endIndex);
 
         return [new DocumentHighlight(new Range(new Position(startLine.line, startLine.character), new Position(endLine.line, endLine.character)), DocumentHighlightKind.Read)];
     }

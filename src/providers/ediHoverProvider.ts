@@ -2,7 +2,6 @@ import { HoverProvider, Hover, MarkedString, TextDocument, CancellationToken, Po
 import { EditorController } from '../controllers/editorController';
 import { Parser, EdiSegment } from '../parser';
 import { Constants } from '../constants'
-import { EdiFile } from '../ediFile'
 
 export class EdiHoverProvider implements HoverProvider {
 
@@ -17,11 +16,10 @@ export class EdiHoverProvider implements HoverProvider {
     public async provideHover(document: TextDocument, position: Position, token: CancellationToken): Promise<Hover> {
 
         let text = document.getText();
-        let doc = EdiFile.create(text);
         let config = this.parser.parseHeader(text);
 
         let segments = this.parser.parseSegments(text, config.configuration);
-        let realPosition = doc.positionToIndex(position.line, position.character);
+        let realPosition = document.offsetAt(new Position(position.line, position.character));
         let selectedSegment = segments.find(x => realPosition >= x.startIndex && realPosition <= x.endIndex);
 
         let selectedElementIndex = selectedSegment.elements.findIndex(x => realPosition >= x.startIndex && realPosition <= x.endIndex);

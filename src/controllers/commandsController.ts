@@ -1,7 +1,6 @@
 import { window, TextEditor, Range, ExtensionContext, commands, QuickPickItem, Selection, Position } from 'vscode';
 import { Constants } from '../constants'
 import { Parser, EdiSegment, EdiElement, ElementType } from '../parser'
-import { EdiFile } from '../ediFile'
 
 export class CommandsController implements Disposable {
 
@@ -59,16 +58,17 @@ export class CommandsController implements Disposable {
 
     public async goto() {
 
-        let parser = new Parser();
-        let document = window.activeTextEditor.document.getText();
+        let document = window.activeTextEditor.document;
 
-        let result = parser.parseHeader(document);
+        let parser = new Parser();
+        let text = document.getText();
+
+        let result = parser.parseHeader(text);
         if (!result.isValid) {
             window.showErrorMessage("No ISA header found.");
             return;
         }
-        let doc = EdiFile.create(document);
-        let segments = parser.parseSegments(document, result.configuration);
+        let segments = parser.parseSegments(text, result.configuration);
 
         let i = 0;
         let picks = segments.map(x => {
@@ -86,13 +86,13 @@ export class CommandsController implements Disposable {
             return;
         }
 
-        let anchor = doc.indexToPosition(pick.element.startIndex);
-        let active = doc.indexToPosition(pick.element.endIndex);
+        let anchor = document.positionAt(pick.element.startIndex);
+        let active = document.positionAt(pick.element.endIndex);
 
         if (pick.element.type == ElementType.segmentId) {
-            active = doc.indexToPosition(pick.segment.endIndex);
+            active = document.positionAt(pick.segment.endIndex);
         }
-        
+
         window.activeTextEditor.selections = [new Selection(new Position(anchor.line, anchor.character), new Position(active.line, active.character))]
     }
 
