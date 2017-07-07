@@ -1,10 +1,16 @@
 import { window, TextEditor, Range, ExtensionContext, commands, QuickPickItem, Selection, Position } from 'vscode';
 import { Constants } from '../constants'
 import { Parser, EdiSegment, EdiElement, ElementType } from '../parser'
-import { provide } from "../container";
+import { injectable } from "inversify";
 
-@provide(CommandsController)
+@injectable()
 export class CommandsController implements Disposable {
+
+    private _parser: Parser;
+
+    constructor(parser: Parser) {
+        this._parser = parser;
+    }
 
     public bind(context: ExtensionContext) {
         context.subscriptions.push(this);
@@ -20,15 +26,14 @@ export class CommandsController implements Disposable {
 
     public prettify() {
 
-        let parser = new Parser();
         let document = window.activeTextEditor.document.getText();
-        let result = parser.parseHeader(document);
+        let result = this._parser.parseHeader(document);
         if (!result.isValid) {
             window.showErrorMessage("No ISA header found.");
             return;
         }
 
-        let segments = parser.parseSegments(document, result.configuration);
+        let segments = this._parser.parseSegments(document, result.configuration);
         let text = segments.join("\n");
 
         window.activeTextEditor.edit(builder => {
@@ -40,15 +45,14 @@ export class CommandsController implements Disposable {
 
     public uglify() {
 
-        let parser = new Parser();
         let document = window.activeTextEditor.document.getText();
 
-        let result = parser.parseHeader(document);
+        let result = this._parser.parseHeader(document);
         if (result.isValid) {
             window.showErrorMessage("No ISA header found.");
             return;
         }
-        let segments = parser.parseSegments(document, result.configuration);
+        let segments = this._parser.parseSegments(document, result.configuration);
         let text = segments.join("");
 
         window.activeTextEditor.edit(builder => {
@@ -62,15 +66,14 @@ export class CommandsController implements Disposable {
 
         let document = window.activeTextEditor.document;
 
-        let parser = new Parser();
         let text = document.getText();
 
-        let result = parser.parseHeader(text);
+        let result = this._parser.parseHeader(text);
         if (!result.isValid) {
             window.showErrorMessage("No ISA header found.");
             return;
         }
-        let segments = parser.parseSegments(text, result.configuration);
+        let segments = this._parser.parseSegments(text, result.configuration);
 
         let i = 0;
         let picks = segments.map(x => {

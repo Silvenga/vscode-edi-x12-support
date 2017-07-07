@@ -1,6 +1,6 @@
-import { provide } from "./container";
+import { injectable } from "inversify";
 
-@provide(Parser)
+@injectable()
 export class Parser {
 
     public parseHeader(document: string): EdiDocumentConfigurationResult {

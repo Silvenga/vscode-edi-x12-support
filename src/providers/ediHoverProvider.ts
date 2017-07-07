@@ -2,9 +2,9 @@ import { HoverProvider, Hover, MarkedString, TextDocument, CancellationToken, Po
 import { EditorController } from '../controllers/editorController';
 import { Parser, EdiSegment } from '../parser';
 import { Constants } from '../constants';
-import { provide } from "../container";
+import { injectable } from "inversify";
 
-@provide(EdiHoverProvider)
+@injectable()
 export class EdiHoverProvider implements HoverProvider {
 
     private ediController: EditorController;

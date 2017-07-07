@@ -2,9 +2,9 @@ import { DocumentHighlightProvider, DocumentHighlight, MarkedString, TextDocumen
 import { EditorController } from '../controllers/editorController';
 import { Parser } from '../parser';
 import { Constants } from '../constants';
-import { provide } from "../container";
+import { injectable } from "inversify";
 
-@provide(EdiHighlightProvider)
+@injectable()
 export class EdiHighlightProvider implements DocumentHighlightProvider {
 
     private ediController: EditorController;

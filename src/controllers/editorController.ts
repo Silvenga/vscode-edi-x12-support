@@ -4,22 +4,19 @@ import { Parser } from '../parser'
 import { EdiHoverProvider } from '../providers/ediHoverProvider';
 import { EdiHighlightProvider } from '../providers/ediHighlightProvider';
 import { EdiDocumentSymbolProvider } from '../providers/ediDocumentSymbolProvider';
-import { provide } from "../container";
+import { injectable } from "inversify";
 
-@provide(EditorController)
+@injectable()
 export class EditorController implements Disposable {
 
+    private _parser: Parser;
     private _statusBarItem: StatusBarItem;
 
-    public bind(context: ExtensionContext) {
-        context.subscriptions.push(this);
-        context.subscriptions.push(languages.registerHoverProvider(Constants.languageId, new EdiHoverProvider(this)))
-        context.subscriptions.push(languages.registerDocumentHighlightProvider(Constants.languageId, new EdiHighlightProvider(this)));
-        context.subscriptions.push(languages.registerDocumentHighlightProvider(Constants.languageId, new EdiHighlightProvider(this)));
-        context.subscriptions.push(languages.registerDocumentSymbolProvider(Constants.languageId, new EdiDocumentSymbolProvider(this)));
-    }
 
-    public constructor() {
+    public constructor(parser: Parser) {
+
+        this._parser = parser;
+
         // Prepare messing
         this._statusBarItem = this.createStatusBar();
         this.onDidChangeActiveTextEditor(window.activeTextEditor);
@@ -50,8 +47,7 @@ export class EditorController implements Disposable {
     private onDidChangeTextDocument(document: TextDocument) {
         if (document.languageId === Constants.languageId) {
 
-            let parser = new Parser();
-            let result = parser.parseHeader(document.getText());
+            let result = this._parser.parseHeader(document.getText());
             if (!result.isValid) {
                 this.setStatus("No Valid ISA Header", result.errorMessage);
             } else {
