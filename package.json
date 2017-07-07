@@ -103,5 +103,9 @@
         "vsce": "^1.25.1",
         "vscode": "^1.1.0"
     },
-    "dependencies": {}
+    "dependencies": {
+        "inversify": "^4.2.0",
+        "inversify-binding-decorators": "^3.0.0",
+        "reflect-metadata": "^0.1.10"
+    }
 }
