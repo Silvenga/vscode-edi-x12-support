@@ -1,5 +1,5 @@
-'use strict';
 import { ExtensionContext, commands, languages, TextDocument, Range } from 'vscode';
+import { provide, container, injectable } from "./container";
 import { EditorController } from './controllers/editorController';
 import { CommandsController } from './controllers/commandsController';
 
@@ -7,11 +7,11 @@ export async function activate(context: ExtensionContext) {
 
     console.log('EDI support now active!');
 
-    let commandsController = new CommandsController();
-    commandsController.bind(context);
+    let commandsController = container.get<CommandsController>(CommandsController);
+    let editorController = container.get<EditorController>(EditorController);
 
-    let editController = new EditorController();
-    editController.bind(context);
+    commandsController.bind(context);
+    editorController.bind(context);
 }
 
 export function deactivate() {
