@@ -1,8 +1,10 @@
 import { HoverProvider, Hover, MarkedString, TextDocument, CancellationToken, Position, window } from 'vscode';
 import { EditorController } from '../controllers/editorController';
 import { Parser, EdiSegment } from '../parser';
-import { Constants } from '../constants'
+import { Constants } from '../constants';
+import { provide } from "../container";
 
+@provide(EdiHoverProvider)
 export class EdiHoverProvider implements HoverProvider {
 
     private ediController: EditorController;

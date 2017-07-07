@@ -4,7 +4,9 @@ import { Parser } from '../parser'
 import { EdiHoverProvider } from '../providers/ediHoverProvider';
 import { EdiHighlightProvider } from '../providers/ediHighlightProvider';
 import { EdiDocumentSymbolProvider } from '../providers/ediDocumentSymbolProvider';
+import { provide } from "../container";
 
+@provide(EditorController)
 export class EditorController implements Disposable {
 
     private _statusBarItem: StatusBarItem;

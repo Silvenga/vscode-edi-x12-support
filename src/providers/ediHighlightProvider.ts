@@ -1,8 +1,10 @@
 import { DocumentHighlightProvider, DocumentHighlight, MarkedString, TextDocument, CancellationToken, Position, Range, DocumentHighlightKind } from 'vscode';
 import { EditorController } from '../controllers/editorController';
 import { Parser } from '../parser';
-import { Constants } from '../constants'
+import { Constants } from '../constants';
+import { provide } from "../container";
 
+@provide(EdiHighlightProvider)
 export class EdiHighlightProvider implements DocumentHighlightProvider {
 
     private ediController: EditorController;

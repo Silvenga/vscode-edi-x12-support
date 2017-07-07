@@ -1,7 +1,9 @@
 import { window, TextEditor, Range, ExtensionContext, commands, QuickPickItem, Selection, Position } from 'vscode';
 import { Constants } from '../constants'
 import { Parser, EdiSegment, EdiElement, ElementType } from '../parser'
+import { provide } from "../container";
 
+@provide(CommandsController)
 export class CommandsController implements Disposable {
 
     public bind(context: ExtensionContext) {

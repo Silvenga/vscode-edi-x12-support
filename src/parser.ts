@@ -1,3 +1,6 @@
+import { provide } from "./container";
+
+@provide(Parser)
 export class Parser {
 
     public parseHeader(document: string): EdiDocumentConfigurationResult {
