@@ -12,7 +12,7 @@ test('Can parse pipes', t => {
     // Act
     let result = parser.parseSegments(input, config);
 
-    // Assert    
+    // Assert
     expect(result[0].elements).to.have.lengthOf(4);
     t.pass();
 });

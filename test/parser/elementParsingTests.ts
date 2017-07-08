@@ -32,7 +32,6 @@ test('Data elements.', t => {
     t.pass();
 });
 
-
 test('Component elements.', t => {
 
     const input = "ISA*test:test~";
@@ -47,7 +46,6 @@ test('Component elements.', t => {
     t.pass();
 });
 
-
 test('Repeating elements.', t => {
 
     const input = "ISA*test>test~";
@@ -61,7 +59,6 @@ test('Repeating elements.', t => {
     expect(result.elements[2].name).is.eq("01");
     t.pass();
 });
-
 
 test('Can parse decimals.', t => {
 
@@ -88,4 +85,3 @@ test('Can parse whitespace.', t => {
     expect(result[0].elements).to.have.lengthOf(2);
     t.pass();
 });
-

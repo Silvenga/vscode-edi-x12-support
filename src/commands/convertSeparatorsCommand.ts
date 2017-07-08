@@ -9,13 +9,14 @@ import { EdiDocumentConfiguration, DefaultConfiguration } from './../parser';
 export class ConvertSeparatorsCommand implements ICommandable {
     private _parser: Parser;
 
-    name: string = "edi-x12-support.convert-separators";
+    public name: string = "edi-x12-support.convert-separators";
 
     constructor(parser: Parser) {
         this._parser = parser;
     }
 
-    async command(...args: any[]) {
+    // tslint:disable-next-line:no-any
+    public async command(...args: Array<any>) {
         let document = window.activeTextEditor.document.getText();
 
         let result = this._parser.parseHeader(document);
@@ -36,7 +37,7 @@ export class ConvertSeparatorsCommand implements ICommandable {
         })
     }
 
-    private modifySeparators(oldConfig: EdiDocumentConfiguration, newConfig: EdiDocumentConfiguration, segments: EdiSegment[]): void {
+    private modifySeparators(oldConfig: EdiDocumentConfiguration, newConfig: EdiDocumentConfiguration, segments: Array<EdiSegment>): void {
 
         for (let segment of segments) {
             for (let element of segment.elements) {

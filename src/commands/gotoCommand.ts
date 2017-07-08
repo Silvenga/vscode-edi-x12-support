@@ -7,13 +7,14 @@ import { injectable } from "inversify";
 export class GotoCommand implements ICommandable {
     private _parser: Parser;
 
-    name: string = "edi-x12-support.goto";
+    public name: string = "edi-x12-support.goto";
 
     constructor(parser: Parser) {
         this._parser = parser;
     }
 
-    async command(...args: any[]) {
+    // tslint:disable-next-line:no-any
+    public async command(...args: Array<any>) {
         let document = window.activeTextEditor.document;
 
         let text = document.getText();
@@ -33,7 +34,6 @@ export class GotoCommand implements ICommandable {
             i++;
             return x.elements.map(g => new QuickPick(x, g, i));
         }).reduce((a, b) => a.concat(b));
-
 
         let pick = await window.showQuickPick<QuickPick>(picks, { matchOnDescription: true });
 

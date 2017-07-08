@@ -49,6 +49,6 @@ export class EdiHoverProvider implements HoverProvider, IProvidable {
         return null;
     }
 
-    dispose() {
+    public dispose() {
     }
 }

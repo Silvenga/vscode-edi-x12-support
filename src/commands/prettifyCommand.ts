@@ -7,13 +7,14 @@ import { injectable } from "inversify";
 export class PrettifyCommand implements ICommandable {
     private _parser: Parser;
 
-    name: string = "edi-x12-support.prettify";
+    public name: string = "edi-x12-support.prettify";
 
     constructor(parser: Parser) {
         this._parser = parser;
     }
 
-    command(...args: any[]) {
+    // tslint:disable-next-line:no-any
+    public command(...args: Array<any>) {
         let document = window.activeTextEditor.document.getText();
         let result = this._parser.parseHeader(document);
         if (!result.isValid) {

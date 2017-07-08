@@ -20,7 +20,6 @@ test('Can parse header.', t => {
     t.pass();
 });
 
-
 test('When header ends with windows new line, segment separator should be new line.', t => {
 
     const noMatch = "ISA*00*          *00*          *ZZ*123456789012345*ZZ*123456789012346*080503*1705*>*00501*000010216*0*T*:\r\n";
@@ -36,7 +35,6 @@ test('When header ends with windows new line, segment separator should be new li
     t.pass();
 });
 
-
 test('When header ends with unix new line, segment separator should be new line.', t => {
 
     const noMatch = "ISA*00*          *00*          *ZZ*123456789012345*ZZ*123456789012346*080503*1705*>*00501*000010216*0*T*:\n";
@@ -50,7 +48,6 @@ test('When header ends with unix new line, segment separator should be new line.
     t.pass();
 });
 
-
 test('When header does not start with ISA, return null.', t => {
 
     const noMatch = "nothing to see here...";
@@ -63,7 +60,6 @@ test('When header does not start with ISA, return null.', t => {
     expect(result.isValid).is.false;
     t.pass();
 });
-
 
 test('When data elements are not correct, return null.', t => {
 
@@ -90,4 +86,3 @@ test('When data elements are not correct, return null.', t => {
     expect(result.isValid).is.true;
     t.pass();
 });
-

@@ -17,7 +17,7 @@ export class EdiDocumentSymbolProvider implements DocumentSymbolProvider, IProvi
         this.parser = parser;
     }
 
-    public async provideDocumentSymbols(document: TextDocument, token: CancellationToken): Promise<SymbolInformation[]> {
+    public async provideDocumentSymbols(document: TextDocument, token: CancellationToken): Promise<Array<SymbolInformation>> {
 
         let text = document.getText();
 
@@ -25,13 +25,13 @@ export class EdiDocumentSymbolProvider implements DocumentSymbolProvider, IProvi
         let segments = this.parser.parseSegments(text, result.configuration);
 
         let segmentSymbols = segments
-            .map<SymbolInformation[]>(segment => this.createSymbolsForSegment(segment, document))
+            .map<Array<SymbolInformation>>(segment => this.createSymbolsForSegment(segment, document))
             .reduce((a, b) => a.concat(b));
 
         return [].concat(segmentSymbols);
     }
 
-    private createSymbolsForSegment(segment: EdiSegment, document: TextDocument): SymbolInformation[] {
+    private createSymbolsForSegment(segment: EdiSegment, document: TextDocument): Array<SymbolInformation> {
 
         let symbolMap = (x: ElementType): SymbolKind => {
             switch (x) {
@@ -53,7 +53,7 @@ export class EdiDocumentSymbolProvider implements DocumentSymbolProvider, IProvi
         return [].concat(elements);
     }
 
-    dispose() {
+    public dispose() {
 
     }
 }

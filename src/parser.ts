@@ -10,7 +10,7 @@ export class Parser {
         let configResult = new EdiDocumentConfigurationResult();
         configResult.isValid = false;
 
-        var isaHeader = document.replace(/(^\s+)/g, '').slice(0, 106);
+        let isaHeader = document.replace(/(^\s+)/g, '').slice(0, 106);
 
         let isIsa = isaHeader.slice(0, 3) == "ISA";
         if (!isIsa) {
@@ -30,7 +30,7 @@ export class Parser {
         let config = new EdiDocumentConfiguration(standard, dataSeparator, componentSeparator, repetitionSeparator, segmentSeparator);
         configResult.configuration = config;
 
-        var parseResult = this.parseSegments(isaHeader, config);
+        let parseResult = this.parseSegments(isaHeader, config);
 
         // TODO Cleanup
         let isValid = false;
@@ -81,7 +81,7 @@ export class Parser {
         return result;
     }
 
-    public parseSegments(document: string, config: EdiDocumentConfiguration): EdiSegment[] {
+    public parseSegments(document: string, config: EdiDocumentConfiguration): Array<EdiSegment> {
 
         if (config == null) {
             config = DefaultConfiguration;
@@ -194,8 +194,8 @@ export class Parser {
         return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')
     }
 
-    private parseRegex<T>(exp: RegExp, str: string, selector: (match: RegExpExecArray) => T): T[] {
-        let results: T[] = [];
+    private parseRegex<T>(exp: RegExp, str: string, selector: (match: RegExpExecArray) => T): Array<T> {
+        let results: Array<T> = [];
         let match: RegExpExecArray;
         while ((match = exp.exec(str)) != null) {
             results.push(selector(match));
@@ -219,7 +219,7 @@ export class EdiSegment {
 
     public id: string;
 
-    public elements: EdiElement[];
+    public elements: Array<EdiElement>;
 
     public endingDelimiter: string;
 
@@ -229,10 +229,12 @@ export class EdiSegment {
 }
 
 export enum ElementType {
+    // tslint:disable:no-any
     segmentId = <any>"Segment Id",
     dataElement = <any>"Data Element",
     repeatingElement = <any>"Repeating Element",
     componentElement = <any>"Component Element"
+    // tslint:enable:no-any
 }
 
 export class EdiElement {
@@ -282,7 +284,7 @@ export class EdiDocumentConfiguration {
         this.segmentSeparator = segmentSeparator;
     }
 
-    public get separators(): string[] {
+    public get separators(): Array<string> {
         return [
             this.dataSeparator,
             this.componentSeparator,

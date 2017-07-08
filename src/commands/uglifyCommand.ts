@@ -7,13 +7,14 @@ import { injectable } from "inversify";
 export class UglifyCommand implements ICommandable {
     private _parser: Parser;
 
-    name: string = "edi-x12-support.uglify";
+    public name: string = "edi-x12-support.uglify";
 
     constructor(parser: Parser) {
         this._parser = parser;
     }
 
-    command(...args: any[]) {
+    // tslint:disable-next-line:no-any
+    public command(...args: Array<any>) {
         let document = window.activeTextEditor.document.getText();
 
         let result = this._parser.parseHeader(document);

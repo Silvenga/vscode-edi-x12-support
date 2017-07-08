@@ -1,4 +1,5 @@
 export interface ICommandable {
     name: string;
-    command(...args: any[]): any;
+    // tslint:disable-next-line:no-any
+    command(...args: Array<any>): any;
 }

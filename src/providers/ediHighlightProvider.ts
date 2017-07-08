@@ -24,7 +24,7 @@ export class EdiHighlightProvider implements DocumentHighlightProvider, IProvida
         this.parser = parser;
     }
 
-    public async provideDocumentHighlights(document: TextDocument, position: Position, token: CancellationToken): Promise<DocumentHighlight[]> {
+    public async provideDocumentHighlights(document: TextDocument, position: Position, token: CancellationToken): Promise<Array<DocumentHighlight>> {
 
         let text = document.getText();
 
@@ -39,6 +39,6 @@ export class EdiHighlightProvider implements DocumentHighlightProvider, IProvida
         return [new DocumentHighlight(new Range(new Position(startLine.line, startLine.character), new Position(endLine.line, endLine.character)), DocumentHighlightKind.Read)];
     }
 
-    dispose() {
+    public dispose() {
     }
 }

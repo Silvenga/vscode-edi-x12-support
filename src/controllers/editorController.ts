@@ -11,7 +11,6 @@ export class EditorController implements IDisposable {
     private _parser: Parser;
     private _statusBarItem: StatusBarItem;
 
-
     public constructor(parser: Parser) {
 
         this._parser = parser;
