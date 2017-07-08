@@ -84,7 +84,7 @@ export class Parser {
     public parseSegments(document: string, config: EdiDocumentConfiguration): EdiSegment[] {
 
         if (config == null) {
-            config = new EdiDocumentConfiguration("", "*", ":", ">", "~");
+            config = DefaultConfiguration;
         }
 
         let regex = new RegExp(`\\b([\\s\\S]*?)(${config.segmentSeparator})`, "g");
@@ -309,3 +309,5 @@ export class EdiDocumentConfiguration {
             ;
     }
 }
+
+export const DefaultConfiguration = new EdiDocumentConfiguration("", "*", ":", ">", "~");
