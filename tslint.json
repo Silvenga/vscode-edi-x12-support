@@ -1,11 +1,26 @@
 {
     "rules": {
-        "no-unused-variable": true,
-        "no-unused-expression": true,
         "no-trailing-whitespace": true,
-        "no-unreachable": true,
         "no-duplicate-variable": true,
-        "no-duplicate-key": true,
-        "triple-equals": false
+        "no-consecutive-blank-lines": true,
+        "member-access": true,
+        "no-any": true,
+        "promise-function-async": true,
+        "await-promise": true,
+        "no-floating-promises": true,
+        "no-shadowed-variable": true,
+        "no-string-throw": true,
+        "no-var-keyword": true,
+        "restrict-plus-operands": true,
+        "strict-boolean-expressions": true,
+        "use-isnan": true,
+        "array-type": [
+            true,
+            "generic"
+        ]
+    },
+    "tslint.options": {
+        "project": "tsconfig.json",
+        "typeCheck": true
     }
 }
