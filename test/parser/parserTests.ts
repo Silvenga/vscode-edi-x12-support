@@ -1,3 +1,4 @@
+import '../index';
 import test from 'ava';
 import { expect } from 'chai';
 import { Parser, ElementType, EdiDocumentConfiguration } from '../../src/parser'

@@ -22,7 +22,6 @@ export async function activate(context: ExtensionContext) {
     context.subscriptions.push(languages.registerHoverProvider(Constants.languageId, container.get<EdiHoverProvider>(EdiHoverProvider)))
     context.subscriptions.push(languages.registerDocumentHighlightProvider(Constants.languageId, container.get<EdiHighlightProvider>(EdiHighlightProvider)));
     context.subscriptions.push(languages.registerDocumentSymbolProvider(Constants.languageId, container.get<EdiDocumentSymbolProvider>(EdiDocumentSymbolProvider)));
-
 }
 
 export function deactivate() {
