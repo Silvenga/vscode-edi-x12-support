@@ -83,7 +83,7 @@
         "compile": "tsc -p ./",
         "watch": "tsc -watch -p ./",
         "postinstall": "node ./node_modules/vscode/bin/install",
-        "tslint": "tslint -c tslint.json src/**/*.ts",
+        "tslint": "tslint --config tslint.json --type-check --project tsconfig.json src/**/*.ts",
         "test": "ava",
         "test:watch": "ava --watch",
         "publish": "vsce publish",
