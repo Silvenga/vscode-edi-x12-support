@@ -31,13 +31,15 @@ export class EditorController implements IDisposable {
     }
 
     private onDidChangeActiveTextEditor(textEditor: TextEditor) {
-        if (textEditor == null) {
-            return;
-        }
-        if (textEditor.document.languageId === Constants.languageId) {
+
+        if (textEditor != null && textEditor.document.languageId === Constants.languageId) {
             this.documentActive(textEditor);
         } else {
             this.documentInactive(textEditor);
+        }
+
+        if (textEditor == null) {
+            return;
         }
 
         this.onDidChangeTextDocument(textEditor.document);
@@ -45,7 +47,6 @@ export class EditorController implements IDisposable {
 
     private onDidChangeTextDocument(document: TextDocument) {
         if (document.languageId === Constants.languageId) {
-
             let result = this._parser.parseHeader(document.getText());
             if (!result.isValid) {
                 this.setStatus("No Valid ISA Header", result.errorMessage);
