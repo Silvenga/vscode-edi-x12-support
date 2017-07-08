@@ -6,7 +6,10 @@
         "member-access": true,
         "no-any": true,
         "promise-function-async": true,
-        "await-promise": true,
+        "await-promise": [
+            true,
+            "Thenable"
+        ],
         "no-floating-promises": true,
         "no-shadowed-variable": true,
         "no-string-throw": true,
@@ -17,6 +20,32 @@
         "array-type": [
             true,
             "generic"
+        ],
+        "class-name": true,
+        "interface-name": [
+            true,
+            "always-prefix"
+        ],
+        "no-boolean-literal-compare": true,
+        "no-parameter-properties": true,
+        "one-variable-per-declaration": [
+            true,
+            "ignore-for-loop"
+        ],
+        "quotemark": [
+            true,
+            "single",
+            "avoid-escape"
+        ],
+        "semicolon": [
+            true,
+            "always"
+        ],
+        "variable-name": [
+            true,
+            "check-format",
+            "allow-leading-underscore",
+            "allow-pascal-case"
         ]
     },
     "tslint.options": {
