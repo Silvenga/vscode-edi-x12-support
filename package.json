@@ -2,7 +2,7 @@
     "name": "edi-x12-support",
     "displayName": "Edi X12 Support",
     "description": "Provides basic support for the EDI X12/HIPAA format.",
-    "version": "0.8.2",
+    "version": "0.9.0",
     "publisher": "Silvenga",
     "author": {
         "email": "m+vscode@silvenga.com",
@@ -73,7 +73,7 @@
             },
             {
                 "command": "edi-x12-support.convert-separators",
-                "title": "Convert Separators",
+                "title": "Convert Separators (Normalize/change EDI separators)",
                 "category": "EDI Support"
             }
         ]

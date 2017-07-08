@@ -2,6 +2,13 @@
 
 All notable changes to the "edi-x12-support" extension will be documented in this file.
 
+## [0.9.0]
+### Added
+- Command to convert/normalize document separators (i.e. data element separator from `|` to `*`)  
+### Changed
+- Tooltips are now colorized.
+- Tooltips will no longer scroll horizontally.
+
 ## [0.8.1]
 ### Changed
 - Reduced package.json icon size to prevent blurring.
