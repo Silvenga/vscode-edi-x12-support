@@ -44,9 +44,6 @@ export class ConvertSeparatorsCommand implements ICommandable {
                     case oldConfig.componentSeparator:
                         element.separator = newConfig.componentSeparator;
                         break;
-                    case oldConfig.controlVersion:
-                        element.separator = newConfig.controlVersion;
-                        break;
                     case oldConfig.dataSeparator:
                         element.separator = newConfig.dataSeparator;
                         break;
