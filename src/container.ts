@@ -1,3 +1,4 @@
+import { ConvertSeparatorsCommand } from './commands/convertSeparatorsCommand';
 import { Container } from 'inversify';
 
 import { GotoCommand } from './commands/gotoCommand';
@@ -18,6 +19,7 @@ container.bind<Parser>(Parser).toSelf();
 container.bind<ICommandable>("ICommandable").to(GotoCommand);
 container.bind<ICommandable>("ICommandable").to(PrettifyCommand);
 container.bind<ICommandable>("ICommandable").to(UglifyCommand);
+container.bind<ICommandable>("ICommandable").to(ConvertSeparatorsCommand);
 
 container.bind<EdiDocumentSymbolProvider>(EdiDocumentSymbolProvider).to(EdiDocumentSymbolProvider);
 container.bind<EdiHighlightProvider>(EdiHighlightProvider).to(EdiHighlightProvider);

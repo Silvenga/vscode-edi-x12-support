@@ -29,7 +29,8 @@
     "activationEvents": [
         "onLanguage:edi",
         "onCommand:edi-x12-support.prettify",
-        "onCommand:edi-x12-support.uglify"
+        "onCommand:edi-x12-support.uglify",
+        "edi-x12-support.convert-separators"
     ],
     "main": "./out/src/extension",
     "contributes": {
@@ -68,6 +69,11 @@
             {
                 "command": "edi-x12-support.goto",
                 "title": "Goto",
+                "category": "EDI Support"
+            },
+            {
+                "command": "edi-x12-support.convert-separators",
+                "title": "Convert Separators",
                 "category": "EDI Support"
             }
         ]
