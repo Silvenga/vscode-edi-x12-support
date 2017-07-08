@@ -5,7 +5,7 @@ import { injectable } from "inversify";
 
 @injectable()
 export class UglifyCommand implements ICommandable {
-    private _parser: any;
+    private _parser: Parser;
 
     name: string = "edi-x12-support.uglify";
 
@@ -17,7 +17,7 @@ export class UglifyCommand implements ICommandable {
         let document = window.activeTextEditor.document.getText();
 
         let result = this._parser.parseHeader(document);
-        if (result.isValid) {
+        if (!result.isValid) {
             window.showErrorMessage("No ISA header found.");
             return;
         }
