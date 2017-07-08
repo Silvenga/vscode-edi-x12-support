@@ -10,9 +10,9 @@ export class EdiHoverProvider implements HoverProvider {
     private ediController: EditorController;
     private parser: Parser;
 
-    constructor(ediController: EditorController) {
+    constructor(ediController: EditorController, parser: Parser) {
         this.ediController = ediController;
-        this.parser = new Parser();
+        this.parser = parser;
     }
 
     public async provideHover(document: TextDocument, position: Position, token: CancellationToken): Promise<Hover> {
@@ -32,15 +32,16 @@ export class EdiHoverProvider implements HoverProvider {
             let context = "";
             for (let i = 0, len = selectedSegment.elements.length; i < len; i++) {
                 let el = selectedSegment.elements[i];
-                let element = (el.separator + el.value).replace("*", "\\*");
-                let isSelected = i == selectedElementIndex;
-                context += isSelected ? `**${element}**` : element;
+                let element = (el.separator + el.value);
+                context += element;
             }
             context += selectedSegment.endingDelimiter;
 
             return new Hover(
                 `**${selectedSegment.id}**${selectedElement.name} (_${selectedElement.type}_)\n\n` +
-                `${context}`
+                "```edi\n" +
+                `${context}\n` +
+                "```"
             );
         }
 

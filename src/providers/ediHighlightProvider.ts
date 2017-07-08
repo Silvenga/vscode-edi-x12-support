@@ -10,9 +10,9 @@ export class EdiHighlightProvider implements DocumentHighlightProvider {
     private ediController: EditorController;
     private parser: Parser;
 
-    constructor(ediController: EditorController) {
+    constructor(ediController: EditorController, parser: Parser) {
         this.ediController = ediController;
-        this.parser = new Parser();
+        this.parser = parser;
     }
 
     public async provideDocumentHighlights(document: TextDocument, position: Position, token: CancellationToken): Promise<DocumentHighlight[]> {

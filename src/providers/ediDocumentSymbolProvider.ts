@@ -11,9 +11,9 @@ export class EdiDocumentSymbolProvider implements DocumentSymbolProvider {
     private ediController: EditorController;
     private parser: Parser;
 
-    constructor(ediController: EditorController) {
+    constructor(ediController: EditorController, parser: Parser) {
         this.ediController = ediController;
-        this.parser = new Parser();
+        this.parser = parser;
     }
 
     public async provideDocumentSymbols(document: TextDocument, token: CancellationToken): Promise<SymbolInformation[]> {
@@ -44,8 +44,6 @@ export class EdiDocumentSymbolProvider implements DocumentSymbolProvider {
                     return SymbolKind.Variable
             }
         }
-
-        // let root = new SymbolInformation(segment.id, SymbolKind.Class, new Range(document.positionAt(segment.startIndex), document.positionAt(segment.endIndex)), null, segment.id);
 
         let elements = segment.elements.map<SymbolInformation>(element =>
             new SymbolInformation(segment.id + element.name, symbolMap(element.type), new Range(document.positionAt(element.startIndex), document.positionAt(element.endIndex)), null, segment.id)
