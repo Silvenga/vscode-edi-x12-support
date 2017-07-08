@@ -1,13 +1,13 @@
 import { ICommandable } from './../interfaces/commandable';
 import { window, Range, QuickPickItem, Position, Selection } from 'vscode';
-import { Parser, EdiSegment, EdiElement, ElementType } from '../parser'
-import { injectable } from "inversify";
+import { Parser, EdiSegment, EdiElement, ElementType } from '../parser';
+import { injectable } from 'inversify';
 
 @injectable()
 export class GotoCommand implements ICommandable {
     private _parser: Parser;
 
-    public name: string = "edi-x12-support.goto";
+    public name: string = 'edi-x12-support.goto';
 
     constructor(parser: Parser) {
         this._parser = parser;
@@ -21,14 +21,14 @@ export class GotoCommand implements ICommandable {
 
         let result = this._parser.parseHeader(text);
         if (!result.isValid) {
-            window.showErrorMessage("No ISA header found.");
+            window.showErrorMessage('No ISA header found.');
             return;
         }
         let segments = this._parser.parseSegments(text, result.configuration);
 
         let i = 0;
         let picks = segments.map(x => {
-            if (x.id == "ISA") {
+            if (x.id == 'ISA') {
                 i = 0;
             }
             i++;
@@ -48,7 +48,7 @@ export class GotoCommand implements ICommandable {
             active = document.positionAt(pick.segment.endIndex);
         }
 
-        window.activeTextEditor.selections = [new Selection(new Position(anchor.line, anchor.character), new Position(active.line, active.character))]
+        window.activeTextEditor.selections = [new Selection(new Position(anchor.line, anchor.character), new Position(active.line, active.character))];
     }
 }
 

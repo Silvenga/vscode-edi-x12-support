@@ -16,10 +16,10 @@ export const container = new Container();
 container.bind<EditorController>(EditorController).toSelf().inSingletonScope();
 container.bind<Parser>(Parser).toSelf();
 
-container.bind<ICommandable>("ICommandable").to(GotoCommand);
-container.bind<ICommandable>("ICommandable").to(PrettifyCommand);
-container.bind<ICommandable>("ICommandable").to(UglifyCommand);
-container.bind<ICommandable>("ICommandable").to(ConvertSeparatorsCommand);
+container.bind<ICommandable>('ICommandable').to(GotoCommand);
+container.bind<ICommandable>('ICommandable').to(PrettifyCommand);
+container.bind<ICommandable>('ICommandable').to(UglifyCommand);
+container.bind<ICommandable>('ICommandable').to(ConvertSeparatorsCommand);
 
 container.bind<EdiDocumentSymbolProvider>(EdiDocumentSymbolProvider).to(EdiDocumentSymbolProvider);
 container.bind<EdiHighlightProvider>(EdiHighlightProvider).to(EdiHighlightProvider);

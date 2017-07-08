@@ -9,7 +9,7 @@ import { EdiDocumentConfiguration, DefaultConfiguration } from './../parser';
 export class ConvertSeparatorsCommand implements ICommandable {
     private _parser: Parser;
 
-    public name: string = "edi-x12-support.convert-separators";
+    public name: string = 'edi-x12-support.convert-separators';
 
     constructor(parser: Parser) {
         this._parser = parser;
@@ -21,20 +21,20 @@ export class ConvertSeparatorsCommand implements ICommandable {
 
         let result = this._parser.parseHeader(document);
         if (!result.isValid) {
-            window.showErrorMessage("No ISA header found.");
+            window.showErrorMessage('No ISA header found.');
             return;
         }
         let segments = this._parser.parseSegments(document, result.configuration);
 
         this.modifySeparators(result.configuration, DefaultConfiguration, segments);
 
-        let text = segments.join("");
+        let text = segments.join('');
 
         window.activeTextEditor.edit(builder => {
             let start = window.activeTextEditor.document.positionAt(segments[0].startIndex);
             let end = window.activeTextEditor.document.positionAt(segments[segments.length - 1].endIndex);
             builder.replace(new Range(start, end), text);
-        })
+        });
     }
 
     private modifySeparators(oldConfig: EdiDocumentConfiguration, newConfig: EdiDocumentConfiguration, segments: Array<EdiSegment>): void {
@@ -51,10 +51,10 @@ export class ConvertSeparatorsCommand implements ICommandable {
                     case oldConfig.repetitionSeparator:
                         element.separator = newConfig.repetitionSeparator;
                         break;
-                    case "":
+                    case '':
                         break;
                     default:
-                        throw new Error("Unknown separator found.");
+                        throw new Error('Unknown separator found.');
                 }
             }
             segment.endingDelimiter = newConfig.segmentSeparator;

@@ -12,18 +12,18 @@ export class Parser {
 
         let isaHeader = document.replace(/(^\s+)/g, '').slice(0, 106);
 
-        let isIsa = isaHeader.slice(0, 3) == "ISA";
+        let isIsa = isaHeader.slice(0, 3) == 'ISA';
         if (!isIsa) {
-            configResult.errorMessage = `No segment with the segment id of ISA found at the beginning of the document.`
+            configResult.errorMessage = `No segment with the segment id of ISA found at the beginning of the document.`;
             return configResult;
         }
         let standard = isaHeader.slice(84, 89);
         let dataSeparator = isaHeader.charAt(3);
         let componentSeparator = isaHeader.charAt(104);
         let segmentSeparator = isaHeader.charAt(105);
-        if (segmentSeparator == "\r") {
-            segmentSeparator = "\r\n";
-            isaHeader += "\n"; // TODO HACK, handle without modifying header.
+        if (segmentSeparator == '\r') {
+            segmentSeparator = '\r\n';
+            isaHeader += '\n'; // TODO HACK, handle without modifying header.
         }
         let repetitionSeparator = isaHeader.charAt(82);
 
@@ -37,9 +37,9 @@ export class Parser {
         if (parseResult.length == 1) {
             let result = parseResult[0];
             isValid = // TODO Too much?
-                this.checkWithReason(configResult, () => result.elements.filter(x => x.type == ElementType.repeatingElement && x.name == "11").length == 1,
+                this.checkWithReason(configResult, () => result.elements.filter(x => x.type == ElementType.repeatingElement && x.name == '11').length == 1,
                     `ISA segment found, but found one or more repeating segments, should the repeating element separator really be '${repetitionSeparator}'?`)
-                && this.checkWithReason(configResult, () => result.elements.filter(x => x.type == ElementType.componentElement && x.name == "16-2").length == 1,
+                && this.checkWithReason(configResult, () => result.elements.filter(x => x.type == ElementType.componentElement && x.name == '16-2').length == 1,
                     `ISA segment found, but found one or more components, should the component element separator really be '${componentSeparator}'?`)
                 && this.checkWithReason(configResult, () => result.elements.filter(x => x.type == ElementType.dataElement).length == 16,
                     `ISA segment found, but found an invalid number of data elements, should the data element separator really be '${dataSeparator}'?`)
@@ -87,7 +87,7 @@ export class Parser {
             config = DefaultConfiguration;
         }
 
-        let regex = new RegExp(`\\b([\\s\\S]*?)(${config.segmentSeparator})`, "g");
+        let regex = new RegExp(`\\b([\\s\\S]*?)(${config.segmentSeparator})`, 'g');
         let results = this.parseRegex(regex, document, x => this.parseSegment(x[0], x.index, x.index + x[0].length, x[2], config));
 
         return results;
@@ -101,9 +101,9 @@ export class Parser {
         segment.endIndex = endIndex;
         segment.length = endIndex - startIndex;
 
-        let segmentsIds = this.parseRegex(new RegExp("^[\\w\\d]{2,3}", "g"),
+        let segmentsIds = this.parseRegex(new RegExp('^[\\w\\d]{2,3}', 'g'),
             segmentStr,
-            x => new EdiElement(ElementType.segmentId, x[0], startIndex + x.index, ""));
+            x => new EdiElement(ElementType.segmentId, x[0], startIndex + x.index, ''));
 
         let charSet = [
             `\\w`,
@@ -140,18 +140,18 @@ export class Parser {
             `"`,
             `\\+`,
         ].filter(x => {
-            return config.separators.indexOf(x.replace(/\\{1}/, "")) == -1; // Remove first \
+            return config.separators.indexOf(x.replace(/\\{1}/, '')) == -1; // Remove first \
         });
 
-        let dataRegex = `[${charSet.join("")}]*`;
+        let dataRegex = `[${charSet.join('')}]*`;
 
-        let dataElements = this.parseRegex(new RegExp(`(${this.escapeCharRegex(config.dataSeparator)})(${dataRegex})`, "g"),
+        let dataElements = this.parseRegex(new RegExp(`(${this.escapeCharRegex(config.dataSeparator)})(${dataRegex})`, 'g'),
             segmentStr,
             x => new EdiElement(ElementType.dataElement, x[2], startIndex + x.index + 1, x[1]));
-        let repeatingElements = this.parseRegex(new RegExp(`(${this.escapeCharRegex(config.repetitionSeparator)})(${dataRegex})`, "g"),
+        let repeatingElements = this.parseRegex(new RegExp(`(${this.escapeCharRegex(config.repetitionSeparator)})(${dataRegex})`, 'g'),
             segmentStr,
             x => new EdiElement(ElementType.repeatingElement, x[2], startIndex + x.index + 1, x[1]));
-        let componentElements = this.parseRegex(new RegExp(`(${this.escapeCharRegex(config.componentSeparator)})(${dataRegex})`, "g"),
+        let componentElements = this.parseRegex(new RegExp(`(${this.escapeCharRegex(config.componentSeparator)})(${dataRegex})`, 'g'),
             segmentStr,
             x => new EdiElement(ElementType.componentElement, x[2], startIndex + x.index + 1, x[1]));
 
@@ -182,7 +182,7 @@ export class Parser {
 
                 element.name = elementName;
             } else {
-                element.name = "";
+                element.name = '';
             }
         }
 
@@ -191,7 +191,7 @@ export class Parser {
 
     private escapeCharRegex(str: string): string {
         // http://stackoverflow.com/a/3561711
-        return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')
+        return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
     }
 
     private parseRegex<T>(exp: RegExp, str: string, selector: (match: RegExpExecArray) => T): Array<T> {
@@ -205,7 +205,7 @@ export class Parser {
 
     // http://stackoverflow.com/a/10073788
     private pad(n: number, width: number, z: string = '0') {
-        let nStr = n + '';
+        let nStr = n.toString() + '';
         return nStr.length >= width ? nStr : new Array(width - nStr.length + 1).join(z) + nStr;
     }
 }
@@ -224,16 +224,16 @@ export class EdiSegment {
     public endingDelimiter: string;
 
     public toString() {
-        return this.elements.join("") + this.endingDelimiter;
+        return this.elements.join('') + this.endingDelimiter;
     }
 }
 
 export enum ElementType {
     // tslint:disable:no-any
-    segmentId = <any>"Segment Id",
-    dataElement = <any>"Data Element",
-    repeatingElement = <any>"Repeating Element",
-    componentElement = <any>"Component Element"
+    segmentId = <any>'Segment Id',
+    dataElement = <any>'Data Element',
+    repeatingElement = <any>'Repeating Element',
+    componentElement = <any>'Component Element'
     // tslint:enable:no-any
 }
 
@@ -295,7 +295,7 @@ export class EdiDocumentConfiguration {
 
     public toString(): string {
         return this.humanReadableWhitespace(
-            (""
+            (''
                 + `Control Version: '${this.controlVersion}'\n`
                 + `Data Separator: '${this.dataSeparator}'\n`
                 + `Component Separator: '${this.componentSeparator}'\n`
@@ -312,4 +312,4 @@ export class EdiDocumentConfiguration {
     }
 }
 
-export const DefaultConfiguration = new EdiDocumentConfiguration("", "*", ":", ">", "~");
+export const DefaultConfiguration = new EdiDocumentConfiguration('', '*', ':', '>', '~');

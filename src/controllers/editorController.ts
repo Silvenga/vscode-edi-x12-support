@@ -24,7 +24,7 @@ export class EditorController implements IDisposable {
         workspace.onDidChangeTextDocument((params) => this.onDidChangeTextDocument(params.document));
     }
 
-    public setStatus(message: string, tooltip: string = "EDI Extension Status") {
+    public setStatus(message: string, tooltip: string = 'EDI Extension Status') {
         this._statusBarItem.text = message;
         this._statusBarItem.tooltip = tooltip;
     }
@@ -48,9 +48,9 @@ export class EditorController implements IDisposable {
         if (document.languageId === Constants.languageId) {
             let result = this._parser.parseHeader(document.getText());
             if (!result.isValid) {
-                this.setStatus("No Valid ISA Header", result.errorMessage);
+                this.setStatus('No Valid ISA Header', result.errorMessage);
             } else {
-                this.setStatus("Valid ISA Header", result.configuration.toString());
+                this.setStatus('Valid ISA Header', result.configuration.toString());
             }
         }
     }
@@ -61,7 +61,7 @@ export class EditorController implements IDisposable {
     }
 
     private documentInactive(textEditor: TextEditor) {
-        console.log("EDI doc Inactive");
+        console.log('EDI doc Inactive');
         this._statusBarItem.hide();
     }
 

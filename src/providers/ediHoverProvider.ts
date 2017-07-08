@@ -30,7 +30,7 @@ export class EdiHoverProvider implements HoverProvider, IProvidable {
         if (selectedElementIndex != -1) {
             let selectedElement = selectedSegment.elements[selectedElementIndex];
 
-            let context = "";
+            let context = '';
             for (let i = 0, len = selectedSegment.elements.length; i < len; i++) {
                 let el = selectedSegment.elements[i];
                 let element = (el.separator + el.value);
@@ -40,9 +40,9 @@ export class EdiHoverProvider implements HoverProvider, IProvidable {
 
             return new Hover(
                 `**${selectedSegment.id}**${selectedElement.name} (_${selectedElement.type}_)\n\n` +
-                "```edi\n" +
+                '```edi\n' +
                 `${context}\n` +
-                "```"
+                '```'
             );
         }
 

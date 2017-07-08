@@ -36,15 +36,15 @@ export class EdiDocumentSymbolProvider implements DocumentSymbolProvider, IProvi
         let symbolMap = (x: ElementType): SymbolKind => {
             switch (x) {
                 case ElementType.componentElement:
-                    return SymbolKind.Object
+                    return SymbolKind.Object;
                 case ElementType.dataElement:
-                    return SymbolKind.Constant
+                    return SymbolKind.Constant;
                 case ElementType.repeatingElement:
-                    return SymbolKind.Array
+                    return SymbolKind.Array;
                 case ElementType.segmentId:
-                    return SymbolKind.Variable
+                    return SymbolKind.Variable;
             }
-        }
+        };
 
         let elements = segment.elements.map<SymbolInformation>(element =>
             new SymbolInformation(segment.id + element.name, symbolMap(element.type), new Range(document.positionAt(element.startIndex), document.positionAt(element.endIndex)), null, segment.id)

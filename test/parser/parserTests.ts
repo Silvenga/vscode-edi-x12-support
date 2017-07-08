@@ -1,13 +1,13 @@
 import '../index';
 import test from 'ava';
 import { expect } from 'chai';
-import { Parser, ElementType, EdiDocumentConfiguration } from '../../src/parser'
+import { Parser, ElementType, EdiDocumentConfiguration } from '../../src/parser';
 
-const config = new EdiDocumentConfiguration("", "*", ":", ">", "~");
+const config = new EdiDocumentConfiguration('', '*', ':', '>', '~');
 
 test('On ParseSegments, when no matches, return empty array.', t => {
 
-    const input = "";
+    const input = '';
     let parser = new Parser();
 
     // Act
@@ -20,7 +20,7 @@ test('On ParseSegments, when no matches, return empty array.', t => {
 
 test('On ParseSegments, return matches.', t => {
 
-    const input = "ISA*hello~BSA*61*2017~";
+    const input = 'ISA*hello~BSA*61*2017~';
     let parser = new Parser();
 
     // Act
@@ -33,7 +33,7 @@ test('On ParseSegments, return matches.', t => {
 
 test('Segment Id should be populated.', t => {
 
-    const input = "ISA*test~";
+    const input = 'ISA*test~';
     let parser = new Parser();
 
     // Act
@@ -41,26 +41,26 @@ test('Segment Id should be populated.', t => {
 
     // Assert
     expect(result).to.have.lengthOf(1);
-    expect(result[0].id).to.be.eq("ISA");
+    expect(result[0].id).to.be.eq('ISA');
     t.pass();
 });
 
 test('Segment end deliminator should be populated.', t => {
 
-    const input = "ISA*test~";
+    const input = 'ISA*test~';
     let parser = new Parser();
 
     // Act
     let result = parser.parseSegments(input, config);
 
     // Assert
-    expect(result[0].endingDelimiter).to.be.eq("~");
+    expect(result[0].endingDelimiter).to.be.eq('~');
     t.pass();
 });
 
 test('Can parse empty elements.', t => {
 
-    const input = "ISA***~";
+    const input = 'ISA***~';
     let parser = new Parser();
 
     // Act
@@ -74,7 +74,7 @@ test('Can parse empty elements.', t => {
 test('Supports extended character sets.', t => {
 
     const supportCharsExtended = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!\"&'\(\),-./;?= abcdefghijklmnopqrstuvwxyz%@[]_{}\\|<#$:~>";
-    const customConfig = new EdiDocumentConfiguration("", "\u0000", "\u0001", "\u0002", "\u0003");
+    const customConfig = new EdiDocumentConfiguration('', '\u0000', '\u0001', '\u0002', '\u0003');
     const input = `ISA\u0000${supportCharsExtended}\u0000test\u0003`;
     let parser = new Parser();
 
