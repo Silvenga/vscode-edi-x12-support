@@ -5,7 +5,7 @@ import { injectable } from "inversify";
 
 @injectable()
 export class GotoCommand implements ICommandable {
-    private _parser: any;
+    private _parser: Parser;
 
     name: string = "edi-x12-support.goto";
 
