@@ -11,6 +11,7 @@ build_script:
 after_build:
 - cmd: npm run package
 test_script:
+- cmd: npm run tslint
 - cmd: npm test
 artifacts:
   - path: '*.vsix'
