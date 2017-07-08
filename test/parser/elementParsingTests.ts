@@ -61,3 +61,31 @@ test('Repeating elements.', t => {
     expect(result.elements[2].name).is.eq("01");
     t.pass();
 });
+
+
+test('Can parse decimals.', t => {
+
+    const input = "ISA*1.0~";
+    let parser = new Parser();
+
+    // Act
+    let result = parser.parseSegments(input, config);
+
+    // Assert
+    expect(result[0].elements).to.have.lengthOf(2);
+    t.pass();
+});
+
+test('Can parse whitespace.', t => {
+
+    const input = "ISA*1000 ~";
+    let parser = new Parser();
+
+    // Act
+    let result = parser.parseSegments(input, config);
+
+    // Assert
+    expect(result[0].elements).to.have.lengthOf(2);
+    t.pass();
+});
+
