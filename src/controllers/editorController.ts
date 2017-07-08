@@ -1,13 +1,12 @@
-import { StatusBarItem, StatusBarAlignment, window, TextEditor, Selection, Range, ExtensionContext, languages, workspace, TextDocumentChangeEvent, TextDocument } from 'vscode';
-import { Constants } from '../constants'
-import { Parser } from '../parser'
-import { EdiHoverProvider } from '../providers/ediHoverProvider';
-import { EdiHighlightProvider } from '../providers/ediHighlightProvider';
-import { EdiDocumentSymbolProvider } from '../providers/ediDocumentSymbolProvider';
-import { injectable } from "inversify";
+import { injectable } from 'inversify';
+import { StatusBarAlignment, StatusBarItem, TextDocument, TextEditor, window, workspace } from 'vscode';
+
+import { Constants } from '../constants';
+import { Parser } from '../parser';
+import { IDisposable } from './../interfaces/disposable';
 
 @injectable()
-export class EditorController implements Disposable {
+export class EditorController implements IDisposable {
 
     private _parser: Parser;
     private _statusBarItem: StatusBarItem;

@@ -1,20 +1,24 @@
-import { EdiHoverProvider } from './providers/ediHoverProvider';
-import { EdiHighlightProvider } from './providers/ediHighlightProvider';
-import { EdiDocumentSymbolProvider } from './providers/ediDocumentSymbolProvider';
+import { Container } from 'inversify';
 
-import { injectable, Container } from "inversify";
-
+import { GotoCommand } from './commands/gotoCommand';
+import { PrettifyCommand } from './commands/prettifyCommand';
+import { UglifyCommand } from './commands/uglifyCommand';
 import { EditorController } from './controllers/editorController';
-import { CommandsController } from './controllers/commandsController';
+import { ICommandable } from './interfaces/commandable';
 import { Parser } from './parser';
-
+import { EdiDocumentSymbolProvider } from './providers/ediDocumentSymbolProvider';
+import { EdiHighlightProvider } from './providers/ediHighlightProvider';
+import { EdiHoverProvider } from './providers/ediHoverProvider';
 
 export const container = new Container();
 
 container.bind<EditorController>(EditorController).toSelf().inSingletonScope();
-container.bind<CommandsController>(CommandsController).toSelf().inSingletonScope();
-
-container.bind<EdiDocumentSymbolProvider>(EdiDocumentSymbolProvider).toSelf();
-container.bind<EdiHighlightProvider>(EdiHighlightProvider).toSelf();
-container.bind<EdiHoverProvider>(EdiHoverProvider).toSelf();
 container.bind<Parser>(Parser).toSelf();
+
+container.bind<ICommandable>("ICommandable").to(GotoCommand);
+container.bind<ICommandable>("ICommandable").to(PrettifyCommand);
+container.bind<ICommandable>("ICommandable").to(UglifyCommand);
+
+container.bind<EdiDocumentSymbolProvider>(EdiDocumentSymbolProvider).to(EdiDocumentSymbolProvider);
+container.bind<EdiHighlightProvider>(EdiHighlightProvider).to(EdiHighlightProvider);
+container.bind<EdiHoverProvider>(EdiHoverProvider).to(EdiHoverProvider);

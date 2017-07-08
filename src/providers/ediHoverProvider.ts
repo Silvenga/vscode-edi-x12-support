@@ -1,11 +1,12 @@
-import { HoverProvider, Hover, MarkedString, TextDocument, CancellationToken, Position, window } from 'vscode';
+import { injectable } from 'inversify';
+import { CancellationToken, Hover, HoverProvider, Position, TextDocument } from 'vscode';
+
 import { EditorController } from '../controllers/editorController';
-import { Parser, EdiSegment } from '../parser';
-import { Constants } from '../constants';
-import { injectable } from "inversify";
+import { Parser } from '../parser';
+import { IProvidable } from './../interfaces/providable';
 
 @injectable()
-export class EdiHoverProvider implements HoverProvider {
+export class EdiHoverProvider implements HoverProvider, IProvidable {
 
     private ediController: EditorController;
     private parser: Parser;
@@ -46,5 +47,8 @@ export class EdiHoverProvider implements HoverProvider {
         }
 
         return null;
+    }
+
+    dispose() {
     }
 }

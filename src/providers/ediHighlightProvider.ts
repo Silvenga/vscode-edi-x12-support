@@ -1,11 +1,20 @@
-import { DocumentHighlightProvider, DocumentHighlight, MarkedString, TextDocument, CancellationToken, Position, Range, DocumentHighlightKind } from 'vscode';
+import { injectable } from 'inversify';
+import {
+    CancellationToken,
+    DocumentHighlight,
+    DocumentHighlightKind,
+    DocumentHighlightProvider,
+    Position,
+    Range,
+    TextDocument,
+} from 'vscode';
+
 import { EditorController } from '../controllers/editorController';
 import { Parser } from '../parser';
-import { Constants } from '../constants';
-import { injectable } from "inversify";
+import { IProvidable } from './../interfaces/providable';
 
 @injectable()
-export class EdiHighlightProvider implements DocumentHighlightProvider {
+export class EdiHighlightProvider implements DocumentHighlightProvider, IProvidable {
 
     private ediController: EditorController;
     private parser: Parser;
@@ -28,5 +37,8 @@ export class EdiHighlightProvider implements DocumentHighlightProvider {
         let endLine = document.positionAt(selectedSegment.endIndex);
 
         return [new DocumentHighlight(new Range(new Position(startLine.line, startLine.character), new Position(endLine.line, endLine.character)), DocumentHighlightKind.Read)];
+    }
+
+    dispose() {
     }
 }

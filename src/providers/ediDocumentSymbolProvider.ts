@@ -1,12 +1,13 @@
-import { EdiSegment } from './../parser';
-import { DocumentSymbolProvider, TextDocument, CancellationToken, Position, Range, SymbolInformation, SymbolKind, Location } from 'vscode';
+import { injectable } from 'inversify';
+import { CancellationToken, DocumentSymbolProvider, Range, SymbolInformation, SymbolKind, TextDocument } from 'vscode';
+
 import { EditorController } from '../controllers/editorController';
-import { Parser, ElementType } from '../parser';
-import { Constants } from '../constants'
-import { injectable } from "inversify";
+import { ElementType, Parser } from '../parser';
+import { IProvidable } from './../interfaces/providable';
+import { EdiSegment } from './../parser';
 
 @injectable()
-export class EdiDocumentSymbolProvider implements DocumentSymbolProvider {
+export class EdiDocumentSymbolProvider implements DocumentSymbolProvider, IProvidable {
 
     private ediController: EditorController;
     private parser: Parser;
@@ -50,5 +51,9 @@ export class EdiDocumentSymbolProvider implements DocumentSymbolProvider {
         );
 
         return [].concat(elements);
+    }
+
+    dispose() {
+
     }
 }
