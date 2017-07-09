@@ -4,6 +4,7 @@ import { commands, ExtensionContext, languages } from 'vscode';
 
 import { Constants } from './constants';
 import { container } from './container';
+import { DecorationController } from './controllers/decorationController';
 import { EditorController } from './controllers/editorController';
 import { ICommandable } from './interfaces/commandable';
 import { EdiDocumentSymbolProvider } from './providers/ediDocumentSymbolProvider';
@@ -15,8 +16,11 @@ export async function activate(context: ExtensionContext) {
     console.log('EDI support now active!');
 
     let editorController = container.get<EditorController>(EditorController);
-
     context.subscriptions.push(editorController);
+
+    let decorationController = container.get<DecorationController>(DecorationController);
+    context.subscriptions.push(decorationController);
+
     context.subscriptions.push(languages.registerHoverProvider(Constants.languageId, container.get<EdiHoverProvider>(EdiHoverProvider)));
     context.subscriptions.push(languages.registerDocumentHighlightProvider(Constants.languageId, container.get<EdiHighlightProvider>(EdiHighlightProvider)));
     context.subscriptions.push(languages.registerDocumentSymbolProvider(Constants.languageId, container.get<EdiDocumentSymbolProvider>(EdiDocumentSymbolProvider)));
