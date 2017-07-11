@@ -9,7 +9,7 @@ export class GotoCommand implements ICommandable {
 
     public name: string = 'edi-x12-support.goto';
 
-    constructor(parser: Parser) {
+    public constructor(parser: Parser) {
         this._parser = parser;
     }
 
@@ -63,7 +63,7 @@ class QuickPick implements QuickPickItem {
 
     public index: number;
 
-    constructor(segment: EdiSegment, element: EdiElement, index: number) {
+    public constructor(segment: EdiSegment, element: EdiElement, index: number) {
         this.segment = segment;
         this.element = element;
         this.label = segment.id + element.name;

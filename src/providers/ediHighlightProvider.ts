@@ -19,7 +19,7 @@ export class EdiHighlightProvider implements DocumentHighlightProvider, IProvida
     private ediController: EditorController;
     private parser: Parser;
 
-    constructor(ediController: EditorController, parser: Parser) {
+    public constructor(ediController: EditorController, parser: Parser) {
         this.ediController = ediController;
         this.parser = parser;
     }

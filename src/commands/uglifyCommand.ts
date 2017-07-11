@@ -9,7 +9,7 @@ export class UglifyCommand implements ICommandable {
 
     public name: string = 'edi-x12-support.uglify';
 
-    constructor(parser: Parser) {
+    public constructor(parser: Parser) {
         this._parser = parser;
     }
 

@@ -9,7 +9,7 @@ export class PrettifyCommand implements ICommandable {
 
     public name: string = 'edi-x12-support.prettify';
 
-    constructor(parser: Parser) {
+    public constructor(parser: Parser) {
         this._parser = parser;
     }
 

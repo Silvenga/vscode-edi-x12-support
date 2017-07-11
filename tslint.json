@@ -3,7 +3,11 @@
         "no-trailing-whitespace": true,
         "no-duplicate-variable": true,
         "no-consecutive-blank-lines": true,
-        "member-access": true,
+        "member-access": [
+            true,
+            "check-accessor",
+            "check-constructor"
+        ],
         "no-any": true,
         "promise-function-async": true,
         "await-promise": [

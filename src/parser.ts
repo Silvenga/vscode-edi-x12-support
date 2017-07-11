@@ -249,7 +249,7 @@ export class EdiElement {
 
     public name: string;
 
-    constructor(type: ElementType, value: string, startIndex: number, separator: string) {
+    public constructor(type: ElementType, value: string, startIndex: number, separator: string) {
         this.type = type;
         this.value = value;
         this.startIndex = startIndex;
@@ -276,7 +276,7 @@ export class EdiDocumentConfiguration {
     public repetitionSeparator: string;
     public segmentSeparator: string;
 
-    constructor(controlVersion: string, dataSeparator: string, componentSeparator: string, repetitionSeparator: string, segmentSeparator: string) {
+    public constructor(controlVersion: string, dataSeparator: string, componentSeparator: string, repetitionSeparator: string, segmentSeparator: string) {
         this.controlVersion = controlVersion;
         this.dataSeparator = dataSeparator;
         this.componentSeparator = componentSeparator;
