@@ -1,8 +1,9 @@
 import { injectable } from 'inversify';
 import { StatusBarAlignment, StatusBarItem, TextDocument, TextEditor, window, workspace } from 'vscode';
 
-import { Constants } from '../constants';
 import { Parser } from '../parser';
+import { Configuration } from './../configuration';
+import { IConfiguration } from './../interfaces/configuration';
 import { IDisposable } from './../interfaces/disposable';
 
 @injectable()
@@ -10,10 +11,12 @@ export class EditorController implements IDisposable {
 
     private _parser: Parser;
     private _statusBarItem: StatusBarItem;
+    private _configuration: IConfiguration;
 
-    public constructor(parser: Parser) {
+    public constructor(parser: Parser, configuration: Configuration) {
 
         this._parser = parser;
+        this._configuration = configuration;
 
         // Prepare messing
         this._statusBarItem = this.createStatusBar();
@@ -32,7 +35,7 @@ export class EditorController implements IDisposable {
 
     private onDidChangeActiveTextEditor(textEditor: TextEditor) {
 
-        if (textEditor != null && textEditor.document.languageId === Constants.languageId) {
+        if (textEditor != null && textEditor.document.languageId === this._configuration.languageId) {
             this.documentActive(textEditor);
         } else {
             this.documentInactive(textEditor);
@@ -46,7 +49,7 @@ export class EditorController implements IDisposable {
     }
 
     private onDidChangeTextDocument(document: TextDocument) {
-        if (document.languageId === Constants.languageId) {
+        if (document.languageId === this._configuration.languageId) {
             let result = this._parser.parseHeader(document.getText());
             if (!result.isValid) {
                 this.setStatus('No Valid ISA Header', result.errorMessage, false);

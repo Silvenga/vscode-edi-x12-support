@@ -1,7 +1,6 @@
 import { injectable } from 'inversify';
 import {
     DecorationRenderOptions,
-    Position,
     Range,
     TextDocument,
     TextEditor,
@@ -10,8 +9,9 @@ import {
     workspace,
 } from 'vscode';
 
-import { Constants } from '../constants';
 import { Parser } from '../parser';
+import { Configuration } from './../configuration';
+import { IConfiguration } from './../interfaces/configuration';
 import { IDisposable } from './../interfaces/disposable';
 
 @injectable()
@@ -19,10 +19,12 @@ export class DecorationController implements IDisposable {
 
     private _parser: Parser;
     private _decorations: Decorations;
+    private _configuration: IConfiguration;
 
-    public constructor(parser: Parser) {
+    public constructor(parser: Parser, configuration: Configuration) {
 
         this._parser = parser;
+        this._configuration = configuration;
 
         // Prepare messing
         this._decorations = this.mapDecorations();
@@ -43,7 +45,7 @@ export class DecorationController implements IDisposable {
     }
 
     private onDidChangeTextDocument(editor: TextEditor, document: TextDocument) {
-        if (document.languageId === Constants.languageId && this._decorations != null) {
+        if (document.languageId === this._configuration.languageId && this._decorations != null) {
             let result = this._parser.parseHeader(document.getText());
             if (result.isValid) {
                 let edi = this._parser.parseSegments(document.getText(), result.configuration);
