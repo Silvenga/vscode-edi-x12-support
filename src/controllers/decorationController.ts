@@ -1,4 +1,4 @@
-import { injectable } from 'inversify';
+import { inject, injectable } from 'inversify';
 import {
     DecorationRenderOptions,
     Range,
@@ -10,7 +10,6 @@ import {
 } from 'vscode';
 
 import { Parser } from '../parser';
-import { Configuration } from './../configuration';
 import { IConfiguration } from './../interfaces/configuration';
 import { IDisposable } from './../interfaces/disposable';
 
@@ -21,7 +20,7 @@ export class DecorationController implements IDisposable {
     private _decorations: Decorations;
     private _configuration: IConfiguration;
 
-    public constructor(parser: Parser, configuration: Configuration) {
+    public constructor(parser: Parser, @inject('IConfiguration') configuration: IConfiguration) {
 
         this._parser = parser;
         this._configuration = configuration;

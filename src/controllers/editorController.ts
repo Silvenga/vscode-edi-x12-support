@@ -1,8 +1,7 @@
-import { injectable } from 'inversify';
+import { inject, injectable } from 'inversify';
 import { StatusBarAlignment, StatusBarItem, TextDocument, TextEditor, window, workspace } from 'vscode';
 
 import { Parser } from '../parser';
-import { Configuration } from './../configuration';
 import { IConfiguration } from './../interfaces/configuration';
 import { IDisposable } from './../interfaces/disposable';
 
@@ -13,7 +12,7 @@ export class EditorController implements IDisposable {
     private _statusBarItem: StatusBarItem;
     private _configuration: IConfiguration;
 
-    public constructor(parser: Parser, configuration: Configuration) {
+    public constructor(parser: Parser, @inject('IConfiguration') configuration: IConfiguration) {
 
         this._parser = parser;
         this._configuration = configuration;

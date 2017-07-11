@@ -3,7 +3,7 @@ import { Range, window } from 'vscode';
 
 import { EdiSegment, Parser } from '../parser';
 import { ICommandable } from './../interfaces/commandable';
-import { EdiDocumentConfiguration, DefaultConfiguration } from './../parser';
+import { EdiDocumentConfiguration } from './../parser';
 
 @injectable()
 export class ConvertSeparatorsCommand implements ICommandable {
@@ -26,7 +26,7 @@ export class ConvertSeparatorsCommand implements ICommandable {
         }
         let segments = this._parser.parseSegments(document, result.configuration);
 
-        this.modifySeparators(result.configuration, DefaultConfiguration, segments);
+        this.modifySeparators(result.configuration, this._parser.defaultConfiguration, segments);
 
         let text = segments.join('');
 

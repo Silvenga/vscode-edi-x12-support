@@ -1,7 +1,27 @@
-import { injectable } from 'inversify';
+import { inject, injectable } from 'inversify';
+
+import { IConfiguration } from './interfaces/configuration';
 
 @injectable()
 export class Parser {
+    private _configuration: IConfiguration;
+
+    public constructor( @inject('IConfiguration') configuration?: IConfiguration) {
+        this._configuration = configuration;
+    }
+
+    public get defaultConfiguration(): EdiDocumentConfiguration {
+        if (this._configuration == null) {
+            throw new Error('No default configuration set');
+        }
+        return new EdiDocumentConfiguration(
+            null,
+            this._configuration.dataElementSeparator,
+            this._configuration.componentElementSeparator,
+            this._configuration.repetitionElementSeparator,
+            this._configuration.segmentSeparator
+        );
+    }
 
     public parseHeader(document: string): EdiDocumentConfigurationResult {
 
@@ -84,7 +104,8 @@ export class Parser {
     public parseSegments(document: string, config: EdiDocumentConfiguration): Array<EdiSegment> {
 
         if (config == null) {
-            config = DefaultConfiguration;
+            console.warn('Config is null, this is deprecated.');
+            config = this.defaultConfiguration;
         }
 
         let regex = new RegExp(`\\b([\\s\\S]*?)(${config.segmentSeparator})`, 'g');
@@ -311,5 +332,3 @@ export class EdiDocumentConfiguration {
             ;
     }
 }
-
-export const DefaultConfiguration = new EdiDocumentConfiguration('', '*', ':', '>', '~');
