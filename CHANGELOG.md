@@ -2,6 +2,12 @@
 
 All notable changes to the "edi-x12-support" extension will be documented in this file.
 
+## [0.10.0]
+### Added
+- Pull default document separators from workspace configuration.
+### Changed
+- Colorized status item when no valid ISA header is found.
+
 ## [0.9.0]
 ### Added
 - Command to convert/normalize document separators (i.e. data element separator from `|` to `*`)  
