@@ -134,14 +134,14 @@
     "devDependencies": {
         "@types/chai": "^4.0.1",
         "@types/mocha": "^2.2.41",
-        "@types/node": "^6.0.78",
-        "ava": "^0.19.1",
+        "@types/node": "^8.0.10",
+        "ava": "^0.20.0",
         "chai": "^4.0.2",
         "mocha": "^3.4.2",
         "tslint": "^5.5.0",
-        "typescript": "^2.3.4",
-        "vsce": "^1.25.1",
-        "vscode": "^1.1.0"
+        "typescript": "^2.4.1",
+        "vsce": "^1.29.0",
+        "vscode": "^1.1.2"
     },
     "dependencies": {
         "inversify": "^4.2.0",
