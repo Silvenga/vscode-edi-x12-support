@@ -76,7 +76,41 @@
                 "title": "Convert Separators (Normalize/change EDI separators)",
                 "category": "EDI Support"
             }
-        ]
+        ],
+        "configuration": {
+            "type": "object",
+            "title": "Edi X12 Support Configuration",
+            "properties": {
+                "edi-x12.separator.data": {
+                    "type": "string",
+                    "default": "*",
+                    "required": true,
+                    "description": "A single character, which acts as a separator between data elements within a segment.",
+                    "pattern": "^.?$"
+                },
+                "edi-x12.separator.component": {
+                    "type": "string",
+                    "default": ":",
+                    "required": true,
+                    "description": "A single character, which acts as a separator between composite elements within a segment.",
+                    "pattern": "^.?$"
+                },
+                "edi-x12.separator.repetition": {
+                    "type": "string",
+                    "default": ">",
+                    "required": true,
+                    "description": "A single character, which acts as a separator between repeating data elements within a segment.",
+                    "pattern": "^.?$"
+                },
+                "edi-x12.separator.segment": {
+                    "type": "string",
+                    "default": "~",
+                    "required": true,
+                    "description": "A single character, which acts as a segment terminator separating multiple segments.",
+                    "pattern": "^.?$"
+                }
+            }
+        }
     },
     "scripts": {
         "vscode:prepublish": "tsc -p ./",

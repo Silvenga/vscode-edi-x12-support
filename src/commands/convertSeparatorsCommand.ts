@@ -30,7 +30,7 @@ export class ConvertSeparatorsCommand implements ICommandable {
 
         let text = segments.join('');
 
-        window.activeTextEditor.edit(builder => {
+        await window.activeTextEditor.edit(builder => {
             let start = window.activeTextEditor.document.positionAt(segments[0].startIndex);
             let end = window.activeTextEditor.document.positionAt(segments[segments.length - 1].endIndex);
             builder.replace(new Range(start, end), text);
