@@ -77,6 +77,30 @@
                 "category": "EDI Support"
             }
         ],
+        "menus": {
+            "editor/context": [
+                {
+                    "when": "resourceLangId == edi",
+                    "command": "edi-x12-support.prettify",
+                    "group": "edi"
+                },
+                {
+                    "when": "resourceLangId == edi",
+                    "command": "edi-x12-support.uglify",
+                    "group": "edi"
+                },
+                {
+                    "when": "resourceLangId == edi",
+                    "command": "edi-x12-support.goto",
+                    "group": "edi"
+                },
+                {
+                    "when": "resourceLangId == edi",
+                    "command": "edi-x12-support.convert-separators",
+                    "group": "edi"
+                }
+            ]
+        },
         "configuration": {
             "type": "object",
             "title": "Edi X12 Support Configuration",
