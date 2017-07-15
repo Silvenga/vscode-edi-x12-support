@@ -1,5 +1,5 @@
 import { injectable } from 'inversify';
-import { CancellationToken, DocumentSymbolProvider, Range, SymbolInformation, SymbolKind, TextDocument } from 'vscode';
+import { CancellationToken, DocumentSymbolProvider, Range, SymbolInformation, SymbolKind, TextDocument, languages } from 'vscode';
 
 import { EditorController } from '../controllers/editorController';
 import { ElementType, Parser } from '../parser';
@@ -51,6 +51,10 @@ export class EdiDocumentSymbolProvider implements DocumentSymbolProvider, IProvi
         );
 
         return [].concat(elements);
+    }
+
+    public registerFunction(): (languageId: string) => void {
+        return (languageId) => languages.registerDocumentSymbolProvider(languageId, this);
     }
 
     public dispose() {

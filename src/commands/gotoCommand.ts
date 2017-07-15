@@ -50,6 +50,9 @@ export class GotoCommand implements ICommandable {
 
         window.activeTextEditor.selections = [new Selection(new Position(anchor.line, anchor.character), new Position(active.line, active.character))];
     }
+
+    public dispose() {
+    }
 }
 
 class QuickPick implements QuickPickItem {

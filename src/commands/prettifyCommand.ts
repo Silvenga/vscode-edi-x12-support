@@ -32,4 +32,6 @@ export class PrettifyCommand implements ICommandable {
         });
     }
 
+    public dispose() {
+    }
 }

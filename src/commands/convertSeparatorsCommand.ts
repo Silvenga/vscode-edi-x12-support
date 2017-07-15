@@ -7,6 +7,7 @@ import { EdiDocumentConfiguration } from './../parser';
 
 @injectable()
 export class ConvertSeparatorsCommand implements ICommandable {
+
     private _parser: Parser;
 
     public name: string = 'edi-x12-support.convert-separators';
@@ -59,5 +60,8 @@ export class ConvertSeparatorsCommand implements ICommandable {
             }
             segment.endingDelimiter = newConfig.segmentSeparator;
         }
+    }
+
+    public dispose() {
     }
 }

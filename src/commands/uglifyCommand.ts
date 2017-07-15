@@ -32,4 +32,6 @@ export class UglifyCommand implements ICommandable {
         });
     }
 
+    public dispose() {
+    }
 }

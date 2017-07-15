@@ -33,6 +33,7 @@ export async function activate(context: ExtensionContext) {
 
 function bindCommands(context: ExtensionContext, commmandables: Array<ICommandable>) {
     for (let commandable of commmandables) {
+        context.subscriptions.push(commandable);
         context.subscriptions.push(commands.registerCommand(commandable.name, commandable.command, commandable));
     }
 }

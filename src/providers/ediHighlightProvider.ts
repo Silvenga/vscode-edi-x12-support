@@ -4,6 +4,7 @@ import {
     DocumentHighlight,
     DocumentHighlightKind,
     DocumentHighlightProvider,
+    languages,
     Position,
     Range,
     TextDocument,
@@ -37,6 +38,10 @@ export class EdiHighlightProvider implements DocumentHighlightProvider, IProvida
         let endLine = document.positionAt(selectedSegment.endIndex);
 
         return [new DocumentHighlight(new Range(new Position(startLine.line, startLine.character), new Position(endLine.line, endLine.character)), DocumentHighlightKind.Read)];
+    }
+
+    public registerFunction(): (languageId: string) => void {
+        return (languageId) => languages.registerDocumentHighlightProvider(languageId, this);
     }
 
     public dispose() {
