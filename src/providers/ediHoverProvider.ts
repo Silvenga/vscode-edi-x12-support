@@ -9,20 +9,20 @@ import { IProvidable } from './../interfaces/providable';
 @injectable()
 export class EdiHoverProvider implements HoverProvider, IProvidable {
 
-    private ediController: EditorController;
-    private parser: Parser;
+    private _ediController: EditorController;
+    private _parser: Parser;
 
     public constructor(ediController: EditorController, parser: Parser) {
-        this.ediController = ediController;
-        this.parser = parser;
+        this._ediController = ediController;
+        this._parser = parser;
     }
 
     public async provideHover(document: TextDocument, position: Position, token: CancellationToken): Promise<Hover> {
 
         let text = document.getText();
-        let config = this.parser.parseHeader(text);
+        let config = this._parser.parseHeader(text);
 
-        let segments = this.parser.parseSegments(text, config.configuration);
+        let segments = this._parser.parseSegments(text, config.configuration);
         let realPosition = document.offsetAt(new Position(position.line, position.character));
         let selectedSegment = segments.find(x => realPosition >= x.startIndex && realPosition <= x.endIndex);
 

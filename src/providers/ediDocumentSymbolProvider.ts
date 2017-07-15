@@ -18,20 +18,20 @@ import { EdiSegment } from './../parser';
 @injectable()
 export class EdiDocumentSymbolProvider implements DocumentSymbolProvider, IProvidable {
 
-    private ediController: EditorController;
-    private parser: Parser;
+    private _ediController: EditorController;
+    private _parser: Parser;
 
     public constructor(ediController: EditorController, parser: Parser) {
-        this.ediController = ediController;
-        this.parser = parser;
+        this._ediController = ediController;
+        this._parser = parser;
     }
 
     public async provideDocumentSymbols(document: TextDocument, token: CancellationToken): Promise<Array<SymbolInformation>> {
 
         let text = document.getText();
 
-        let result = this.parser.parseHeader(text);
-        let segments = this.parser.parseSegments(text, result.configuration);
+        let result = this._parser.parseHeader(text);
+        let segments = this._parser.parseSegments(text, result.configuration);
 
         let segmentSymbols = segments
             .map<Array<SymbolInformation>>(segment => this.createSymbolsForSegment(segment, document))
