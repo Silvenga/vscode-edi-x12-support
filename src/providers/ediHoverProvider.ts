@@ -1,7 +1,8 @@
 import { injectable } from 'inversify';
-import { CancellationToken, Hover, HoverProvider, Position, TextDocument, languages } from 'vscode';
+import { CancellationToken, Hover, HoverProvider, languages, Position, TextDocument } from 'vscode';
 
 import { EditorController } from '../controllers/editorController';
+import { IDisposable } from '../interfaces/disposable';
 import { Parser } from '../parser';
 import { IProvidable } from './../interfaces/providable';
 
@@ -49,7 +50,7 @@ export class EdiHoverProvider implements HoverProvider, IProvidable {
         return null;
     }
 
-    public registerFunction(): (languageId: string) => void {
+    public registerFunction(): (languageId: string) => IDisposable {
         return (languageId) => languages.registerHoverProvider(languageId, this);
     }
 

@@ -1,7 +1,9 @@
 import '../index';
+
 import test from 'ava';
 import { expect } from 'chai';
-import { Parser, ElementType } from '../../src/parser';
+
+import { Parser } from '../../src/parser';
 
 test('Can parse header.', t => {
 

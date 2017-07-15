@@ -1,3 +1,4 @@
+
 export interface IDisposable {
     dispose();
 }

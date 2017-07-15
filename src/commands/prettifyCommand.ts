@@ -1,7 +1,8 @@
-import { ICommandable } from './../interfaces/commandable';
-import { window, Range } from 'vscode';
-import { Parser } from '../parser';
 import { injectable } from 'inversify';
+import { Range, window } from 'vscode';
+
+import { Parser } from '../parser';
+import { ICommandable } from './../interfaces/commandable';
 
 @injectable()
 export class PrettifyCommand implements ICommandable {

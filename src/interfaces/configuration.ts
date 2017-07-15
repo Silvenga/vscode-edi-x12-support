@@ -1,3 +1,4 @@
+
 export interface IConfiguration {
     readonly languageId: string;
     readonly dataElementSeparator: string;

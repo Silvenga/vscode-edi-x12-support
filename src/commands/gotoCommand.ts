@@ -1,7 +1,8 @@
-import { ICommandable } from './../interfaces/commandable';
-import { window, Range, QuickPickItem, Position, Selection } from 'vscode';
-import { Parser, EdiSegment, EdiElement, ElementType } from '../parser';
 import { injectable } from 'inversify';
+import { Position, QuickPickItem, Selection, window } from 'vscode';
+
+import { EdiElement, EdiSegment, ElementType, Parser } from '../parser';
+import { ICommandable } from './../interfaces/commandable';
 
 @injectable()
 export class GotoCommand implements ICommandable {

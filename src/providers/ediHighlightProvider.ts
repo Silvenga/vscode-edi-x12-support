@@ -11,6 +11,7 @@ import {
 } from 'vscode';
 
 import { EditorController } from '../controllers/editorController';
+import { IDisposable } from '../interfaces/disposable';
 import { Parser } from '../parser';
 import { IProvidable } from './../interfaces/providable';
 
@@ -40,7 +41,7 @@ export class EdiHighlightProvider implements DocumentHighlightProvider, IProvida
         return [new DocumentHighlight(new Range(new Position(startLine.line, startLine.character), new Position(endLine.line, endLine.character)), DocumentHighlightKind.Read)];
     }
 
-    public registerFunction(): (languageId: string) => void {
+    public registerFunction(): (languageId: string) => IDisposable {
         return (languageId) => languages.registerDocumentHighlightProvider(languageId, this);
     }
 
