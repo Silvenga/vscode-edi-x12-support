@@ -169,6 +169,7 @@
     },
     "dependencies": {
         "inversify": "^4.2.0",
+        "raven-js": "^3.17.0",
         "reflect-metadata": "^0.1.10"
     }
 }
