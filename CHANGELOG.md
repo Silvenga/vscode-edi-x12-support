@@ -2,6 +2,10 @@
 
 All notable changes to the "edi-x12-support" extension will be documented in this file.
 
+## [0.10.1]
+### Added
+- Error reporting telemetry.
+
 ## [0.10.0]
 ### Added
 - Pull default document separators from workspace configuration.
