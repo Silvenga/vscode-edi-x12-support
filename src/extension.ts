@@ -1,6 +1,5 @@
 import 'reflect-metadata';
 
-import * as Raven from 'raven-js';
 import { commands, ExtensionContext } from 'vscode';
 
 import { container } from './container';
@@ -8,14 +7,16 @@ import { EditorController } from './controllers/editorController';
 import { ICommandable } from './interfaces/commandable';
 import { IConfiguration } from './interfaces/configuration';
 import { IProvidable } from './interfaces/providable';
+import { Telemetry } from './telemetry';
 
 export async function activate(context: ExtensionContext) {
-
-    Raven.config('https://164272356e3b481f824212f7be48febc@sentry.io/192167').install();
 
     console.log('EDI support now active!');
 
     const configuration = container.get<IConfiguration>('IConfiguration');
+
+    const telemetry = container.get<Telemetry>(Telemetry);
+    telemetry.install();
 
     const editorController = container.get<EditorController>(EditorController);
     context.subscriptions.push(editorController);

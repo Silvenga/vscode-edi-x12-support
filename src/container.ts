@@ -13,10 +13,13 @@ import { Parser } from './parser';
 import { EdiDocumentSymbolProvider } from './providers/ediDocumentSymbolProvider';
 import { EdiHighlightProvider } from './providers/ediHighlightProvider';
 import { EdiHoverProvider } from './providers/ediHoverProvider';
+import { Telemetry } from './telemetry';
 
 export const container = new Container();
 
 container.bind<IConfiguration>('IConfiguration').to(Configuration).inSingletonScope();
+
+container.bind<Telemetry>(Telemetry).toSelf().inSingletonScope();
 
 container.bind<EditorController>(EditorController).toSelf().inSingletonScope();
 
