@@ -12,4 +12,5 @@ export interface IConfiguration {
     readonly vsCodeMachineId: string;
     readonly vscodeLanguage: string;
     readonly vsCodeVersion: string;
+    readonly telemetryDisabled: boolean;
 }

@@ -132,6 +132,12 @@
                     "required": true,
                     "description": "A single character, which acts as a segment terminator separating multiple segments.",
                     "pattern": "^.?$"
+                },
+                "edi-x12.telemetry.disabled": {
+                    "type": "boolean",
+                    "default": false,
+                    "required": false,
+                    "description": "Disable telemetry of both usage metrics and error reporting."
                 }
             }
         }

@@ -40,4 +40,8 @@ export class Configuration implements IConfiguration {
         // https://github.com/Microsoft/vscode/issues/10272
         return env.machineId == 'someValue.machineId';
     }
+
+    public get telemetryDisabled(): boolean {
+        return workspaceConfiguration.get<boolean>('edi-x12.telemetry.disabled', false);
+    }
 }

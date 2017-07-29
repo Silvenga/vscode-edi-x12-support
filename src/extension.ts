@@ -11,8 +11,6 @@ import { Telemetry } from './telemetry';
 
 export async function activate(context: ExtensionContext) {
 
-    console.log('EDI support now active!');
-
     const configuration = container.get<IConfiguration>('IConfiguration');
 
     const telemetry = container.get<Telemetry>(Telemetry);
@@ -28,6 +26,8 @@ export async function activate(context: ExtensionContext) {
     bindProviders(context, configuration, providables);
 
     telemetry.captureEvent('Extension Started');
+
+    console.log('EDI support now active!');
 }
 
 function bindCommands(context: ExtensionContext, commmandables: Array<ICommandable>) {
