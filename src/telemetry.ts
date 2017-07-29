@@ -15,11 +15,7 @@ export class Telemetry {
     }
 
     public install() {
-        this._ravenStatic = Raven.config(this._configuration.ravenDsn, {
-            autoBreadcrumbs: {
-                xhr: false
-            }
-        });
+        this._ravenStatic = Raven.config(this._configuration.ravenDsn);
     }
 
     // tslint:disable-next-line:no-any
