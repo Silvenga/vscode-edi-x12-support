@@ -26,6 +26,8 @@ export async function activate(context: ExtensionContext) {
 
     const providables = container.getAll<IProvidable>('IProvidable');
     bindProviders(context, configuration, providables);
+
+    telemetry.captureEvent('Extension Started');
 }
 
 function bindCommands(context: ExtensionContext, commmandables: Array<ICommandable>) {
