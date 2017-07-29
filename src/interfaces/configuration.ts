@@ -6,4 +6,10 @@ export interface IConfiguration {
     readonly repetitionElementSeparator: string;
     readonly segmentSeparator: string;
     readonly ravenDsn: string;
+    readonly piwikSiteId: number;
+    readonly piwikUrl: string;
+    readonly devMode: boolean;
+    readonly vsCodeMachineId: string;
+    readonly vscodeLanguage: string;
+    readonly vsCodeVersion: string;
 }
