@@ -38,7 +38,7 @@ export class Configuration implements IConfiguration {
     }
     public get devMode(): boolean {
         // https://github.com/Microsoft/vscode/issues/10272
-        return env.machineId == 'someValue.machineId';
+        return this.vsCodeMachineId == 'someValue.machineId';
     }
 
     public get telemetryDisabled(): boolean {
