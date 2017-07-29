@@ -2,6 +2,11 @@
 
 All notable changes to the "edi-x12-support" extension will be documented in this file.
 
+## [0.10.2]
+### Added
+- Metrics reporting telemetry.
+- Ability to disable all telemetry via `edi-x12.telemetry.disabled`.
+
 ## [0.10.1]
 ### Added
 - Error reporting telemetry.
