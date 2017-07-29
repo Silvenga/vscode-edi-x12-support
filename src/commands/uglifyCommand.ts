@@ -1,6 +1,7 @@
 import { injectable } from 'inversify';
 import { Range, window } from 'vscode';
 
+import { logExceptions } from '../decorators/logExceptions';
 import { Parser } from '../parser';
 import { ICommandable } from './../interfaces/commandable';
 
@@ -14,6 +15,7 @@ export class UglifyCommand implements ICommandable {
         this._parser = parser;
     }
 
+    @logExceptions
     // tslint:disable-next-line:no-any
     public command(...args: Array<any>) {
         let document = window.activeTextEditor.document.getText();

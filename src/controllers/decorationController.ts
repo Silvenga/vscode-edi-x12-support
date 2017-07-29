@@ -9,6 +9,7 @@ import {
     workspace,
 } from 'vscode';
 
+import { logExceptions } from '../decorators/logExceptions';
 import { Parser } from '../parser';
 import { IConfiguration } from './../interfaces/configuration';
 import { IDisposable } from './../interfaces/disposable';
@@ -34,6 +35,7 @@ export class DecorationController implements IDisposable {
         workspace.onDidChangeTextDocument((params) => this.onDidChangeTextDocument(window.activeTextEditor, params.document));
     }
 
+    @logExceptions
     private onDidChangeActiveTextEditor(textEditor: TextEditor) {
 
         if (textEditor == null) {
@@ -43,6 +45,7 @@ export class DecorationController implements IDisposable {
         this.onDidChangeTextDocument(textEditor, textEditor.document);
     }
 
+    @logExceptions
     private onDidChangeTextDocument(editor: TextEditor, document: TextDocument) {
         if (document.languageId === this._configuration.languageId && this._decorations != null) {
             let result = this._parser.parseHeader(document.getText());

@@ -1,6 +1,7 @@
 import { inject, injectable } from 'inversify';
 import { StatusBarAlignment, StatusBarItem, TextDocument, TextEditor, window, workspace } from 'vscode';
 
+import { logExceptions } from '../decorators/logExceptions';
 import { Parser } from '../parser';
 import { IConfiguration } from './../interfaces/configuration';
 import { IDisposable } from './../interfaces/disposable';
@@ -32,6 +33,7 @@ export class EditorController implements IDisposable {
         this._statusBarItem.color = hasSuccess ? null : '#FFEB3B';
     }
 
+    @logExceptions
     private onDidChangeActiveTextEditor(textEditor: TextEditor) {
 
         if (textEditor != null && textEditor.document.languageId === this._configuration.languageId) {
@@ -47,6 +49,7 @@ export class EditorController implements IDisposable {
         this.onDidChangeTextDocument(textEditor.document);
     }
 
+    @logExceptions
     private onDidChangeTextDocument(document: TextDocument) {
         if (document.languageId === this._configuration.languageId) {
             let result = this._parser.parseHeader(document.getText());

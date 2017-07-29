@@ -1,6 +1,7 @@
 import { injectable } from 'inversify';
 import { Range, window } from 'vscode';
 
+import { logExceptions } from '../decorators/logExceptions';
 import { EdiSegment, Parser } from '../parser';
 import { ICommandable } from './../interfaces/commandable';
 import { EdiDocumentConfiguration } from './../parser';
@@ -16,6 +17,7 @@ export class ConvertSeparatorsCommand implements ICommandable {
         this._parser = parser;
     }
 
+    @logExceptions
     // tslint:disable-next-line:no-any
     public async command(...args: Array<any>) {
         let document = window.activeTextEditor.document.getText();

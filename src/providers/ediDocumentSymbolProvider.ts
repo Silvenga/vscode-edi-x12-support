@@ -10,6 +10,7 @@ import {
 } from 'vscode';
 
 import { EditorController } from '../controllers/editorController';
+import { logExceptions } from '../decorators/logExceptions';
 import { ElementType, Parser } from '../parser';
 import { IDisposable } from './../interfaces/disposable';
 import { IProvidable } from './../interfaces/providable';
@@ -26,6 +27,7 @@ export class EdiDocumentSymbolProvider implements DocumentSymbolProvider, IProvi
         this._parser = parser;
     }
 
+    @logExceptions
     public async provideDocumentSymbols(document: TextDocument, token: CancellationToken): Promise<Array<SymbolInformation>> {
 
         let text = document.getText();

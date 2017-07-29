@@ -1,6 +1,7 @@
 import { injectable } from 'inversify';
 import { Position, QuickPickItem, Selection, window } from 'vscode';
 
+import { logExceptions } from '../decorators/logExceptions';
 import { EdiElement, EdiSegment, ElementType, Parser } from '../parser';
 import { ICommandable } from './../interfaces/commandable';
 
@@ -14,8 +15,10 @@ export class GotoCommand implements ICommandable {
         this._parser = parser;
     }
 
+    @logExceptions
     // tslint:disable-next-line:no-any
     public async command(...args: Array<any>) {
+
         let document = window.activeTextEditor.document;
 
         let text = document.getText();

@@ -5,4 +5,5 @@ export interface IConfiguration {
     readonly componentElementSeparator: string;
     readonly repetitionElementSeparator: string;
     readonly segmentSeparator: string;
+    readonly ravenDsn: string;
 }

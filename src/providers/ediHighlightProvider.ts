@@ -11,6 +11,7 @@ import {
 } from 'vscode';
 
 import { EditorController } from '../controllers/editorController';
+import { logExceptions } from '../decorators/logExceptions';
 import { IDisposable } from '../interfaces/disposable';
 import { Parser } from '../parser';
 import { IProvidable } from './../interfaces/providable';
@@ -26,6 +27,7 @@ export class EdiHighlightProvider implements DocumentHighlightProvider, IProvida
         this._parser = parser;
     }
 
+    @logExceptions
     public async provideDocumentHighlights(document: TextDocument, position: Position, token: CancellationToken): Promise<Array<DocumentHighlight>> {
 
         let text = document.getText();

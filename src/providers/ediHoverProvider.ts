@@ -2,6 +2,7 @@ import { injectable } from 'inversify';
 import { CancellationToken, Hover, HoverProvider, languages, Position, TextDocument } from 'vscode';
 
 import { EditorController } from '../controllers/editorController';
+import { logExceptions } from '../decorators/logExceptions';
 import { IDisposable } from '../interfaces/disposable';
 import { Parser } from '../parser';
 import { IProvidable } from './../interfaces/providable';
@@ -17,6 +18,7 @@ export class EdiHoverProvider implements HoverProvider, IProvidable {
         this._parser = parser;
     }
 
+    @logExceptions
     public async provideHover(document: TextDocument, position: Position, token: CancellationToken): Promise<Hover> {
 
         let text = document.getText();
