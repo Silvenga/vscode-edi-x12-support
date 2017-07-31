@@ -3,7 +3,6 @@
 typings/**
 out/test/**
 test/**
-src/**
 docs/*.*
 docs/images/*.gif
 docs/images/*.svg
