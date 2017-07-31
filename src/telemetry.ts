@@ -19,7 +19,12 @@ export class Telemetry {
     public install() {
         this._disabled = this._configuration.telemetryDisabled;
 
-        this._ravenStatic = Raven.config(this._configuration.ravenDsn);
+        this._ravenStatic = Raven.config(this._configuration.ravenDsn, {
+            release: this._configuration.extensionVersion,
+            tags: {
+                vsCodeVersion: this._configuration.vsCodeVersion
+            }
+        });
         this._piwikTracker = new PiwikTracker(this._configuration.piwikSiteId, this._configuration.piwikUrl);
     }
 

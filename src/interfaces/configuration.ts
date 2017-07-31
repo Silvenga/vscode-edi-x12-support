@@ -13,4 +13,5 @@ export interface IConfiguration {
     readonly vscodeLanguage: string;
     readonly vsCodeVersion: string;
     readonly telemetryDisabled: boolean;
+    readonly extensionVersion: string;
 }
