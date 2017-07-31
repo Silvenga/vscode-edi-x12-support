@@ -28,6 +28,10 @@ export class EdiHoverProvider implements HoverProvider, IProvidable {
         let realPosition = document.offsetAt(new Position(position.line, position.character));
         let selectedSegment = segments.find(x => realPosition >= x.startIndex && realPosition <= x.endIndex);
 
+        if (selectedSegment == null) {
+            return null;
+        }
+
         let selectedElementIndex = selectedSegment.elements.findIndex(x => realPosition >= x.startIndex && realPosition <= x.endIndex);
 
         if (selectedElementIndex != -1) {
