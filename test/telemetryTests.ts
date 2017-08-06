@@ -1,6 +1,6 @@
 import './index';
 
-import test from 'ava';
+import * as ava from 'ava';
 import { expect } from 'chai';
 import * as Crypto from 'crypto';
 import * as faker from 'faker';
@@ -12,20 +12,36 @@ import { Telemetry } from '../src/telemetry';
 import { IConfiguration } from './../src/interfaces/configuration';
 import { IPiwikTrackOptions } from './Fixtures/piwikTrackOptions';
 
-const configuration = td.object('IConfiguration') as IConfiguration;
-configuration.telemetryDisabled = false;
-configuration.vsCodeMachineId = 'vsCodeMachineId';
-configuration.vscodeLanguage = 'vscodeLanguage';
-configuration.vsCodeVersion = 'vsCodeVersion';
-configuration.extensionVersion = 'extensionVersion';
+function contextualize<T>(getContext: () => T): ava.RegisterContextual<T> {
+    ava.test.beforeEach(t => {
+        Object.assign(t.context, getContext());
+    });
 
-const ravenMock = <Raven.RavenStatic>td.object('Raven');
-const trackerMock = <PiwikTracker>td.object('PiwikTracker');
+    return ava.test;
+}
+
+const test = contextualize(() => ({
+    ravenMock: <Raven.RavenStatic>null,
+    trackerMock: <PiwikTracker>null,
+    configuration: <IConfiguration>null
+}));
+
+test.beforeEach(t => {
+    t.context.ravenMock = td.object('Raven');
+    t.context.trackerMock = td.object('PiwikTracker');
+    const configuration = td.object('IConfiguration') as IConfiguration;
+    configuration.telemetryDisabled = false;
+    configuration.vsCodeMachineId = 'vsCodeMachineId';
+    configuration.vscodeLanguage = 'vscodeLanguage';
+    configuration.vsCodeVersion = 'vsCodeVersion';
+    configuration.extensionVersion = 'extensionVersion';
+    t.context.configuration = configuration;
+});
 
 test('Capture event should specify action_name.', t => {
 
-    const telemtry = new Telemetry(configuration);
-    telemtry.install(ravenMock, trackerMock, true);
+    const telemtry = new Telemetry(t.context.configuration);
+    telemtry.install(t.context.ravenMock, t.context.trackerMock, true);
 
     const action = faker.lorem.sentence();
 
@@ -33,7 +49,7 @@ test('Capture event should specify action_name.', t => {
     telemtry.captureEvent(action);
 
     // Assert
-    td.verify(trackerMock.track(td.matchers.argThat((x: IPiwikTrackOptions) => {
+    td.verify(t.context.trackerMock.track(td.matchers.argThat((x: IPiwikTrackOptions) => {
         return x.action_name == action;
     })));
     t.pass();
@@ -41,14 +57,14 @@ test('Capture event should specify action_name.', t => {
 
 test('Capture event should specify lang.', t => {
 
-    const telemtry = new Telemetry(configuration);
-    telemtry.install(ravenMock, trackerMock, true);
+    const telemtry = new Telemetry(t.context.configuration);
+    telemtry.install(t.context.ravenMock, t.context.trackerMock, true);
 
     // // Act
     telemtry.captureEvent(faker.lorem.sentence());
 
     // Assert
-    td.verify(trackerMock.track(td.matchers.argThat((x: IPiwikTrackOptions) => {
+    td.verify(t.context.trackerMock.track(td.matchers.argThat((x: IPiwikTrackOptions) => {
         return x.lang == 'vscodeLanguage';
     })));
     t.pass();
@@ -56,14 +72,14 @@ test('Capture event should specify lang.', t => {
 
 test('Capture event should specify uid hashed.', t => {
 
-    const telemtry = new Telemetry(configuration);
-    telemtry.install(ravenMock, trackerMock, true);
+    const telemtry = new Telemetry(t.context.configuration);
+    telemtry.install(t.context.ravenMock, t.context.trackerMock, true);
 
     // // Act
     telemtry.captureEvent(faker.lorem.sentence());
 
     // Assert
-    td.verify(trackerMock.track(td.matchers.argThat((x: IPiwikTrackOptions) => {
+    td.verify(t.context.trackerMock.track(td.matchers.argThat((x: IPiwikTrackOptions) => {
         return x.uid == hashData('vsCodeMachineId');
     })));
     t.pass();
@@ -71,8 +87,8 @@ test('Capture event should specify uid hashed.', t => {
 
 test('Capture event should hash file path.', t => {
 
-    const telemtry = new Telemetry(configuration);
-    telemtry.install(ravenMock, trackerMock, true);
+    const telemtry = new Telemetry(t.context.configuration);
+    telemtry.install(t.context.ravenMock, t.context.trackerMock, true);
 
     const action = faker.lorem.sentence();
     const filePath = faker.lorem.sentence();
@@ -81,7 +97,7 @@ test('Capture event should hash file path.', t => {
     telemtry.captureEvent(action, filePath);
 
     // Assert
-    td.verify(trackerMock.track(td.matchers.argThat((x: IPiwikTrackOptions) => {
+    td.verify(t.context.trackerMock.track(td.matchers.argThat((x: IPiwikTrackOptions) => {
         return x.url.indexOf('&filePath=' + hashData(filePath)) != -1 && x.url.indexOf(filePath) == -1;
     })));
     t.pass();
@@ -89,8 +105,8 @@ test('Capture event should hash file path.', t => {
 
 test('Action count should increase every capture.', t => {
 
-    const telemtry = new Telemetry(configuration);
-    telemtry.install(ravenMock, trackerMock, true);
+    const telemtry = new Telemetry(t.context.configuration);
+    telemtry.install(t.context.ravenMock, t.context.trackerMock, true);
 
     const action = faker.lorem.sentence();
     const filePath = faker.lorem.sentence();
@@ -100,10 +116,10 @@ test('Action count should increase every capture.', t => {
     telemtry.captureEvent(action, filePath);
 
     // Assert
-    td.verify(trackerMock.track(td.matchers.argThat((x: IPiwikTrackOptions) => {
+    td.verify(t.context.trackerMock.track(td.matchers.argThat((x: IPiwikTrackOptions) => {
         return x._idvc == '1';
     })));
-    td.verify(trackerMock.track(td.matchers.argThat((x: IPiwikTrackOptions) => {
+    td.verify(t.context.trackerMock.track(td.matchers.argThat((x: IPiwikTrackOptions) => {
         return x._idvc == '2';
     })));
     t.pass();
@@ -111,10 +127,10 @@ test('Action count should increase every capture.', t => {
 
 test('When capturing event throws and throw is enabled, then propagate up the stack.', t => {
 
-    const telemtry = new Telemetry(configuration);
-    telemtry.install(ravenMock, trackerMock, true);
+    const telemtry = new Telemetry(t.context.configuration);
+    telemtry.install(t.context.ravenMock, t.context.trackerMock, true);
 
-    td.when(trackerMock.track(td.matchers.anything())).thenThrow(new Error());
+    td.when(t.context.trackerMock.track(td.matchers.anything())).thenThrow(new Error());
 
     // // Act
     let action = () => telemtry.captureEvent(faker.lorem.sentence());
@@ -126,10 +142,10 @@ test('When capturing event throws and throw is enabled, then propagate up the st
 
 test('When capturing event throws and throw is not enabled, then do not propagate up the stack.', t => {
 
-    const telemtry = new Telemetry(configuration);
-    telemtry.install(ravenMock, trackerMock, false);
+    const telemtry = new Telemetry(t.context.configuration);
+    telemtry.install(t.context.ravenMock, t.context.trackerMock, false);
 
-    td.when(trackerMock.track(td.matchers.anything())).thenThrow(new Error());
+    td.when(t.context.trackerMock.track(td.matchers.anything())).thenThrow(new Error());
 
     // // Act
     let action = () => telemtry.captureEvent(faker.lorem.sentence());
@@ -141,17 +157,17 @@ test('When capturing event throws and throw is not enabled, then do not propagat
 
 test('When capturing event throws, capture exception.', t => {
 
-    const telemtry = new Telemetry(configuration);
-    telemtry.install(ravenMock, trackerMock, false);
+    const telemtry = new Telemetry(t.context.configuration);
+    telemtry.install(t.context.ravenMock, t.context.trackerMock, false);
 
-    td.when(trackerMock.track(td.matchers.anything())).thenThrow(new Error());
+    td.when(t.context.trackerMock.track(td.matchers.anything())).thenThrow(new Error());
 
     // // Act
     let action = () => telemtry.captureEvent(faker.lorem.sentence());
 
     // Assert
     expect(action).to.not.throw();
-    td.verify(ravenMock.captureException(td.matchers.anything()));
+    td.verify(t.context.ravenMock.captureException(td.matchers.anything()));
     t.pass();
 });
 

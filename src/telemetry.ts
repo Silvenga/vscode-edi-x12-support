@@ -46,7 +46,6 @@ export class Telemetry {
         if (this._disabled) {
             return;
         }
-        // return Promise.resolve().then(() => {
 
         try {
             let query = new Array<{ key: string, value: string }>();

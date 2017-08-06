@@ -5,6 +5,7 @@ import { logExceptions } from '../decorators/logExceptions';
 import { Parser } from '../parser';
 import { IConfiguration } from './../interfaces/configuration';
 import { IDisposable } from './../interfaces/disposable';
+import { Telemetry } from './../telemetry';
 
 @injectable()
 export class EditorController implements IDisposable {
@@ -12,11 +13,13 @@ export class EditorController implements IDisposable {
     private _parser: Parser;
     private _statusBarItem: StatusBarItem;
     private _configuration: IConfiguration;
+    private _telemetry: Telemetry;
 
-    public constructor(parser: Parser, @inject('IConfiguration') configuration: IConfiguration) {
+    public constructor(parser: Parser, @inject('IConfiguration') configuration: IConfiguration, telemetry: Telemetry) {
 
         this._parser = parser;
         this._configuration = configuration;
+        this._telemetry = telemetry;
 
         // Prepare messing
         this._statusBarItem = this.createStatusBar();
@@ -64,6 +67,8 @@ export class EditorController implements IDisposable {
     private documentActive(textEditor: TextEditor) {
         console.log(`EDI Doc - ${textEditor.document.fileName}`);
         this._statusBarItem.show();
+
+        this._telemetry.captureEvent('Document Active', textEditor.document.fileName);
     }
 
     private documentInactive(textEditor: TextEditor) {
