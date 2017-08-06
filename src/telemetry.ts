@@ -1,3 +1,4 @@
+import * as Crypto from 'crypto';
 import { inject, injectable } from 'inversify';
 import PiwikTracker = require('piwik-tracker');
 import * as Raven from 'raven';
@@ -12,20 +13,22 @@ export class Telemetry {
     private _piwikTracker: PiwikTracker;
     private _disabled: boolean;
 
+    private _actionCount: number = 0;
+
     public constructor( @inject('IConfiguration') configuration: IConfiguration) {
         this._configuration = configuration;
     }
 
-    public install() {
+    public install(ravenOverride: Raven.RavenStatic = null, piwikTrackerOverride: PiwikTracker = null) {
         this._disabled = this._configuration.telemetryDisabled;
 
-        this._ravenStatic = Raven.config(this._configuration.ravenDsn, {
+        this._ravenStatic = ravenOverride != null ? ravenOverride : Raven.config(this._configuration.ravenDsn, {
             release: this._configuration.extensionVersion,
             tags: {
                 vsCodeVersion: this._configuration.vsCodeVersion
             }
         });
-        this._piwikTracker = new PiwikTracker(this._configuration.piwikSiteId, this._configuration.piwikUrl);
+        this._piwikTracker = piwikTrackerOverride != null ? piwikTrackerOverride : new PiwikTracker(this._configuration.piwikSiteId, this._configuration.piwikUrl);
     }
 
     // tslint:disable-next-line:no-any
@@ -37,23 +40,54 @@ export class Telemetry {
         this._ravenStatic.captureException(error);
     }
 
-    public captureEvent(action: string): void {
+    public captureEvent(action: string, filePath: string = null): Promise<void> {
         if (this._disabled) {
             return;
         }
-        Promise.resolve().then(() => {
+        // return Promise.resolve().then(() => {
 
-            this._piwikTracker.track({
-                url: `https://vscode.silvenga.com/edi-support?action=${encodeURIComponent(action)}`,
-                action_name: action,
-                ua: `VSCode v${this._configuration.vsCodeVersion}`,
-                uid: this._configuration.vsCodeMachineId,
-                lang: this._configuration.vscodeLanguage
-            });
-            console.log(`Captured event ${action}.`);
+        let query = new Array<{ key: string, value: string }>();
 
-        }).catch((error) => {
-            this.captureException(error);
+        query.push({
+            key: 'action',
+            value: encodeURIComponent(action)
         });
+
+        if (filePath != null) {
+            query.push({
+                key: 'filePath',
+                value: this.hashData(filePath)
+            });
+        }
+
+        let count = ++this._actionCount;
+
+        let queryString = query.map((i) => `${i.key}=${i.value}`).join('&');
+
+        console.log(queryString);
+
+        this._piwikTracker.track({
+            url: `https://vscode.silvenga.com/edi-support?${queryString}`,
+            action_name: action,
+            ua: `VSCode v${this._configuration.vsCodeVersion} - Extension v${this._configuration.extensionVersion}`,
+            uid: this.hashData(this._configuration.vsCodeMachineId),
+            lang: this._configuration.vscodeLanguage,
+            _idvc: count.toString(),
+            rand: new Date().valueOf().toString()
+        });
+        console.log(`Captured event ${action}.`);
+
+        // }).catch((error) => {
+        //     this.captureException(error);
+        // });
+    }
+
+    private hashData(data: {}): string {
+        let json: string;
+        if (data == null || (json = JSON.stringify(data)) == null) {
+            return null;
+        }
+
+        return Crypto.createHash('md5').update(json).digest('hex');
     }
 }
