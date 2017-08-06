@@ -12,6 +12,7 @@ export class Telemetry {
     private _configuration: IConfiguration;
     private _piwikTracker: PiwikTracker;
     private _disabled: boolean;
+    private _throwErrors: boolean;
 
     private _actionCount: number = 0;
 
@@ -19,8 +20,9 @@ export class Telemetry {
         this._configuration = configuration;
     }
 
-    public install(ravenOverride: Raven.RavenStatic = null, piwikTrackerOverride: PiwikTracker = null) {
+    public install(ravenOverride: Raven.RavenStatic = null, piwikTrackerOverride: PiwikTracker = null, throwErrors: boolean = false) {
         this._disabled = this._configuration.telemetryDisabled;
+        this._throwErrors = throwErrors;
 
         this._ravenStatic = ravenOverride != null ? ravenOverride : Raven.config(this._configuration.ravenDsn, {
             release: this._configuration.extensionVersion,
