@@ -48,38 +48,41 @@ export class Telemetry {
         }
         // return Promise.resolve().then(() => {
 
-        let query = new Array<{ key: string, value: string }>();
+        try {
+            let query = new Array<{ key: string, value: string }>();
 
-        query.push({
-            key: 'action',
-            value: encodeURIComponent(action)
-        });
-
-        if (filePath != null) {
             query.push({
-                key: 'filePath',
-                value: this.hashData(filePath)
+                key: 'action',
+                value: encodeURIComponent(action)
             });
+
+            if (filePath != null) {
+                query.push({
+                    key: 'filePath',
+                    value: this.hashData(filePath)
+                });
+            }
+
+            let count = ++this._actionCount;
+
+            let queryString = query.map((i) => `${i.key}=${i.value}`).join('&');
+
+            this._piwikTracker.track({
+                url: `https://vscode.silvenga.com/edi-support?${queryString}`,
+                action_name: action,
+                ua: `VSCode v${this._configuration.vsCodeVersion} - Extension v${this._configuration.extensionVersion}`,
+                uid: this.hashData(this._configuration.vsCodeMachineId),
+                lang: this._configuration.vscodeLanguage,
+                _idvc: count.toString(),
+                rand: new Date().valueOf().toString()
+            });
+            console.log(`Captured event ${action}.`);
+        } catch (error) {
+            this.captureException(error);
+            if (this._throwErrors) {
+                throw error;
+            }
         }
-
-        let count = ++this._actionCount;
-
-        let queryString = query.map((i) => `${i.key}=${i.value}`).join('&');
-
-        this._piwikTracker.track({
-            url: `https://vscode.silvenga.com/edi-support?${queryString}`,
-            action_name: action,
-            ua: `VSCode v${this._configuration.vsCodeVersion} - Extension v${this._configuration.extensionVersion}`,
-            uid: this.hashData(this._configuration.vsCodeMachineId),
-            lang: this._configuration.vscodeLanguage,
-            _idvc: count.toString(),
-            rand: new Date().valueOf().toString()
-        });
-        console.log(`Captured event ${action}.`);
-
-        // }).catch((error) => {
-        //     this.captureException(error);
-        // });
     }
 
     private hashData(data: {}): string {

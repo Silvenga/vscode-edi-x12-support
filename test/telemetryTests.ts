@@ -1,9 +1,11 @@
 import './index';
 
 import test from 'ava';
+import { expect } from 'chai';
 import * as Crypto from 'crypto';
 import * as faker from 'faker';
 import PiwikTracker = require('piwik-tracker');
+import * as Raven from 'raven';
 import * as td from 'testdouble';
 
 import { Telemetry } from '../src/telemetry';
@@ -17,7 +19,7 @@ configuration.vscodeLanguage = 'vscodeLanguage';
 configuration.vsCodeVersion = 'vsCodeVersion';
 configuration.extensionVersion = 'extensionVersion';
 
-const ravenMock = <PiwikTracker>td.object('Raven');
+const ravenMock = <Raven.RavenStatic>td.object('Raven');
 const trackerMock = <PiwikTracker>td.object('PiwikTracker');
 
 test('Capture event should specify action_name.', t => {
@@ -104,6 +106,52 @@ test('Action count should increase every capture.', t => {
     td.verify(trackerMock.track(td.matchers.argThat((x: IPiwikTrackOptions) => {
         return x._idvc == '2';
     })));
+    t.pass();
+});
+
+test('When capturing event throws and throw is enabled, then propagate up the stack.', t => {
+
+    const telemtry = new Telemetry(configuration);
+    telemtry.install(ravenMock, trackerMock, true);
+
+    td.when(trackerMock.track(td.matchers.anything())).thenThrow(new Error());
+
+    // // Act
+    let action = () => telemtry.captureEvent(faker.lorem.sentence());
+
+    // Assert
+    expect(action).to.throw();
+    t.pass();
+});
+
+test('When capturing event throws and throw is not enabled, then do not propagate up the stack.', t => {
+
+    const telemtry = new Telemetry(configuration);
+    telemtry.install(ravenMock, trackerMock, false);
+
+    td.when(trackerMock.track(td.matchers.anything())).thenThrow(new Error());
+
+    // // Act
+    let action = () => telemtry.captureEvent(faker.lorem.sentence());
+
+    // Assert
+    expect(action).to.not.throw();
+    t.pass();
+});
+
+test('When capturing event throws, capture exception.', t => {
+
+    const telemtry = new Telemetry(configuration);
+    telemtry.install(ravenMock, trackerMock, false);
+
+    td.when(trackerMock.track(td.matchers.anything())).thenThrow(new Error());
+
+    // // Act
+    let action = () => telemtry.captureEvent(faker.lorem.sentence());
+
+    // Assert
+    expect(action).to.not.throw();
+    td.verify(ravenMock.captureException(td.matchers.anything()));
     t.pass();
 });
 
