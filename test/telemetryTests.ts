@@ -15,15 +15,15 @@ configuration.vscodeLanguage = 'vscodeLanguage';
 configuration.vsCodeVersion = 'vsCodeVersion';
 configuration.extensionVersion = 'extensionVersion';
 
+const ravenMock = <PiwikTracker>td.object('Raven');
+const trackerMock = <PiwikTracker>td.object('PiwikTracker');
+
 test('Capture event should specify action_name.', t => {
-
-    const ravenMock = <PiwikTracker>td.object('Raven');
-    const trackerMock = <PiwikTracker>td.object('PiwikTracker');
-
-    const action = faker.lorem.word();
 
     const telemtry = new Telemetry(configuration);
     telemtry.install(ravenMock, trackerMock);
+
+    const action = faker.lorem.word();
 
     // // Act
     telemtry.captureEvent(action);
@@ -38,14 +38,11 @@ test('Capture event should specify action_name.', t => {
 
 test('Capture event should hash file path.', t => {
 
-    const ravenMock = <PiwikTracker>td.object('Raven');
-    const trackerMock = <PiwikTracker>td.object('PiwikTracker');
+    const telemtry = new Telemetry(configuration);
+    telemtry.install(ravenMock, trackerMock);
 
     const action = faker.lorem.word();
     const filePath = faker.lorem.word();
-
-    const telemtry = new Telemetry(configuration);
-    telemtry.install(ravenMock, trackerMock);
 
     // // Act
     telemtry.captureEvent(action, filePath);
