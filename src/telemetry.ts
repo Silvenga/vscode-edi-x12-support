@@ -40,7 +40,7 @@ export class Telemetry {
         this._ravenStatic.captureException(error);
     }
 
-    public captureEvent(action: string, filePath: string = null): Promise<void> {
+    public captureEvent(action: string, filePath: string = null): void {
         if (this._disabled) {
             return;
         }
@@ -63,8 +63,6 @@ export class Telemetry {
         let count = ++this._actionCount;
 
         let queryString = query.map((i) => `${i.key}=${i.value}`).join('&');
-
-        console.log(queryString);
 
         this._piwikTracker.track({
             url: `https://vscode.silvenga.com/edi-support?${queryString}`,
