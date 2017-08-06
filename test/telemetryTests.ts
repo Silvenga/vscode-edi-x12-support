@@ -7,6 +7,7 @@ import * as td from 'testdouble';
 
 import { Telemetry } from '../src/telemetry';
 import { IConfiguration } from './../src/interfaces/configuration';
+import { IPiwikTrackOptions } from './Fixtures/piwikTrackOptions';
 
 const configuration = td.object('IConfiguration') as IConfiguration;
 configuration.telemetryDisabled = false;
@@ -29,8 +30,7 @@ test('Capture event should specify action_name.', t => {
     telemtry.captureEvent(action);
 
     // Assert
-    // tslint:disable-next-line:no-any
-    td.verify(trackerMock.track(td.matchers.argThat((x: any) => {
+    td.verify(trackerMock.track(td.matchers.argThat((x: IPiwikTrackOptions) => {
         return x.action_name == action;
     })));
     t.pass();
@@ -48,9 +48,30 @@ test('Capture event should hash file path.', t => {
     telemtry.captureEvent(action, filePath);
 
     // Assert
-    // tslint:disable-next-line:no-any
-    td.verify(trackerMock.track(td.matchers.argThat((x: any) => {
+    td.verify(trackerMock.track(td.matchers.argThat((x: IPiwikTrackOptions) => {
         return x.url.indexOf('&filePath=') != -1 && x.url.indexOf(filePath) == -1;
+    })));
+    t.pass();
+});
+
+test('Action count should increase every capture.', t => {
+
+    const telemtry = new Telemetry(configuration);
+    telemtry.install(ravenMock, trackerMock);
+
+    const action = faker.lorem.word();
+    const filePath = faker.lorem.word();
+
+    // // Act
+    telemtry.captureEvent(action, filePath);
+    telemtry.captureEvent(action, filePath);
+
+    // Assert
+    td.verify(trackerMock.track(td.matchers.argThat((x: IPiwikTrackOptions) => {
+        return x._idvc == '1';
+    })));
+    td.verify(trackerMock.track(td.matchers.argThat((x: IPiwikTrackOptions) => {
+        return x._idvc == '2';
     })));
     t.pass();
 });
