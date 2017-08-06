@@ -163,11 +163,13 @@
     },
     "devDependencies": {
         "@types/chai": "^4.0.1",
+        "@types/faker": "^4.1.0",
         "@types/mocha": "^2.2.41",
         "@types/node": "^8.0.10",
         "@types/piwik-tracker": "^0.1.28",
         "ava": "^0.20.0",
         "chai": "^4.0.2",
+        "faker": "^4.1.0",
         "mocha": "^3.4.2",
         "tslint": "^5.5.0",
         "typescript": "^2.4.1",
@@ -178,6 +180,7 @@
         "inversify": "^4.2.0",
         "piwik-tracker": "^1.1.1",
         "raven": "^2.1.1",
-        "reflect-metadata": "^0.1.10"
+        "reflect-metadata": "^0.1.10",
+        "testdouble": "^3.2.3"
     }
 }
