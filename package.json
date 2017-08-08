@@ -162,25 +162,25 @@
         ]
     },
     "devDependencies": {
-        "@types/chai": "^4.0.1",
+        "@types/chai": "^4.0.2",
         "@types/faker": "^4.1.0",
         "@types/mocha": "^2.2.41",
-        "@types/node": "^8.0.10",
+        "@types/node": "^8.0.19",
         "@types/piwik-tracker": "^0.1.28",
-        "ava": "^0.20.0",
-        "chai": "^4.0.2",
+        "ava": "^0.21.0",
+        "chai": "^4.1.1",
         "faker": "^4.1.0",
-        "mocha": "^3.4.2",
-        "tslint": "^5.5.0",
-        "typescript": "^2.4.1",
-        "vsce": "^1.29.0",
-        "vscode": "^1.1.2"
+        "mocha": "^3.5.0",
+        "tslint": "^5.6.0",
+        "typescript": "^2.4.2",
+        "vsce": "^1.30.0",
+        "vscode": "^1.1.4"
     },
     "dependencies": {
-        "inversify": "^4.2.0",
+        "inversify": "^4.3.0",
         "piwik-tracker": "^1.1.1",
         "raven": "^2.1.1",
         "reflect-metadata": "^0.1.10",
-        "testdouble": "^3.2.3"
+        "testdouble": "^3.2.4"
     }
 }
