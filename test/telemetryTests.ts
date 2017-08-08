@@ -40,13 +40,13 @@ test.beforeEach(t => {
 
 test('Capture event should specify action_name.', t => {
 
-    const telemtry = new Telemetry(t.context.configuration);
-    telemtry.install(t.context.ravenMock, t.context.trackerMock, true);
+    const telemetry = new Telemetry(t.context.configuration);
+    telemetry.install(t.context.ravenMock, t.context.trackerMock, true);
 
     const action = faker.lorem.sentence();
 
     // // Act
-    telemtry.captureEvent(action);
+    telemetry.captureEvent(action);
 
     // Assert
     td.verify(t.context.trackerMock.track(td.matchers.argThat((x: IPiwikTrackOptions) => {
@@ -57,11 +57,11 @@ test('Capture event should specify action_name.', t => {
 
 test('Capture event should specify lang.', t => {
 
-    const telemtry = new Telemetry(t.context.configuration);
-    telemtry.install(t.context.ravenMock, t.context.trackerMock, true);
+    const telemetry = new Telemetry(t.context.configuration);
+    telemetry.install(t.context.ravenMock, t.context.trackerMock, true);
 
     // // Act
-    telemtry.captureEvent(faker.lorem.sentence());
+    telemetry.captureEvent(faker.lorem.sentence());
 
     // Assert
     td.verify(t.context.trackerMock.track(td.matchers.argThat((x: IPiwikTrackOptions) => {
@@ -72,11 +72,11 @@ test('Capture event should specify lang.', t => {
 
 test('Capture event should specify uid hashed.', t => {
 
-    const telemtry = new Telemetry(t.context.configuration);
-    telemtry.install(t.context.ravenMock, t.context.trackerMock, true);
+    const telemetry = new Telemetry(t.context.configuration);
+    telemetry.install(t.context.ravenMock, t.context.trackerMock, true);
 
     // // Act
-    telemtry.captureEvent(faker.lorem.sentence());
+    telemetry.captureEvent(faker.lorem.sentence());
 
     // Assert
     td.verify(t.context.trackerMock.track(td.matchers.argThat((x: IPiwikTrackOptions) => {
@@ -87,14 +87,14 @@ test('Capture event should specify uid hashed.', t => {
 
 test('Capture event should hash file path.', t => {
 
-    const telemtry = new Telemetry(t.context.configuration);
-    telemtry.install(t.context.ravenMock, t.context.trackerMock, true);
+    const telemetry = new Telemetry(t.context.configuration);
+    telemetry.install(t.context.ravenMock, t.context.trackerMock, true);
 
     const action = faker.lorem.sentence();
     const filePath = faker.lorem.sentence();
 
     // // Act
-    telemtry.captureEvent(action, filePath);
+    telemetry.captureEvent(action, filePath);
 
     // Assert
     td.verify(t.context.trackerMock.track(td.matchers.argThat((x: IPiwikTrackOptions) => {
@@ -105,15 +105,15 @@ test('Capture event should hash file path.', t => {
 
 test('Action count should increase every capture.', t => {
 
-    const telemtry = new Telemetry(t.context.configuration);
-    telemtry.install(t.context.ravenMock, t.context.trackerMock, true);
+    const telemetry = new Telemetry(t.context.configuration);
+    telemetry.install(t.context.ravenMock, t.context.trackerMock, true);
 
     const action = faker.lorem.sentence();
     const filePath = faker.lorem.sentence();
 
     // // Act
-    telemtry.captureEvent(action, filePath);
-    telemtry.captureEvent(action, filePath);
+    telemetry.captureEvent(action, filePath);
+    telemetry.captureEvent(action, filePath);
 
     // Assert
     td.verify(t.context.trackerMock.track(td.matchers.argThat((x: IPiwikTrackOptions) => {
@@ -127,13 +127,13 @@ test('Action count should increase every capture.', t => {
 
 test('When capturing event throws and throw is enabled, then propagate up the stack.', t => {
 
-    const telemtry = new Telemetry(t.context.configuration);
-    telemtry.install(t.context.ravenMock, t.context.trackerMock, true);
+    const telemetry = new Telemetry(t.context.configuration);
+    telemetry.install(t.context.ravenMock, t.context.trackerMock, true);
 
     td.when(t.context.trackerMock.track(td.matchers.anything())).thenThrow(new Error());
 
     // // Act
-    let action = () => telemtry.captureEvent(faker.lorem.sentence());
+    let action = () => telemetry.captureEvent(faker.lorem.sentence());
 
     // Assert
     expect(action).to.throw();
@@ -142,13 +142,13 @@ test('When capturing event throws and throw is enabled, then propagate up the st
 
 test('When capturing event throws and throw is not enabled, then do not propagate up the stack.', t => {
 
-    const telemtry = new Telemetry(t.context.configuration);
-    telemtry.install(t.context.ravenMock, t.context.trackerMock, false);
+    const telemetry = new Telemetry(t.context.configuration);
+    telemetry.install(t.context.ravenMock, t.context.trackerMock, false);
 
     td.when(t.context.trackerMock.track(td.matchers.anything())).thenThrow(new Error());
 
     // // Act
-    let action = () => telemtry.captureEvent(faker.lorem.sentence());
+    let action = () => telemetry.captureEvent(faker.lorem.sentence());
 
     // Assert
     expect(action).to.not.throw();
@@ -157,13 +157,13 @@ test('When capturing event throws and throw is not enabled, then do not propagat
 
 test('When capturing event throws, capture exception.', t => {
 
-    const telemtry = new Telemetry(t.context.configuration);
-    telemtry.install(t.context.ravenMock, t.context.trackerMock, false);
+    const telemetry = new Telemetry(t.context.configuration);
+    telemetry.install(t.context.ravenMock, t.context.trackerMock, false);
 
     td.when(t.context.trackerMock.track(td.matchers.anything())).thenThrow(new Error());
 
     // // Act
-    let action = () => telemtry.captureEvent(faker.lorem.sentence());
+    let action = () => telemetry.captureEvent(faker.lorem.sentence());
 
     // Assert
     expect(action).to.not.throw();
