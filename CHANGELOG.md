@@ -2,6 +2,10 @@
 
 All notable changes to the "edi-x12-support" extension will be documented in this file.
 
+## [0.10.4]
+### Changed
+- Disable telemetry install completely when disabled.
+
 ## [0.10.3]
 ### Changed
 - Fixed Sentry reported bug - exception when no segments were found during hovering.
