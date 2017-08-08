@@ -45,7 +45,7 @@ test('Capture event should specify action_name.', t => {
 
     const action = faker.lorem.sentence();
 
-    // // Act
+    // Act
     telemetry.captureEvent(action);
 
     // Assert
@@ -60,7 +60,7 @@ test('Capture event should specify lang.', t => {
     const telemetry = new Telemetry(t.context.configuration);
     telemetry.install(t.context.ravenMock, t.context.trackerMock, true);
 
-    // // Act
+    // Act
     telemetry.captureEvent(faker.lorem.sentence());
 
     // Assert
@@ -75,7 +75,7 @@ test('Capture event should specify uid hashed.', t => {
     const telemetry = new Telemetry(t.context.configuration);
     telemetry.install(t.context.ravenMock, t.context.trackerMock, true);
 
-    // // Act
+    // Act
     telemetry.captureEvent(faker.lorem.sentence());
 
     // Assert
@@ -93,7 +93,7 @@ test('Capture event should hash file path.', t => {
     const action = faker.lorem.sentence();
     const filePath = faker.lorem.sentence();
 
-    // // Act
+    // Act
     telemetry.captureEvent(action, filePath);
 
     // Assert
@@ -111,7 +111,7 @@ test('Action count should increase every capture.', t => {
     const action = faker.lorem.sentence();
     const filePath = faker.lorem.sentence();
 
-    // // Act
+    // Act
     telemetry.captureEvent(action, filePath);
     telemetry.captureEvent(action, filePath);
 
@@ -132,7 +132,7 @@ test('When capturing event throws and throw is enabled, then propagate up the st
 
     td.when(t.context.trackerMock.track(td.matchers.anything())).thenThrow(new Error());
 
-    // // Act
+    // Act
     let action = () => telemetry.captureEvent(faker.lorem.sentence());
 
     // Assert
@@ -147,7 +147,7 @@ test('When capturing event throws and throw is not enabled, then do not propagat
 
     td.when(t.context.trackerMock.track(td.matchers.anything())).thenThrow(new Error());
 
-    // // Act
+    // Act
     let action = () => telemetry.captureEvent(faker.lorem.sentence());
 
     // Assert
@@ -162,12 +162,41 @@ test('When capturing event throws, capture exception.', t => {
 
     td.when(t.context.trackerMock.track(td.matchers.anything())).thenThrow(new Error());
 
-    // // Act
+    // Act
     let action = () => telemetry.captureEvent(faker.lorem.sentence());
 
     // Assert
     expect(action).to.not.throw();
     td.verify(t.context.ravenMock.captureException(td.matchers.anything()));
+    t.pass();
+});
+
+test('When capturing is disabled, dont install metrics.', t => {
+
+    t.context.configuration.telemetryDisabled = true;
+
+    const telemetry = new Telemetry(t.context.configuration);
+
+    // Act
+    let action = () => telemetry.install(null, null, true);
+
+    // Assert
+    expect(action).to.not.throw();
+    t.pass();
+});
+
+test('When capturing is disabled, dont send metrics.', t => {
+
+    t.context.configuration.telemetryDisabled = true;
+
+    const telemetry = new Telemetry(t.context.configuration);
+    telemetry.install(t.context.ravenMock, t.context.trackerMock, false);
+
+    // Act
+    telemetry.captureEvent(faker.lorem.word());
+
+    // Assert
+    td.verify(t.context.trackerMock.track(td.matchers.anything()), { times: 0 });
     t.pass();
 });
 

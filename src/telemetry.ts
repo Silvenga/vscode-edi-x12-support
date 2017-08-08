@@ -24,13 +24,15 @@ export class Telemetry {
         this._disabled = this._configuration.telemetryDisabled;
         this._throwErrors = throwErrors;
 
-        this._ravenStatic = ravenOverride != null ? ravenOverride : Raven.config(this._configuration.ravenDsn, {
-            release: this._configuration.extensionVersion,
-            tags: {
-                vsCodeVersion: this._configuration.vsCodeVersion
-            }
-        });
-        this._piwikTracker = piwikTrackerOverride != null ? piwikTrackerOverride : new PiwikTracker(this._configuration.piwikSiteId, this._configuration.piwikUrl);
+        if (!this._disabled) {
+            this._ravenStatic = ravenOverride != null ? ravenOverride : Raven.config(this._configuration.ravenDsn, {
+                release: this._configuration.extensionVersion,
+                tags: {
+                    vsCodeVersion: this._configuration.vsCodeVersion
+                }
+            });
+            this._piwikTracker = piwikTrackerOverride != null ? piwikTrackerOverride : new PiwikTracker(this._configuration.piwikSiteId, this._configuration.piwikUrl);
+        }
     }
 
     // tslint:disable-next-line:no-any
