@@ -10,7 +10,7 @@ import * as td from 'testdouble';
 
 import { Telemetry } from '../src/telemetry';
 import { IConfiguration } from './../src/interfaces/configuration';
-import { IPiwikTrackOptions } from './Fixtures/piwikTrackOptions';
+import { IPiwikTrackOptions } from './helpers/piwikTrackOptions';
 
 function contextualize<T>(getContext: () => T): ava.RegisterContextual<T> {
     ava.test.beforeEach(t => {
