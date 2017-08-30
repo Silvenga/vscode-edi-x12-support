@@ -126,8 +126,9 @@ export class Parser {
             segmentStr,
             x => new EdiElement(ElementType.segmentId, x[0], startIndex + x.index, ''));
 
+        let wordCharacters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'.split('');
+
         let charSet = [
-            `\\w`,
             `\\(`,
             `\\)`,
             `'`,
@@ -160,9 +161,10 @@ export class Parser {
             `~`,
             `"`,
             `\\+`,
-        ].filter(x => {
-            return config.separators.indexOf(x.replace(/\\{1}/, '')) == -1; // Remove first \
-        });
+        ].concat(wordCharacters)
+            .filter(x => {
+                return config.separators.indexOf(x.replace(/\\{1}/, '')) == -1; // Remove first \
+            });
 
         let dataRegex = `[${charSet.join('')}]*`;
 

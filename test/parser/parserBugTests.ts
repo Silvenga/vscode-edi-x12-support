@@ -18,3 +18,29 @@ test('Can parse pipes', t => {
     expect(result[0].elements).to.have.lengthOf(4);
     t.pass();
 });
+
+test('Can parse word characters in header.', t => {
+
+    const input = 'ISAB00B          B00B          BZZB123456789012345BZZB123456789012346B080503B1705BUB00501B000010216B0BTBF~';
+    let parser = new Parser();
+
+    // Act
+    let result = parser.parseHeader(input);
+
+    // Assert
+    expect(result.isValid).to.be.true;
+    t.pass();
+});
+
+test('Can parse word characters as segment separater.', t => {
+
+    const input = 'ISAB00B          B00B          BZZB123456789012345BZZB123456789012346B080503B1705BUB00501B000010216B0BTBFH123';
+    let parser = new Parser();
+
+    // Act
+    let result = parser.parseHeader(input);
+
+    // Assert
+    expect(result.isValid).to.be.true;
+    t.pass();
+});
