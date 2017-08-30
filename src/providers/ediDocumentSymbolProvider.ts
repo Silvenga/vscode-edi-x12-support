@@ -35,6 +35,10 @@ export class EdiDocumentSymbolProvider implements DocumentSymbolProvider, IProvi
         let result = this._parser.parseHeader(text);
         let segments = this._parser.parseSegments(text, result.configuration);
 
+        if (segments.length == 0) {
+            return [];
+        }
+
         let segmentSymbols = segments
             .map<Array<SymbolInformation>>(segment => this.createSymbolsForSegment(segment, document))
             .reduce((a, b) => a.concat(b));
