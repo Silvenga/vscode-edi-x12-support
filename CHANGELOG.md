@@ -2,6 +2,11 @@
 
 All notable changes to the "edi-x12-support" extension will be documented in this file.
 
+## [0.10.5]
+### Changed
+- Fixed hidden exception when document is empty.
+- Added support for word characters to be used as separators.
+
 ## [0.10.4]
 ### Changed
 - Disable telemetry install completely when disabled.
