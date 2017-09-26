@@ -39,6 +39,6 @@ export class Configuration implements IConfiguration {
         return this.vsCodeMachineId == 'someValue.machineId';
     }
     public get telemetryDisabled(): boolean {
-        return workspaceConfiguration.get<boolean>('edi-x12.telemetry.disabled', false);
+        return workspaceConfiguration.get<boolean>('edi-x12.telemetry.disabled', false) || workspaceConfiguration.get<boolean>('telemetry.enableTelemetry', false);
     }
 }
