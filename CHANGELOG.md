@@ -2,6 +2,10 @@
 
 All notable changes to the "edi-x12-support" extension will be documented in this file.
 
+## [0.10.6]
+### Changed
+- Respect `telemetry.enableTelemetry`, resolves #2.
+
 ## [0.10.5]
 ### Changed
 - Fixed hidden exception when document is empty.
