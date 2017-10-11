@@ -2,6 +2,10 @@
 
 All notable changes to the "edi-x12-support" extension will be documented in this file.
 
+## [0.10.7]
+### Changed
+- Fixed incorrectly enabling telemetry when configured disabled. 
+
 ## [0.10.6]
 ### Changed
 - Respect `telemetry.enableTelemetry`, resolves #2.

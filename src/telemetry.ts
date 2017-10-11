@@ -32,6 +32,8 @@ export class Telemetry {
                 }
             });
             this._piwikTracker = piwikTrackerOverride != null ? piwikTrackerOverride : new PiwikTracker(this._configuration.piwikSiteId, this._configuration.piwikUrl);
+        } else {
+            console.log('Telemetry now disabled.');
         }
     }
 
