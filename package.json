@@ -43,7 +43,9 @@
                 ],
                 "extensions": [
                     ".edi",
-                    ".x12"
+                    ".x12",
+                    ".270",
+                    ".271"
                 ],
                 "configuration": "./language-configuration.json"
             }
