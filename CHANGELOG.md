@@ -2,6 +2,10 @@
 
 All notable changes to the "edi-x12-support" extension will be documented in this file.
 
+## [0.10.8]
+### Changed
+- Added language support for `.270` and `.271` files via #6. (Thanks @Polymetric!)
+
 ## [0.10.7]
 ### Changed
 - Fixed incorrectly enabling telemetry when configured disabled. 
