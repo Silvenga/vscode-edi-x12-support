@@ -6,7 +6,7 @@ import { IConfiguration } from './interfaces/configuration';
 export class Parser {
     private _configuration: IConfiguration;
 
-    public constructor( @inject('IConfiguration') configuration?: IConfiguration) {
+    public constructor(@inject('IConfiguration') configuration?: IConfiguration) {
         this._configuration = configuration;
     }
 
@@ -108,7 +108,8 @@ export class Parser {
             config = this.defaultConfiguration;
         }
 
-        let regex = new RegExp(`\\b([\\s\\S]*?)(${config.segmentSeparator})`, 'g');
+        let separater = this.escapeCharRegex(config.segmentSeparator);
+        let regex = new RegExp(`\\b([\\s\\S]*?)(${separater})`, 'g');
         let results = this.parseRegex(regex, document, x => this.parseSegment(x[0], x.index, x.index + x[0].length, x[2], config));
 
         return results;
