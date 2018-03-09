@@ -92,7 +92,7 @@ export class Telemetry {
 
             query.push({
                 key: 'actionCount',
-                value: '' + count
+                value: `${count}`
             });
             let queryObj = query.reduce((last, curr) => {
                 last[curr.key] = curr.value;
