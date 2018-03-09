@@ -16,7 +16,15 @@ export class Telemetry {
 
     private _actionCount: number = 0;
 
-    public constructor( @inject('IConfiguration') configuration: IConfiguration) {
+    public get machineIdHash() {
+        return this.hashData(this._configuration.vsCodeMachineId);
+    }
+
+    public get userAgent() {
+        return `VSCode v${this._configuration.vsCodeVersion} - Extension v${this._configuration.extensionVersion}`;
+    }
+
+    public constructor(@inject('IConfiguration') configuration: IConfiguration) {
         this._configuration = configuration;
     }
 
@@ -28,8 +36,12 @@ export class Telemetry {
             this._ravenStatic = ravenOverride != null ? ravenOverride : Raven.config(this._configuration.ravenDsn, {
                 release: this._configuration.extensionVersion,
                 tags: {
-                    vsCodeVersion: this._configuration.vsCodeVersion
-                }
+                    vsCodeVersion: this._configuration.vsCodeVersion,
+                    ua: this.userAgent
+                },
+                user: {
+                    id: this.machineIdHash
+                },
             });
             this._piwikTracker = piwikTrackerOverride != null ? piwikTrackerOverride : new PiwikTracker(this._configuration.piwikSiteId, this._configuration.piwikUrl);
         } else {
@@ -67,18 +79,30 @@ export class Telemetry {
             }
 
             let count = ++this._actionCount;
-
             let queryString = query.map((i) => `${i.key}=${i.value}`).join('&');
-
             this._piwikTracker.track({
                 url: `https://vscode.silvenga.com/edi-support?${queryString}`,
                 action_name: action,
-                ua: `VSCode v${this._configuration.vsCodeVersion} - Extension v${this._configuration.extensionVersion}`,
-                uid: this.hashData(this._configuration.vsCodeMachineId),
+                ua: this.userAgent,
+                uid: this.machineIdHash,
                 lang: this._configuration.vscodeLanguage,
                 _idvc: count.toString(),
                 rand: new Date().valueOf().toString()
             });
+
+            query.push({
+                key: 'actionCount',
+                value: '' + count
+            });
+            let queryObj = query.reduce((last, curr) => {
+                last[curr.key] = curr.value;
+                return last;
+            }, {});
+            this._ravenStatic.captureBreadcrumb({
+                message: action,
+                data: queryObj
+            });
+
             console.log(`Captured event ${action}.`);
         } catch (error) {
             this.captureException(error);
