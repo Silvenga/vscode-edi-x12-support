@@ -2,7 +2,7 @@
     "name": "edi-x12-support",
     "displayName": "Edi X12 Support",
     "description": "Provides basic support for the EDI X12/HIPAA format.",
-    "version": "0.10.8",
+    "version": "0.10.9",
     "publisher": "Silvenga",
     "author": {
         "email": "m+vscode@silvenga.com",

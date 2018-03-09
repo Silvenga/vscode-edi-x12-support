@@ -2,6 +2,12 @@
 
 All notable changes to the "edi-x12-support" extension will be documented in this file.
 
+## [0.10.9]
+### Fixed
+- Corrected failure when segment separator was a '*', resolves #7.
+### Changed
+- Upgraded packages.
+
 ## [0.10.8]
 ### Changed
 - Added language support for `.270` and `.271` files via #6. (Thanks @Polymetric!)
