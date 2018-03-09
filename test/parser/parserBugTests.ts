@@ -44,3 +44,17 @@ test('Can parse word characters as segment separater.', t => {
     expect(result.isValid).to.be.true;
     t.pass();
 });
+
+test('Can parse parse * as segment separators.', t => {
+
+    const input = 'ISA`00`          `00`          `ZZ`123456789012345`ZZ`123456789012346`080503`1705`>`00501`000010216`0`T`:*';
+    let parser = new Parser();
+
+    // Act
+    let result = parser.parseHeader(input);
+
+    // Assert
+    expect(result.isValid).to.be.true;
+    expect(result.configuration.segmentSeparator).to.be.eq('*');
+    t.pass();
+});
