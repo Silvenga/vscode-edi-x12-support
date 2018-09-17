@@ -14,6 +14,7 @@ import { EdiDocumentSymbolProvider } from './providers/ediDocumentSymbolProvider
 import { EdiHighlightProvider } from './providers/ediHighlightProvider';
 import { EdiHoverProvider } from './providers/ediHoverProvider';
 import { Telemetry } from './telemetry';
+import { EdiPrettifyProvider } from './providers/ediPrettifyProvider';
 
 export const container = new Container();
 
@@ -25,6 +26,7 @@ container.bind<EditorController>(EditorController).toSelf().inSingletonScope();
 
 container.bind<IProvidable>('IProvidable').to(EdiDocumentSymbolProvider).inSingletonScope();
 container.bind<IProvidable>('IProvidable').to(EdiHoverProvider).inSingletonScope();
+container.bind<IProvidable>('IProvidable').to(EdiPrettifyProvider).inSingletonScope();
 
 container.bind<Parser>(Parser).toSelf();
 
