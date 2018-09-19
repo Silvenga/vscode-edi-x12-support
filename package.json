@@ -23,7 +23,9 @@
         "url": "https://github.com/Silvenga/vscode-edi-x12-support.git"
     },
     "categories": [
-        "Languages"
+        "Programming Languages",
+        "Formatters",
+        "Other"
     ],
     "icon": "docs/images/icon-128x128.png",
     "activationEvents": [
