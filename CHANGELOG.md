@@ -2,6 +2,12 @@
 
 All notable changes to the "edi-x12-support" extension will be documented in this file.
 
+## [0.11.0]
+### Added
+- Added formatter API support via #9 (Thanks @chimeramvp!).
+### Changed
+- Updated categories.
+
 ## [0.10.9]
 ### Fixed
 - Corrected failure when segment separator was a '*', resolves #7.
