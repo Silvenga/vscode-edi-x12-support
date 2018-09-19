@@ -1,24 +1,21 @@
 import { injectable } from 'inversify';
 import { CancellationToken, FormattingOptions, TextEdit, languages, Range, window, TextDocument, DocumentFormattingEditProvider } from 'vscode';
 
-import { EditorController } from '../controllers/editorController';
 import { logExceptions } from '../decorators/logExceptions';
 import { IDisposable } from '../interfaces/disposable';
 import { Parser } from '../parser';
 import { IProvidable } from './../interfaces/providable';
 
 @injectable()
-export class EdiPrettifyProvider implements DocumentFormattingEditProvider, IProvidable{
+export class EdiPrettifyProvider implements DocumentFormattingEditProvider, IProvidable {
     private _parser: Parser;
-
-    public name: string = 'edi-x12-support.prettify';
 
     public constructor(parser: Parser) {
         this._parser = parser;
     }
 
     @logExceptions
-    public async provideDocumentFormattingEdits(document: TextDocument, options: FormattingOptions, token: CancellationToken): Promise<Array<TextEdit>>{
+    public async provideDocumentFormattingEdits(document: TextDocument, options: FormattingOptions, token: CancellationToken): Promise<Array<TextEdit>> {
         let d = document.getText();
         let result = this._parser.parseHeader(d);
         if (!result.isValid) {
