@@ -10,7 +10,7 @@
         "url": "https://silvenga.com"
     },
     "engines": {
-        "vscode": "^1.11.0"
+        "vscode": "^1.28.0"
     },
     "license": "MIT",
     "bugs": {
@@ -166,25 +166,25 @@
         ]
     },
     "devDependencies": {
-        "@types/chai": "^4.1.2",
-        "@types/faker": "^4.1.2",
-        "@types/mocha": "^2.2.48",
-        "@types/node": "^9.4.7",
+        "@types/chai": "^4.1.7",
+        "@types/faker": "^4.1.5",
+        "@types/mocha": "^5.2.7",
+        "@types/node": "^12.0.4",
         "@types/piwik-tracker": "^0.1.28",
         "ava": "^0.25.0",
-        "chai": "^4.1.2",
+        "chai": "^4.2.0",
         "faker": "^4.1.0",
-        "mocha": "^5.0.4",
-        "tslint": "^5.9.1",
+        "mocha": "^6.1.4",
+        "tslint": "^5.17.0",
         "typescript": "^2.7.2",
-        "vsce": "^1.37.5",
-        "vscode": "^1.1.13"
+        "vsce": "^1.62.0",
+        "vscode": "^1.1.34",
+        "testdouble": "^3.11.0"
     },
     "dependencies": {
-        "inversify": "^4.11.1",
+        "inversify": "^5.0.1",
         "piwik-tracker": "^1.1.2",
-        "raven": "^2.4.2",
-        "reflect-metadata": "^0.1.12",
-        "testdouble": "^3.5.2"
+        "raven": "^2.6.4",
+        "reflect-metadata": "^0.1.13"
     }
 }
