@@ -22,6 +22,10 @@ export class GotoCommand implements ICommandable {
     // tslint:disable-next-line:no-any
     public async command(...args: Array<any>) {
 
+        if (window.activeTextEditor == null) {
+            return;
+        }
+
         let document = window.activeTextEditor.document;
 
         let text = document.getText();

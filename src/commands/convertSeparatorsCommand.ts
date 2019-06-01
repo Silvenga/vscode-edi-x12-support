@@ -23,6 +23,11 @@ export class ConvertSeparatorsCommand implements ICommandable {
     @logExceptions
     // tslint:disable-next-line:no-any
     public async command(...args: Array<any>) {
+
+        if (window.activeTextEditor == null) {
+            return;
+        }
+
         let document = window.activeTextEditor.document.getText();
 
         let result = this._parser.parseHeader(document);
