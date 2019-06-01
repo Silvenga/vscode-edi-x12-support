@@ -169,7 +169,7 @@ export class Parser {
                     elementType = ElementType.componentElement;
                     break;
                 default:
-                    throw new Error(`Current lead is unknown ${lead}.`);
+                    throw new Error('Current lead is unknown.');
             }
 
             elements.push(new EdiElement(
