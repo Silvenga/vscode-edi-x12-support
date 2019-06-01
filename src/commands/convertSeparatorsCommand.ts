@@ -1,5 +1,6 @@
-import { injectable } from 'inversify';
-import { Range, window } from 'vscode';
+import { Configuration } from './../configuration';
+import { injectable, inject } from 'inversify';
+import { Range, window, languages } from 'vscode';
 
 import { logExceptions } from '../decorators/logExceptions';
 import { EdiSegment, Parser } from '../parser';
@@ -10,11 +11,13 @@ import { EdiDocumentConfiguration } from './../parser';
 export class ConvertSeparatorsCommand implements ICommandable {
 
     private _parser: Parser;
+    private _configuration: Configuration;
 
     public name: string = 'edi-x12-support.convert-separators';
 
-    public constructor(parser: Parser) {
+    public constructor(parser: Parser, @inject('IConfiguration') configuration: Configuration) {
         this._parser = parser;
+        this._configuration = configuration;
     }
 
     @logExceptions
@@ -38,6 +41,8 @@ export class ConvertSeparatorsCommand implements ICommandable {
             let end = window.activeTextEditor.document.positionAt(segments[segments.length - 1].endIndex);
             builder.replace(new Range(start, end), text);
         });
+
+        languages.setTextDocumentLanguage(window.activeTextEditor.document, this._configuration.languageId);
     }
 
     private modifySeparators(oldConfig: EdiDocumentConfiguration, newConfig: EdiDocumentConfiguration, segments: Array<EdiSegment>): void {

@@ -1,18 +1,21 @@
-import { injectable } from 'inversify';
-import { Position, QuickPickItem, Selection, window } from 'vscode';
+import { injectable, inject } from 'inversify';
+import { Position, QuickPickItem, Selection, window, languages } from 'vscode';
 
 import { logExceptions } from '../decorators/logExceptions';
 import { EdiElement, EdiSegment, ElementType, Parser } from '../parser';
 import { ICommandable } from './../interfaces/commandable';
+import { Configuration } from '../configuration';
 
 @injectable()
 export class GotoCommand implements ICommandable {
     private _parser: Parser;
+    private _configuration: Configuration;
 
     public name: string = 'edi-x12-support.goto';
 
-    public constructor(parser: Parser) {
+    public constructor(parser: Parser, @inject('IConfiguration') configuration: Configuration) {
         this._parser = parser;
+        this._configuration = configuration;
     }
 
     @logExceptions
@@ -53,6 +56,8 @@ export class GotoCommand implements ICommandable {
         }
 
         window.activeTextEditor.selections = [new Selection(new Position(anchor.line, anchor.character), new Position(active.line, active.character))];
+
+        languages.setTextDocumentLanguage(window.activeTextEditor.document, this._configuration.languageId);
     }
 
     public dispose() {
