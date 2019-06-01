@@ -2,6 +2,15 @@
 
 All notable changes to the "edi-x12-support" extension will be documented in this file.
 
+## [1.0.1]
+### Breaking Changes
+- Now requires VSCode 1.28.0 to support new features.
+### Added
+- Added support for Unicode.
+- Added support for the setTextDocumentLanguage when using Edi commands.
+### Fixed
+- Fixed errors when attempting to use a command on a non-active document (not even sure how).
+
 ## [0.11.0]
 ### Added
 - Added formatter API support via #9 (Thanks @chimeramvp!).

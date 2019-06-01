@@ -2,7 +2,7 @@
     "name": "edi-x12-support",
     "displayName": "Edi X12 Support",
     "description": "Provides basic support for the EDI X12/HIPAA format.",
-    "version": "0.11.0",
+    "version": "1.0.1",
     "publisher": "Silvenga",
     "author": {
         "email": "m+vscode@silvenga.com",
@@ -32,7 +32,8 @@
         "onLanguage:edi",
         "onCommand:edi-x12-support.prettify",
         "onCommand:edi-x12-support.uglify",
-        "edi-x12-support.convert-separators"
+        "onCommand:edi-x12-support.goto",
+        "onCommand:edi-x12-support.convert-separators"
     ],
     "main": "./out/src/extension",
     "contributes": {
