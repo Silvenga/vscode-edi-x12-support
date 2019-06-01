@@ -58,3 +58,31 @@ test('Can parse parse * as segment separators.', t => {
     expect(result.configuration.segmentSeparator).to.be.eq('*');
     t.pass();
 });
+
+test('Does not duplicate segments', t => {
+
+    const input = 'SAC*C*I134***10127808~CUR*CM*USD~CTT*868*1728~SE*5218*261060410';
+    let parser = new Parser();
+    let config = new EdiDocumentConfiguration('00501', '*', ':', '>', '~');
+
+    // Act
+    let result = parser.parseSegments(input, config);
+
+    // Assert
+    expect(result[1].id).to.eq('CUR');
+    t.pass();
+});
+
+test('Can parse unicode.', t => {
+
+    const input = 'NM1*IL*1*LÓPEZ*MARK****MI*00221111~';
+    let parser = new Parser();
+    let config = new EdiDocumentConfiguration('00501', '*', ':', '>', '~');
+
+    // Act
+    let result = parser.parseSegments(input, config)[0];
+
+    // Assert
+    expect(result.elements[3].value).to.eq('LÓPEZ');
+    t.pass();
+});

@@ -127,59 +127,60 @@ export class Parser {
             segmentStr,
             x => new EdiElement(ElementType.segmentId, x[0], startIndex + x.index, ''));
 
-        let wordCharacters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'.split('');
+        let separatingTokens = [
+            config.dataSeparator,
+            config.repetitionSeparator,
+            config.componentSeparator
+        ].map(x => this.escapeCharRegex(x)).join('|');
 
-        let charSet = [
-            `\\(`,
-            `\\)`,
-            `'`,
-            `&`,
-            `\``,
-            `!`,
-            ` `,
-            `,`,
-            `\\-`,
-            `\\.`,
-            `\\/`,
-            `;`,
-            `\\?`,
-            `=`,
-            `%`,
-            `@`,
-            `\\[`,
-            `\\]`,
-            `_`,
-            `\\{`,
-            `\\}`,
-            `\\\\`,
-            `\\|`,
-            `<`,
-            `>`,
-            `#`,
-            `\$`,
-            `:`,
-            `^`,
-            `~`,
-            `"`,
-            `\\+`,
-        ].concat(wordCharacters)
-            .filter(x => {
-                return config.separators.indexOf(x.replace(/\\{1}/, '')) == -1; // Remove first \
+        let separatingRegex = new RegExp(`(${separatingTokens})`, 'g');
+
+        let tokenRanges: Array<{ leadStart: number, leadEnd: number, tailStart: number, tailEnd?: number }> = [];
+        let match: RegExpExecArray;
+        while ((match = separatingRegex.exec(segmentStr)) != null) {
+            tokenRanges.push({
+                leadStart: match.index,
+                leadEnd: match.index + match[0].length,
+                tailStart: match.index + match[0].length
             });
+        }
 
-        let dataRegex = `[${charSet.join('')}]*`;
+        let lastRangeTailEnd = segmentStr.length - endingDelimiter.length;
+        for (let range of tokenRanges.reverse()) {
+            range.tailEnd = lastRangeTailEnd;
+            lastRangeTailEnd = range.leadStart;
+        }
 
-        let dataElements = this.parseRegex(new RegExp(`(${this.escapeCharRegex(config.dataSeparator)})(${dataRegex})`, 'g'),
-            segmentStr,
-            x => new EdiElement(ElementType.dataElement, x[2], startIndex + x.index + 1, x[1]));
-        let repeatingElements = this.parseRegex(new RegExp(`(${this.escapeCharRegex(config.repetitionSeparator)})(${dataRegex})`, 'g'),
-            segmentStr,
-            x => new EdiElement(ElementType.repeatingElement, x[2], startIndex + x.index + 1, x[1]));
-        let componentElements = this.parseRegex(new RegExp(`(${this.escapeCharRegex(config.componentSeparator)})(${dataRegex})`, 'g'),
-            segmentStr,
-            x => new EdiElement(ElementType.componentElement, x[2], startIndex + x.index + 1, x[1]));
+        let elements: Array<EdiElement> = [];
+        for (let range of tokenRanges.reverse()) {
 
-        segment.elements = segmentsIds.concat(dataElements, repeatingElements, componentElements).sort((a, b) => a.startIndex - b.startIndex);
+            let lead = segmentStr.substr(range.leadStart, range.leadEnd - range.leadStart);
+            let tail = segmentStr.substr(range.leadEnd, (range.tailEnd - range.tailStart));
+
+            let elementType: ElementType;
+            switch (lead) {
+                case config.dataSeparator:
+                    elementType = ElementType.dataElement;
+                    break;
+                case config.repetitionSeparator:
+                    elementType = ElementType.repeatingElement;
+                    break;
+                case config.componentSeparator:
+                    elementType = ElementType.componentElement;
+                    break;
+                default:
+                    throw new Error(`Current lead is unknown ${lead}.`);
+            }
+
+            elements.push(new EdiElement(
+                elementType,
+                tail,
+                startIndex + range.leadStart,
+                lead
+            ));
+        }
+
+        segment.elements = segmentsIds.concat(elements);
 
         let firstElement = segment.elements[0];
         if (firstElement != null && firstElement.type == ElementType.segmentId) {

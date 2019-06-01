@@ -60,6 +60,32 @@ test('Segment end deliminator should be populated.', t => {
     t.pass();
 });
 
+test('Segment start index should be populated.', t => {
+
+    const input = 'ISA*test~GA*test~';
+    let parser = new Parser();
+
+    // Act
+    let result = parser.parseSegments(input, config);
+
+    // Assert
+    expect(result[1].startIndex).to.be.eq(9);
+    t.pass();
+});
+
+test('Element start index should be populated.', t => {
+
+    const input = 'ISA*test~GA*test~';
+    let parser = new Parser();
+
+    // Act
+    let result = parser.parseSegments(input, config);
+
+    // Assert
+    expect(result[1].elements[1].startIndex).to.be.eq(11);
+    t.pass();
+});
+
 test('Can parse empty elements.', t => {
 
     const input = 'ISA***~';
