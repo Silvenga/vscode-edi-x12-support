@@ -8,7 +8,7 @@ const workspaceConfiguration = workspace.getConfiguration();
 
 @injectable()
 export class Configuration implements IConfiguration {
-    public extensionVersion: string = '1.0.1'; // TODO Un-hard-code this.
+    public extensionVersion: string = '1.1.0'; // TODO Un-hard-code this.
     public languageId: string = 'edi';
     public ravenDsn: string = 'https://164272356e3b481f824212f7be48febc:3aff12ab1e3548f3a61f3b00bcdd5985@sentry.io/192167';
     public piwikSiteId: number = 9;

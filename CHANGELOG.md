@@ -2,6 +2,10 @@
 
 All notable changes to the "edi-x12-support" extension will be documented in this file.
 
+## [1.1.0]
+### Added
+- Added support for X12 versions before the repeating segment, resolves #13.
+
 ## [1.0.1]
 ### Breaking Changes
 - Now requires VSCode 1.28.0 to support new features.
