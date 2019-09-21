@@ -38,6 +38,7 @@ export class Parser {
             return configResult;
         }
         let standard = isaHeader.slice(84, 89);
+        let oldStandard = standard < '00402';
         let dataSeparator = isaHeader.charAt(3);
         let componentSeparator = isaHeader.charAt(104);
         let segmentSeparator = isaHeader.charAt(105);
@@ -45,7 +46,7 @@ export class Parser {
             segmentSeparator = '\r\n';
             isaHeader += '\n'; // TODO HACK, handle without modifying header.
         }
-        let repetitionSeparator = isaHeader.charAt(82);
+        let repetitionSeparator = oldStandard ? null : isaHeader.charAt(82);
 
         let config = new EdiDocumentConfiguration(standard, dataSeparator, componentSeparator, repetitionSeparator, segmentSeparator);
         configResult.configuration = config;
@@ -56,32 +57,58 @@ export class Parser {
         let isValid = false;
         if (parseResult.length == 1) {
             let result = parseResult[0];
-            isValid = // TODO Too much?
-                this.checkWithReason(configResult, () => result.elements.filter(x => x.type == ElementType.repeatingElement && x.name == '11').length == 1,
-                    `ISA segment found, but found one or more repeating segments, should the repeating element separator really be '${repetitionSeparator}'?`)
-                && this.checkWithReason(configResult, () => result.elements.filter(x => x.type == ElementType.componentElement && x.name == '16-2').length == 1,
-                    `ISA segment found, but found one or more components, should the component element separator really be '${componentSeparator}'?`)
-                && this.checkWithReason(configResult, () => result.elements.filter(x => x.type == ElementType.dataElement).length == 16,
-                    `ISA segment found, but found an invalid number of data elements, should the data element separator really be '${dataSeparator}'?`)
-                && this.checkWithReason(configResult, () => result.elements[1].value.length == 2, `ISA01 has an invalid length. ${result.elements[1].value.length} != 2`)
-                && this.checkWithReason(configResult, () => result.elements[2].value.length == 10, `ISA02 has an invalid length. ${result.elements[2].value.length} != 10`)
-                && this.checkWithReason(configResult, () => result.elements[3].value.length == 2, `ISA03 has an invalid length.`)
-                && this.checkWithReason(configResult, () => result.elements[4].value.length == 10, `ISA04 has an invalid length.`)
-                && this.checkWithReason(configResult, () => result.elements[5].value.length == 2, `ISA05 has an invalid length.`)
-                && this.checkWithReason(configResult, () => result.elements[6].value.length == 15, `ISA06 has an invalid length.`)
-                && this.checkWithReason(configResult, () => result.elements[7].value.length == 2, `ISA07 has an invalid length.`)
-                && this.checkWithReason(configResult, () => result.elements[8].value.length == 15, `ISA08 has an invalid length.`)
-                && this.checkWithReason(configResult, () => result.elements[9].value.length == 6, `ISA09 has an invalid length.`)
-                && this.checkWithReason(configResult, () => result.elements[10].value.length == 4, `ISA10 has an invalid length.`)
-                && this.checkWithReason(configResult, () => result.elements[11].value.length == 0, `Repeating separator does not exist in the correct element.`)
-                && this.checkWithReason(configResult, () => result.elements[12].value.length == 0, `Repeating separator does not exist in the correct element.`)
-                && this.checkWithReason(configResult, () => result.elements[13].value.length == 5, `ISA12 has an invalid length.`)
-                && this.checkWithReason(configResult, () => result.elements[14].value.length == 9, `ISA13 has an invalid length.`)
-                && this.checkWithReason(configResult, () => result.elements[15].value.length == 1, `ISA14 has an invalid length.`)
-                && this.checkWithReason(configResult, () => result.elements[16].value.length == 1, `ISA15 has an invalid length.`)
-                && this.checkWithReason(configResult, () => result.elements[17].value.length == 0, `Component separator does not exist in the correct element.`)
-                && this.checkWithReason(configResult, () => result.elements[18].value.length == 0, `Component separator does not exist in the correct element.`)
-                ;
+            configResult.headerSegment = result;
+            if (oldStandard) {
+                isValid = // TODO Too much?
+                    this.checkWithReason(configResult, () => result.elements.filter(x => x.type == ElementType.componentElement && x.name == '16-2').length == 1,
+                        `ISA segment found, but found one or more components, should the component element separator really be '${componentSeparator}'?`)
+                    && this.checkWithReason(configResult, () => result.elements.filter(x => x.type == ElementType.dataElement).length == 16,
+                        `ISA segment found, but found an invalid number of data elements, should the data element separator really be '${dataSeparator}'?`)
+                    && this.checkWithReason(configResult, () => result.elements[1].value.length == 2, `ISA01 has an invalid length. ${result.elements[1].value.length} != 2`)
+                    && this.checkWithReason(configResult, () => result.elements[2].value.length == 10, `ISA02 has an invalid length. ${result.elements[2].value.length} != 10`)
+                    && this.checkWithReason(configResult, () => result.elements[3].value.length == 2, `ISA03 has an invalid length.`)
+                    && this.checkWithReason(configResult, () => result.elements[4].value.length == 10, `ISA04 has an invalid length.`)
+                    && this.checkWithReason(configResult, () => result.elements[5].value.length == 2, `ISA05 has an invalid length.`)
+                    && this.checkWithReason(configResult, () => result.elements[6].value.length == 15, `ISA06 has an invalid length.`)
+                    && this.checkWithReason(configResult, () => result.elements[7].value.length == 2, `ISA07 has an invalid length.`)
+                    && this.checkWithReason(configResult, () => result.elements[8].value.length == 15, `ISA08 has an invalid length.`)
+                    && this.checkWithReason(configResult, () => result.elements[9].value.length == 6, `ISA09 has an invalid length.`)
+                    && this.checkWithReason(configResult, () => result.elements[10].value.length == 4, `ISA10 has an invalid length.`)
+                    && this.checkWithReason(configResult, () => result.elements[11].value.length == 1, `Repeating separator does not exist in the correct element.`)
+                    && this.checkWithReason(configResult, () => result.elements[12].value.length == 5, `ISA12 has an invalid length.`)
+                    && this.checkWithReason(configResult, () => result.elements[13].value.length == 9, `ISA13 has an invalid length.`)
+                    && this.checkWithReason(configResult, () => result.elements[14].value.length == 1, `ISA14 has an invalid length.`)
+                    && this.checkWithReason(configResult, () => result.elements[15].value.length == 1, `ISA15 has an invalid length.`)
+                    && this.checkWithReason(configResult, () => result.elements[16].value.length == 0, `Component separator does not exist in the correct element.`)
+                    && this.checkWithReason(configResult, () => result.elements[17].value.length == 0, `Component separator does not exist in the correct element.`);
+            } else {
+                isValid = // TODO Too much?
+                    this.checkWithReason(configResult, () => result.elements.filter(x => x.type == ElementType.repeatingElement && x.name == '11').length == 1,
+                        `ISA segment found, but found one or more repeating segments, should the repeating element separator really be '${repetitionSeparator}'?`)
+                    && this.checkWithReason(configResult, () => result.elements.filter(x => x.type == ElementType.componentElement && x.name == '16-2').length == 1,
+                        `ISA segment found, but found one or more components, should the component element separator really be '${componentSeparator}'?`)
+                    && this.checkWithReason(configResult, () => result.elements.filter(x => x.type == ElementType.dataElement).length == 16,
+                        `ISA segment found, but found an invalid number of data elements, should the data element separator really be '${dataSeparator}'?`)
+                    && this.checkWithReason(configResult, () => result.elements[1].value.length == 2, `ISA01 has an invalid length. ${result.elements[1].value.length} != 2`)
+                    && this.checkWithReason(configResult, () => result.elements[2].value.length == 10, `ISA02 has an invalid length. ${result.elements[2].value.length} != 10`)
+                    && this.checkWithReason(configResult, () => result.elements[3].value.length == 2, `ISA03 has an invalid length.`)
+                    && this.checkWithReason(configResult, () => result.elements[4].value.length == 10, `ISA04 has an invalid length.`)
+                    && this.checkWithReason(configResult, () => result.elements[5].value.length == 2, `ISA05 has an invalid length.`)
+                    && this.checkWithReason(configResult, () => result.elements[6].value.length == 15, `ISA06 has an invalid length.`)
+                    && this.checkWithReason(configResult, () => result.elements[7].value.length == 2, `ISA07 has an invalid length.`)
+                    && this.checkWithReason(configResult, () => result.elements[8].value.length == 15, `ISA08 has an invalid length.`)
+                    && this.checkWithReason(configResult, () => result.elements[9].value.length == 6, `ISA09 has an invalid length.`)
+                    && this.checkWithReason(configResult, () => result.elements[10].value.length == 4, `ISA10 has an invalid length.`)
+                    && this.checkWithReason(configResult, () => result.elements[11].value.length == 0, `Repeating separator does not exist in the correct element.`)
+                    && this.checkWithReason(configResult, () => result.elements[12].value.length == 0, `Repeating separator does not exist in the correct element.`)
+                    && this.checkWithReason(configResult, () => result.elements[13].value.length == 5, `ISA12 has an invalid length.`)
+                    && this.checkWithReason(configResult, () => result.elements[14].value.length == 9, `ISA13 has an invalid length.`)
+                    && this.checkWithReason(configResult, () => result.elements[15].value.length == 1, `ISA14 has an invalid length.`)
+                    && this.checkWithReason(configResult, () => result.elements[16].value.length == 1, `ISA15 has an invalid length.`)
+                    && this.checkWithReason(configResult, () => result.elements[17].value.length == 0, `Component separator does not exist in the correct element.`)
+                    && this.checkWithReason(configResult, () => result.elements[18].value.length == 0, `Component separator does not exist in the correct element.`);
+            }
+
         } else {
             configResult.errorMessage = `ISA segment found, but found element mismatches, should the data element separator really be '${dataSeparator}'?`;
         }
@@ -131,7 +158,7 @@ export class Parser {
             config.dataSeparator,
             config.repetitionSeparator,
             config.componentSeparator
-        ].map(x => this.escapeCharRegex(x)).join('|');
+        ].filter(x => x).map(x => this.escapeCharRegex(x)).join('|');
 
         let separatingRegex = new RegExp(`(${separatingTokens})`, 'g');
 
@@ -291,6 +318,7 @@ export class EdiDocumentConfigurationResult {
     public isValid: boolean;
     public errorMessage: string;
     public configuration: EdiDocumentConfiguration;
+    public headerSegment: EdiSegment;
 }
 
 export class EdiDocumentConfiguration {
@@ -324,7 +352,7 @@ export class EdiDocumentConfiguration {
                 + `Control Version: '${this.controlVersion}'\n`
                 + `Data Separator: '${this.dataSeparator}'\n`
                 + `Component Separator: '${this.componentSeparator}'\n`
-                + `Repetition Separator: '${this.repetitionSeparator}'\n`
+                + `Repetition Separator: '${this.repetitionSeparator != null ? this.repetitionSeparator : ''}'\n`
                 + `Segment Separator: '${this.segmentSeparator}'\n`
             ));
     }

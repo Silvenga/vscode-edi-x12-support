@@ -86,3 +86,21 @@ test('Can parse unicode.', t => {
     expect(result.elements[3].value).to.eq('LÓPEZ');
     t.pass();
 });
+
+test('Can parse 00401 header.', t => {
+
+    const input = 'ISA|00|          |00|          |11|RA0219798      |ZZ|T_NUFACTOR     |190917|0659|U|00401|990000002|0|P|>~';
+    let parser = new Parser();
+
+    // Act
+    let result = parser.parseHeader(input);
+
+    // Assert
+    expect(result.isValid).is.true;
+    expect(result.configuration.componentSeparator).is.eq('>');
+    expect(result.configuration.controlVersion).is.eq('00401');
+    expect(result.configuration.dataSeparator).is.eq('|');
+    expect(result.configuration.repetitionSeparator).is.eq(null);
+    expect(result.configuration.segmentSeparator).is.eq('~');
+    t.pass();
+});
